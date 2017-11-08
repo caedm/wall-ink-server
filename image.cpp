@@ -1656,7 +1656,7 @@ void drawCharacter(int x, int y, char c) {
 
 void drawString(int x, int y, std::string str) {
     for (int i = 0; i < str.length(); i++) {
-        drawCharacter(x + 9*i, y, str[i]);
+        drawCharacter(x + 10*i, y, str[i]);
     }
 }
 
