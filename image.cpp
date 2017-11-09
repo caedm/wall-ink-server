@@ -1636,7 +1636,12 @@ unsigned char letters[95][13] = {
 }};  // :126
 
 void setPixel(int x, int y, unsigned char on) {
-    image[x/8] = image[x/8] | (on << (7-x%8));
+    if (on == 1) {
+        image[x/8] = image[x/8] | (on << (7-x%8));
+    }
+    else {
+        image[x/8] = image[x/8] & (0xfe << (7-x%8));
+    }
 }
 
 void initializeImage() {
