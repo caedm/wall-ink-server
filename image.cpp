@@ -1665,7 +1665,7 @@ void drawCharacter(int x, int y, char c) {
    for (int i = 0; i < 13; i++){
        image[x/8 + 25*(y+12-i)] = image[x/8 + 25*(y+12-i)] | (letters[c - 32][i] >> (x%8));
        if (x%8 > 0) {
-           image[x/8 + 25*(y+12-i) + 1] = image[x/8 + 25*(y+12-i) + 1] | (letters[c - 32][i] << (7-x%8));
+           image[x/8 + 25*(y+12-i) + 1] = image[x/8 + 25*(y+12-i) + 1] | (letters[c - 32][i] << (8-x%8));
        }
    } 
 }
