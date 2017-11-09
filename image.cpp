@@ -1635,12 +1635,23 @@ unsigned char letters[95][13] = {
     0b00000000
 }};  // :126
 
-void setPixel(int x, int y, unsigned char on) {
-    if (on == 1) {
-        image[x/8] = image[x/8] | (on << (7-x%8));
+void setPixel(int x, int y, unsigned char color) {
+    if (color == 0) {
+        image[x/8 + 25*y] = image[x/8 + 25*y] & (0xfe << (7-x%8)); //white
     }
-    else {
-        image[x/8] = image[x/8] & (0xfe << (7-x%8));
+    else if (color == 1) {
+        image[x/8 + 25*y] = image[x/8 + 25*y] | (0x01 << (7-x%8)); //black
+    }
+    else if (color == 2) {
+        image[x/8 + 25*y] = image[x/8 + 25*y] ^ (0x01 << (7-x%8)); //swap
+    }
+}
+
+void drawRect(int x, int y, int width, int height, unsigned char color) {
+    for (int x2 = 0; x2 < width; x2++) {
+        for (int y2 = 0; y2 < height; y2++) {
+            setPixel(x + x2, y + y2, color);
+        }
     }
 }
 
@@ -1732,6 +1743,7 @@ int main(void) {
     initializeImage();
     drawString(10, 10, "This is drawn at 10,10");
     drawString(80, 80, "This is drawn at 80,80");
+    drawRect(50,50,10,10,2);
     invert();
     mirror();
     std::ofstream("me.bin", std::ios::binary).write(image, X_RES/8 * Y_RES);
