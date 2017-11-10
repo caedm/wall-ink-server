@@ -8,13 +8,13 @@ char image[X_RES/8 * Y_RES];
 
 void setPixel(int x, int y, unsigned char color) {
     if (color == 0) {
-        image[x/8 + 25*y] = image[x/8 + 25*y] & (0xfe << (7-x%8)); //white
+        image[x/8 + X_RES/8*y] = image[x/8 + X_RES/8*y] & (0xfe << (7-x%8)); //white
     }
     else if (color == 1) {
-        image[x/8 + 25*y] = image[x/8 + 25*y] | (0x01 << (7-x%8)); //black
+        image[x/8 + X_RES/8*y] = image[x/8 + X_RES/8*y] | (0x01 << (7-x%8)); //black
     }
     else if (color == 2) {
-        image[x/8 + 25*y] = image[x/8 + 25*y] ^ (0x01 << (7-x%8)); //swap
+        image[x/8 + X_RES/8*y] = image[x/8 + X_RES/8*y] ^ (0x01 << (7-x%8)); //swap
     }
 }
 
@@ -34,9 +34,9 @@ void initializeImage() {
 
 void drawCharacter(int x, int y, char c) {
    for (int i = 0; i < 13; i++){
-       image[x/8 + 25*(y+12-i)] = image[x/8 + 25*(y+12-i)] | (letters[c - 32][i] >> (x%8));
+       image[x/8 + X_RES/8*(y+12-i)] = image[x/8 + X_RES/8*(y+12-i)] | (letters[c - 32][i] >> (x%8));
        if (x%8 > 0) {
-           image[x/8 + 25*(y+12-i) + 1] = image[x/8 + 25*(y+12-i) + 1] | (letters[c - 32][i] << (8-x%8));
+           image[x/8 + X_RES/8*(y+12-i) + 1] = image[x/8 + X_RES/8*(y+12-i) + 1] | (letters[c - 32][i] << (8-x%8));
        }
    } 
 }
@@ -95,7 +95,7 @@ void mirror() {
     char temp;
     for (int y = 0; y < Y_RES; y++) {
         for (int x = 0; x < X_RES/16; x++) {
-            temp = image[y * 25 + x]; 
+            temp = image[y * X_RES/8 + x]; 
             image[y * X_RES/8 + x] = image[y * X_RES/8 + X_RES/8 - 1 - x];
             image[y * X_RES/8 + X_RES/8 - 1 - x] = temp;
         }
