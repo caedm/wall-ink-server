@@ -8,7 +8,7 @@ char image[X_RES/8 * Y_RES];
 
 void setPixel(int x, int y, unsigned char color) {
     if (color == 0) {
-        image[x/8 + X_RES/8*y] = image[x/8 + X_RES/8*y] & (0xfe << (7-x%8)); //white
+        image[x/8 + X_RES/8*y] = image[x/8 + X_RES/8*y] & ((0x01 << (7-x%8)) ^ 0xff); //white
     }
     else if (color == 1) {
         image[x/8 + X_RES/8*y] = image[x/8 + X_RES/8*y] | (0x01 << (7-x%8)); //black
@@ -109,16 +109,40 @@ void mirror() {
     }
 }
 
-int main(void) {
-    //write to a file
+void drawImage(std::string roomName, std::string date, std::string time, bool* reservations) {
     initializeImage();
-    drawString(10, 10, "This is drawn at 10,10");
-    drawString(80, 80, "This is drawn at 80,80");
-    drawRect(50,50,10,10,2);
-    drawRect(1,1,198,198,2);
-    drawRect(2,2,196,196,2);
+    drawString(13,12,roomName + " Reservations");
+    drawString(90,43,date);
+
+    //Outer box
+    drawRect(19,67,X_RES - 19*2, Y_RES - 67*2, 1);
+    drawRect(24,72,X_RES - 24*2, Y_RES - 72*2, 0);
+
+    drawString(31,Y_RES - 90, "Last updated " + date + ", " + time);
+    drawString(84,Y_RES - 23, "reserve.et.byu.edu");
+
+    //inner boxes
+    drawRect(120,78,51,Y_RES-78-101,1);
+    drawRect(X_RES-119,78,51,Y_RES-78-101,1);
+
+    //key
+    drawRect(52,Y_RES-59,51,28,1);
+    drawRect(57,Y_RES-55,41,20,0);
+    drawString(111,Y_RES-50,"Available");
+    drawRect(211,Y_RES-59,51,28,1);
+    drawString(275,Y_RES-50,"Reserved");
+
+
     invert();
     mirror();
+}
+
+int main(void) {
+    //actually generate the desired image
+    bool reservations[] = {0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0};
+    drawImage("Step Down Lounge", "11/09/2017", "05:38pm", reservations);
+
+    //write to a file
     std::ofstream("me.bin", std::ios::binary).write(image, X_RES/8 * Y_RES);
     return 0;
 }
