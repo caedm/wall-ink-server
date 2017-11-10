@@ -3,6 +3,8 @@
 #include "letters.h"
 #define X_RES 200
 #define Y_RES 200
+#define ASCII_OFFSET 32
+#define LETTER_HEIGHT 13
 
 char image[X_RES/8 * Y_RES];
 
@@ -33,10 +35,10 @@ void initializeImage() {
 }
 
 void drawCharacter(int x, int y, char c) {
-   for (int i = 0; i < 13; i++){
-       image[x/8 + X_RES/8*(y+12-i)] = image[x/8 + X_RES/8*(y+12-i)] | (letters[c - 32][i] >> (x%8));
+   for (int i = 0; i < LETTER_HEIGHT; i++){
+       image[x/8 + X_RES/8*(y+LETTER_HEIGHT-1-i)] = image[x/8 + X_RES/8*(y+LETTER_HEIGHT-1-i)] | (letters[c - ASCII_OFFSET][i] >> (x%8));
        if (x%8 > 0) {
-           image[x/8 + X_RES/8*(y+12-i) + 1] = image[x/8 + X_RES/8*(y+12-i) + 1] | (letters[c - 32][i] << (8-x%8));
+           image[x/8 + X_RES/8*(y+LETTER_HEIGHT-1-i) + 1] = image[x/8 + X_RES/8*(y+LETTER_HEIGHT-1-i) + 1] | (letters[c - ASCII_OFFSET][i] << (8-x%8));
        }
    } 
 }
