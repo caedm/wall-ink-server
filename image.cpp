@@ -1,10 +1,14 @@
 #include <fstream>
+#include <iostream>
+#include <iomanip>
 #include <string>
 #include "letters.h"
 #define X_RES 200
 #define Y_RES 200
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
+
+using namespace std;
 
 char image[X_RES/8 * Y_RES];
 
@@ -43,7 +47,7 @@ void drawCharacter(int x, int y, char c) {
    } 
 }
 
-void drawString(int x, int y, std::string str) {
+void drawString(int x, int y, string str) {
     for (int i = 0; i < str.length(); i++) {
         drawCharacter(x + 9*i, y, str[i]);
     }
@@ -111,7 +115,7 @@ void mirror() {
     }
 }
 
-void drawImage(std::string roomName, std::string date, std::string time, bool* reservations) {
+void drawImage(string roomName, string date, string time, bool* reservations) {
     initializeImage();
     drawString(13,12,roomName + " Reservations");
     drawString(90,43,date);
@@ -140,11 +144,64 @@ void drawImage(std::string roomName, std::string date, std::string time, bool* r
 }
 
 int main(void) {
+    //read from the database info
+    ifstream fromDB;
+    fromDB.open("fromDB");
+    string mac_address;
+    getline(fromDB, mac_address);
+    string name;
+    getline(fromDB, name);
+    string dateTimeNow;
+    getline(fromDB, dateTimeNow);
+    bool reservations[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    string line;
+    while (getline(fromDB, line)) {
+        string dateTimeStart;
+        getline(fromDB, dateTimeStart);
+        int startIndex;
+
+        if (dateTimeNow.compare(dateTimeStart.substr(0,10))) {
+            int hour = atoi(dateTimeStart.substr(11,2).c_str());
+            int minute = atoi(dateTimeStart.substr(14,2).c_str());
+            hour -= 6;
+            hour *= 2;
+            minute /= 30;
+            startIndex = hour + minute;
+            if (startIndex < 0)
+                startIndex = 0;
+            if (startIndex > 30)
+                startIndex = 30;
+        } else {
+            startIndex = 0;
+        }
+        
+        string dateTimeEnd;
+        getline(fromDB, dateTimeEnd);
+        int endIndex;
+        if (dateTimeNow.compare(dateTimeEnd.substr(0,10))) {
+            int hour = atoi(dateTimeEnd.substr(11,2).c_str());
+            int minute = atoi(dateTimeEnd.substr(14,2).c_str());
+            hour -= 6;
+            hour *= 2;
+            minute /= 30;
+            endIndex = hour + minute;
+            if (endIndex < 0)
+                endIndex = 0;
+            if (endIndex > 31)
+                endIndex = 31;
+        } else {
+            endIndex = 31;
+        }
+
+        for (int i = startIndex; i < endIndex; i++) {
+            reservations[i] = 1;
+        }
+    }
+
     //actually generate the desired image
-    bool reservations[] = {0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0};
-    drawImage("Step Down Lounge", "11/09/2017", "05:38pm", reservations);
+    drawImage(name, "11/09/2017", "05:38pm", reservations);
 
     //write to a file
-    std::ofstream("me.bin", std::ios::binary).write(image, X_RES/8 * Y_RES);
+    ofstream(mac_address, ios::binary).write(image, X_RES/8 * Y_RES);
     return 0;
 }
