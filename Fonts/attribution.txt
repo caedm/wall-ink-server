@@ -1,0 +1,2 @@
+These fonts were provided by Adafruit Industries.
+They can be found at https://github.com/adafruit/Adafruit-GFX-Library
