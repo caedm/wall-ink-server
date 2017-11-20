@@ -1,3 +1,6 @@
 genimg
 database.sh
 fromDB
+*~
+*.swp
+*.swo
