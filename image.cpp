@@ -115,7 +115,7 @@ void mirror() {
     }
 }
 
-void drawImage(string roomName, string date, string time, bool* reservations) {
+void drawImage(string roomName, string date, string time, string* reservations) {
     initializeImage();
     drawString(13,12,roomName + " Reservations");
     drawString(90,43,date);
@@ -153,11 +153,11 @@ int main(void) {
     getline(fromDB, name);
     string dateNow;
     getline(fromDB, dateNow);
-    bool reservations[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    string line;
+    string reservations[] = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
+    string title;
 
     //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
-    while (getline(fromDB, line)) {
+    while (getline(fromDB, title)) {
         
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
         string dateTimeStart;
@@ -198,7 +198,7 @@ int main(void) {
         }
 
         for (int i = startIndex; i < endIndex; i++) {
-            reservations[i] = 1;
+            reservations[i] = title;
         }
     }
 

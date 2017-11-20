@@ -21,12 +21,14 @@ do
         reservation_instance_ids=($reservation_instance_ids);
         for reservation_instance_id in "${reservation_instance_ids[@]}"
         do
+            series_title=`mysql -h $server -u $username --password=$password -s -N -e "SELECT title FROM collegeresv.reservation_series WHERE series_id = $series_id"`
             start_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT start_date FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id"`
             end_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT end_date FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id"`
             echo "Reservation Instance ID: " $reservation_instance_id
+            echo "Reservation Series Title: " $series_title
             echo "Start: " $start_date
             echo "End: " $end_date
-            echo $reservation_instance_id >> fromDB
+            echo $series_title >> fromDB
             echo $start_date >> fromDB
             echo $end_date >> fromDB
         done
