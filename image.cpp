@@ -3,8 +3,8 @@
 #include <iomanip>
 #include <string>
 #include "letters.h"
-#define X_RES0 200
-#define Y_RES0 200
+#define X_RES0 640
+#define Y_RES0 384
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
 
