@@ -151,16 +151,19 @@ int main(void) {
     getline(fromDB, mac_address);
     string name;
     getline(fromDB, name);
-    string dateTimeNow;
-    getline(fromDB, dateTimeNow);
+    string dateNow;
+    getline(fromDB, dateNow);
     bool reservations[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     string line;
+
+    //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
     while (getline(fromDB, line)) {
+        
+        //Take in a date formatted string and decide which reservations[] time block it corresponds to
         string dateTimeStart;
         getline(fromDB, dateTimeStart);
         int startIndex;
-
-        if (dateTimeNow.compare(dateTimeStart.substr(0,10))) {
+        if (dateNow.compare(dateTimeStart.substr(0,10))) {
             int hour = atoi(dateTimeStart.substr(11,2).c_str());
             int minute = atoi(dateTimeStart.substr(14,2).c_str());
             hour -= 6;
@@ -175,10 +178,11 @@ int main(void) {
             startIndex = 0;
         }
         
+        //Take in a date formatted string and decide which reservations[] time block it corresponds to
         string dateTimeEnd;
         getline(fromDB, dateTimeEnd);
         int endIndex;
-        if (dateTimeNow.compare(dateTimeEnd.substr(0,10))) {
+        if (dateNow.compare(dateTimeEnd.substr(0,10))) {
             int hour = atoi(dateTimeEnd.substr(11,2).c_str());
             int minute = atoi(dateTimeEnd.substr(14,2).c_str());
             hour -= 6;
@@ -199,7 +203,7 @@ int main(void) {
     }
 
     //actually generate the desired image
-    drawImage(name, "11/09/2017", "05:38pm", reservations);
+    drawImage(name, dateNow, "05:38pm", reservations);
 
     //write to a file
     ofstream(mac_address, ios::binary).write(image, X_RES/8 * Y_RES);
