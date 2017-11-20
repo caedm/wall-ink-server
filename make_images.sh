@@ -5,15 +5,18 @@ ESP_DEVICES_ARRAY=($ESP_DEVICES);
 for resource_id in "${ESP_DEVICES_ARRAY[@]}"
 do
     mac_address=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT mac_address FROM \`door-display\`.devices WHERE resource_id = '$resource_id`
+    device_type=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT device_type FROM \`door-display\`.devices WHERE resource_id = '$resource_id`
     name=`mysql -h $server -u $username --password=$password -s -N -e "SELECT name FROM collegeresv.resources WHERE resource_id = $resource_id"`
     series_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT series_id FROM collegeresv.reservation_resources WHERE resource_id = $resource_id"`
     series_ids=($series_ids);
     echo "Room Name: " $name
     echo "Resource ID: " $resource_id
+    echo "Device Type: " $device_type
     echo "MAC Address: " $mac_address
     echo $mac_address > fromDB
     echo $name >> fromDB
     echo $DATE >> fromDB
+    echo $device_type >> fromDB
     for series_id in "${series_ids[@]}"
     do
         echo "Series ID: " $series_id
