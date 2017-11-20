@@ -37,8 +37,9 @@ do
         done
     done
     ./genimg
-    mac_address_base_64=$mac_address
+    mac_address_base_64="../www/"
+    mac_address_base_64+=$mac_address
     mac_address_base_64+=".base64"
-    openssl base64 -in $mac_address -out ../www/me.base64 -A
+    openssl base64 -in $mac_address -out $mac_address_base_64 -A
     rm $mac_address
 done
