@@ -153,7 +153,7 @@ int main(void) {
     getline(fromDB, name);
     string dateNow;
     getline(fromDB, dateNow);
-    string reservations[] = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
+    string reservations[] = {"Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"};
     string title;
 
     //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
