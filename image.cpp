@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include <vector>
 #include "letters.h"
 #define X_RES0 384
@@ -193,9 +194,70 @@ void drawImage(string roomName, string date, string time, string* reservations) 
     drawString(31,Y_RES0 - 90, "Last updated " + date + ", " + time);
     drawString(84,Y_RES0 - 23, "reserve.et.byu.edu");
 
-    //inner boxes
-    drawRect(120,78,51,Y_RES0-78-101,1);
-    drawRect(X_RES0-119,78,51,Y_RES0-78-101,1);
+    uint16_t boxCoordinates[32][2] = {
+        {50,78+29*0},
+        {50,78+29*1},
+        {50,78+29*2},
+        {50,78+29*3},
+        {50,78+29*4},
+        {50,78+29*5},
+        {50,78+29*6},
+        {50,78+29*7},
+        {50,78+29*8},
+        {50,78+29*9},
+        {50,78+29*10},
+        {50,78+29*11},
+        {50,78+29*12},
+        {50,78+29*13},
+        {50,78+29*14},
+        {50,78+29*15},
+        {X_RES0-189,78+29*0},
+        {X_RES0-189,78+29*1},
+        {X_RES0-189,78+29*2},
+        {X_RES0-189,78+29*3},
+        {X_RES0-189,78+29*4},
+        {X_RES0-189,78+29*5},
+        {X_RES0-189,78+29*6},
+        {X_RES0-189,78+29*7},
+        {X_RES0-189,78+29*8},
+        {X_RES0-189,78+29*9},
+        {X_RES0-189,78+29*10},
+        {X_RES0-189,78+29*11},
+        {X_RES0-189,78+29*12},
+        {X_RES0-189,78+29*13},
+        {X_RES0-189,78+29*14},
+        {X_RES0-189,78+29*15}
+    };
+
+    //For each time
+    for (int i = 0; i < 32; i++) {
+
+        //generate and display time string
+        ostringstream time;
+        string ampm = "am";
+        int hour = i + 12;
+        hour /= 2;
+        if (hour > 11)
+            ampm = "pm";
+        if (hour > 12)
+            hour -= 12;
+        if (hour < 10)
+            time << " ";
+        time << hour;
+        time << ":";
+        time << (i % 2) * 30;
+        if (i % 2 == 0)
+            time << "0";
+        time << ampm;
+        drawString(boxCoordinates[i][0], boxCoordinates[i][1]+8, time.str()); 
+
+        //draw black boxes
+        drawRect(boxCoordinates[i][0]+70, boxCoordinates[i][1], 51, 29, 1);
+
+        //draw white boxes for open time slots
+        if (reservations[i].compare("Available") == 0)
+            drawRect(boxCoordinates[i][0]+75, boxCoordinates[i][1]+4, 41, 22, 0);
+    }
 
     //key
     drawRect(52,Y_RES0-59,51,28,1);
@@ -203,7 +265,6 @@ void drawImage(string roomName, string date, string time, string* reservations) 
     drawString(111,Y_RES0-50,"Available");
     drawRect(211,Y_RES0-59,51,28,1);
     drawString(275,Y_RES0-50,"Reserved");
-
 
     invert();
     //mirror();
@@ -223,7 +284,10 @@ int main(void) {
     getline(fromDB, dateNow);
     string deviceType;
     getline(fromDB, deviceType);
-    string reservations[] = {"Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available","Available"};
+    string reservations[32];
+    for (int i = 0; i < 32; i++) {
+        reservations[i] = "Available";
+    }
     string title;
 
     //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
@@ -233,7 +297,7 @@ int main(void) {
         string dateTimeStart;
         getline(fromDB, dateTimeStart);
         int startIndex;
-        if (dateNow.compare(dateTimeStart.substr(0,10))) {
+        if (dateNow.compare(dateTimeStart.substr(0,10)) == 0) {
             int hour = atoi(dateTimeStart.substr(11,2).c_str());
             int minute = atoi(dateTimeStart.substr(14,2).c_str());
             hour -= 6;
@@ -252,7 +316,7 @@ int main(void) {
         string dateTimeEnd;
         getline(fromDB, dateTimeEnd);
         int endIndex;
-        if (dateNow.compare(dateTimeEnd.substr(0,10))) {
+        if (dateNow.compare(dateTimeEnd.substr(0,10)) == 0) {
             int hour = atoi(dateTimeEnd.substr(11,2).c_str());
             int minute = atoi(dateTimeEnd.substr(14,2).c_str());
             hour -= 6;
