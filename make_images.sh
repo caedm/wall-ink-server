@@ -37,9 +37,12 @@ do
         done
     done
     ./genimg
-    mac_address_base_64="../www/"
-    mac_address_base_64+=$mac_address
-    mac_address_base_64+=".base64"
-    openssl base64 -in $mac_address -out $mac_address_base_64 -A
+    web_dir="../www/"
+    mac_address_compressed=$mac_address
+    mac_address_compressed+=".compressed"
+    mac_address_compressed_web_dir=$web_dir
+    mac_address_compressed_web_dir+=$mac_address_compressed
+    cp $mac_address_compressed $mac_address_compressed_web_dir
     rm $mac_address
+    rm $mac_address_compressed
 done

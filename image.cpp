@@ -2,15 +2,81 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <vector>
 #include "letters.h"
-#define X_RES0 640
-#define Y_RES0 384
+#define X_RES0 384
+#define Y_RES0 640
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
 
 using namespace std;
 
 char image[X_RES0/8 * Y_RES0];
+
+unsigned char getPixel(unsigned long int x, unsigned long int y) {
+    return (image[x/8 + X_RES0/8*y] >> (7 - x%8)) & 0x01;
+}
+
+vector<unsigned char> compressImage() {
+    vector<unsigned char> compressed;
+    compressed.clear();
+    compressed.push_back(getPixel(0, 0));
+    unsigned long int pointer = 0;
+    unsigned char counter = 0;
+    unsigned char lastEntry = getPixel(0,0);
+    while (++pointer < X_RES0 * Y_RES0) {
+       ++counter;
+       if (getPixel(pointer, 0) != lastEntry) {
+           compressed.push_back(counter);
+           counter = 0;
+           lastEntry = getPixel(pointer, 0);
+       }
+       if (counter == 0xff) {
+           compressed.push_back(counter);
+           counter = 0;
+       }
+    }
+    compressed.push_back(++counter);
+    return compressed;
+}
+
+/*
+vector<unsigned char> compressImage() {
+    vector<unsigned char> compressed;
+    compressed.clear();
+    for (int y = 0; y < Y_RES0; y++) {
+        int switches = 0;
+        for (int x = 1; x < X_RES0; x++)
+            if (getPixel(x,y) != getPixel(x-1,y))
+                ++switches;
+        if (switches >= Y_RES0/8) {
+            compressed.push_back(0);
+            for (int x = 0; x < X_RES0/8; x++) {
+                compressed.push_back(image[x + y*X_RES0/8]);
+            }
+        } else {
+            if (getPixel(0,y) == 1)
+                compressed.push_back(switches);
+            else
+                compressed.push_back(switches);
+            unsigned char counter = 1;
+            for (int x = 1; x < X_RES0; x++) {
+                if (getPixel(x,y) != getPixel(x-1,y)) {
+                    compressed.push_back(counter);
+                    counter = 0;
+                } else if (counter == 255) {
+                    counter = 0;
+                    compressed.push_back(0);
+                }
+                ++counter;
+            }
+            compressed.push_back(counter);
+        }
+    }
+    
+    return compressed;
+}
+*/
 
 void setPixel(int x, int y, unsigned char color) {
     if (color == 0) {
@@ -140,8 +206,10 @@ void drawImage(string roomName, string date, string time, string* reservations) 
 
 
     invert();
-    mirror();
+    //mirror();
 }
+
+
 
 int main(void) {
     //read from the database info
@@ -209,5 +277,7 @@ int main(void) {
 
     //write to a file
     ofstream(mac_address, ios::binary).write(image, X_RES0/8 * Y_RES0);
+    vector<unsigned char> compressed = compressImage();
+    ofstream(mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
     return 0;
 }
