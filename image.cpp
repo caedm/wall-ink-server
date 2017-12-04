@@ -7,25 +7,30 @@
 #include "letters.h"
 #define X_RES0 384
 #define Y_RES0 640
+#define X_RES1 200
+#define Y_RES1 300
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
 
 using namespace std;
 
-char image[X_RES0/8 * Y_RES0];
+uint8_t* image;
 
-unsigned char getPixel(unsigned long int x, unsigned long int y) {
-    return (image[x/8 + X_RES0/8*y] >> (7 - x%8)) & 0x01;
+uint16_t x_res;
+uint16_t y_res;
+
+uint8_t getPixel(unsigned long int x, unsigned long int y) {
+    return (image[x/8 + x_res/8*y] >> (7 - x%8)) & 0x01;
 }
 
-vector<unsigned char> compressImage() {
-    vector<unsigned char> compressed;
+vector<uint8_t> compressImage() {
+    vector<uint8_t> compressed;
     compressed.clear();
     compressed.push_back(getPixel(0, 0));
-    unsigned long int pointer = 0;
-    unsigned char counter = 0;
-    unsigned char lastEntry = getPixel(0,0);
-    while (++pointer < X_RES0 * Y_RES0) {
+    uint32_t pointer = 0;
+    uint8_t counter = 0;
+    uint8_t lastEntry = getPixel(0,0);
+    while (++pointer < x_res * y_res) {
        ++counter;
        if (getPixel(pointer, 0) != lastEntry) {
            compressed.push_back(counter);
@@ -45,15 +50,15 @@ vector<unsigned char> compressImage() {
 vector<unsigned char> compressImage() {
     vector<unsigned char> compressed;
     compressed.clear();
-    for (int y = 0; y < Y_RES0; y++) {
+    for (int y = 0; y < y_res; y++) {
         int switches = 0;
-        for (int x = 1; x < X_RES0; x++)
+        for (int x = 1; x < x_res; x++)
             if (getPixel(x,y) != getPixel(x-1,y))
                 ++switches;
-        if (switches >= Y_RES0/8) {
+        if (switches >= y_res/8) {
             compressed.push_back(0);
-            for (int x = 0; x < X_RES0/8; x++) {
-                compressed.push_back(image[x + y*X_RES0/8]);
+            for (int x = 0; x < x_res/8; x++) {
+                compressed.push_back(image[x + y*x_res/8]);
             }
         } else {
             if (getPixel(0,y) == 1)
@@ -61,7 +66,7 @@ vector<unsigned char> compressImage() {
             else
                 compressed.push_back(switches);
             unsigned char counter = 1;
-            for (int x = 1; x < X_RES0; x++) {
+            for (int x = 1; x < x_res; x++) {
                 if (getPixel(x,y) != getPixel(x-1,y)) {
                     compressed.push_back(counter);
                     counter = 0;
@@ -81,13 +86,13 @@ vector<unsigned char> compressImage() {
 
 void setPixel(int x, int y, unsigned char color) {
     if (color == 0) {
-        image[x/8 + X_RES0/8*y] = image[x/8 + X_RES0/8*y] & ((0x01 << (7-x%8)) ^ 0xff); //white
+        image[x/8 + x_res/8*y] = image[x/8 + x_res/8*y] & ((0x01 << (7-x%8)) ^ 0xff); //white
     }
     else if (color == 1) {
-        image[x/8 + X_RES0/8*y] = image[x/8 + X_RES0/8*y] | (0x01 << (7-x%8)); //black
+        image[x/8 + x_res/8*y] = image[x/8 + x_res/8*y] | (0x01 << (7-x%8)); //black
     }
     else if (color == 2) {
-        image[x/8 + X_RES0/8*y] = image[x/8 + X_RES0/8*y] ^ (0x01 << (7-x%8)); //swap
+        image[x/8 + x_res/8*y] = image[x/8 + x_res/8*y] ^ (0x01 << (7-x%8)); //swap
     }
 }
 
@@ -100,16 +105,17 @@ void drawRect(int x, int y, int width, int height, unsigned char color) {
 }
 
 void initializeImage() {
-    for (int i = 0; i < X_RES0/8 * Y_RES0; i++) {
+    image = (uint8_t*) malloc((x_res * y_res)/8);
+    for (int i = 0; i < x_res * y_res/8; i++) {
         image[i] = 0;
     }
 }
 
 void drawCharacter(int x, int y, char c) {
    for (int i = 0; i < LETTER_HEIGHT; i++){
-       image[x/8 + X_RES0/8*(y+LETTER_HEIGHT-1-i)] = image[x/8 + X_RES0/8*(y+LETTER_HEIGHT-1-i)] | (letters[c - ASCII_OFFSET][i] >> (x%8));
+       image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i)] = image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i)] | (letters[c - ASCII_OFFSET][i] >> (x%8));
        if (x%8 > 0) {
-           image[x/8 + X_RES0/8*(y+LETTER_HEIGHT-1-i) + 1] = image[x/8 + X_RES0/8*(y+LETTER_HEIGHT-1-i) + 1] | (letters[c - ASCII_OFFSET][i] << (8-x%8));
+           image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i) + 1] = image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i) + 1] | (letters[c - ASCII_OFFSET][i] << (8-x%8));
        }
    } 
 }
@@ -159,21 +165,21 @@ unsigned char reverseByte(unsigned char x) {
 }
 
 void invert(){
-    for (int i = 0; i < X_RES0/8 * Y_RES0; i++) {
+    for (int i = 0; i < x_res/8 * y_res; i++) {
         image[i] = image[i] ^ 0xff;
     }
 }
 
 void mirror() {
     char temp;
-    for (int y = 0; y < Y_RES0; y++) {
-        for (int x = 0; x < X_RES0/16; x++) {
-            temp = image[y * X_RES0/8 + x]; 
-            image[y * X_RES0/8 + x] = image[y * X_RES0/8 + X_RES0/8 - 1 - x];
-            image[y * X_RES0/8 + X_RES0/8 - 1 - x] = temp;
+    for (int y = 0; y < y_res; y++) {
+        for (int x = 0; x < x_res/16; x++) {
+            temp = image[y * x_res/8 + x]; 
+            image[y * x_res/8 + x] = image[y * x_res/8 + x_res/8 - 1 - x];
+            image[y * x_res/8 + x_res/8 - 1 - x] = temp;
         }
     }
-    for (int i = 0; i < Y_RES0 * X_RES0/8; i++) {
+    for (int i = 0; i < y_res * x_res/8; i++) {
         //image[i] = reverseByte(image[i]);
         temp = 0;
         for(int j=0;j<8;j++)
@@ -183,16 +189,15 @@ void mirror() {
 }
 
 void drawImage(string roomName, string date, string time, string* reservations) {
-    initializeImage();
     drawString(13,12,roomName + " Reservations");
     drawString(90,43,date);
 
     //Outer box
-    drawRect(19,67,X_RES0 - 19*2, Y_RES0 - 67*2, 1);
-    drawRect(24,72,X_RES0 - 24*2, Y_RES0 - 72*2, 0);
+    drawRect(19,67,x_res - 19*2, y_res - 67*2, 1);
+    drawRect(24,72,x_res - 24*2, y_res - 72*2, 0);
 
-    drawString(31,Y_RES0 - 90, "Last updated " + date + ", " + time);
-    drawString(84,Y_RES0 - 23, "reserve.et.byu.edu");
+    drawString(31,y_res - 90, "Last updated " + date + ", " + time);
+    drawString(84,y_res - 23, "reserve.et.byu.edu");
 
     uint16_t boxCoordinates[32][2] = {
         {50,78+29*0},
@@ -211,22 +216,22 @@ void drawImage(string roomName, string date, string time, string* reservations) 
         {50,78+29*13},
         {50,78+29*14},
         {50,78+29*15},
-        {X_RES0-189,78+29*0},
-        {X_RES0-189,78+29*1},
-        {X_RES0-189,78+29*2},
-        {X_RES0-189,78+29*3},
-        {X_RES0-189,78+29*4},
-        {X_RES0-189,78+29*5},
-        {X_RES0-189,78+29*6},
-        {X_RES0-189,78+29*7},
-        {X_RES0-189,78+29*8},
-        {X_RES0-189,78+29*9},
-        {X_RES0-189,78+29*10},
-        {X_RES0-189,78+29*11},
-        {X_RES0-189,78+29*12},
-        {X_RES0-189,78+29*13},
-        {X_RES0-189,78+29*14},
-        {X_RES0-189,78+29*15}
+        {x_res-189,78+29*0},
+        {x_res-189,78+29*1},
+        {x_res-189,78+29*2},
+        {x_res-189,78+29*3},
+        {x_res-189,78+29*4},
+        {x_res-189,78+29*5},
+        {x_res-189,78+29*6},
+        {x_res-189,78+29*7},
+        {x_res-189,78+29*8},
+        {x_res-189,78+29*9},
+        {x_res-189,78+29*10},
+        {x_res-189,78+29*11},
+        {x_res-189,78+29*12},
+        {x_res-189,78+29*13},
+        {x_res-189,78+29*14},
+        {x_res-189,78+29*15}
     };
 
     //For each time
@@ -260,17 +265,15 @@ void drawImage(string roomName, string date, string time, string* reservations) 
     }
 
     //key
-    drawRect(52,Y_RES0-59,51,28,1);
-    drawRect(57,Y_RES0-55,41,20,0);
-    drawString(111,Y_RES0-50,"Available");
-    drawRect(211,Y_RES0-59,51,28,1);
-    drawString(275,Y_RES0-50,"Reserved");
+    drawRect(52,y_res-59,51,28,1);
+    drawRect(57,y_res-55,41,20,0);
+    drawString(111,y_res-50,"Available");
+    drawRect(211,y_res-59,51,28,1);
+    drawString(275,y_res-50,"Reserved");
 
     invert();
     //mirror();
 }
-
-
 
 int main(void) {
     //read from the database info
@@ -284,6 +287,16 @@ int main(void) {
     getline(fromDB, dateNow);
     string deviceType;
     getline(fromDB, deviceType);
+
+    if (deviceType.compare("0") == 0) {
+        x_res = X_RES0;
+        y_res = Y_RES0;
+    } else if (deviceType.compare("1") == 0) {
+        x_res = X_RES1;
+        y_res = Y_RES1;
+    }
+    initializeImage();
+
     string reservations[32];
     for (int i = 0; i < 32; i++) {
         reservations[i] = "Available";
@@ -340,8 +353,9 @@ int main(void) {
     drawImage(name, dateNow, "05:38pm", reservations);
 
     //write to a file
-    ofstream(mac_address, ios::binary).write(image, X_RES0/8 * Y_RES0);
+    ofstream(mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
     vector<unsigned char> compressed = compressImage();
     ofstream(mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
+    free(image);
     return 0;
 }
