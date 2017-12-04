@@ -5,9 +5,62 @@
 #include <sstream>
 #include <vector>
 #include "letters.h"
+#include "Adafruit-GFX-Library/Adafruit_GFX.cpp"
+#include "Adafruit-GFX-Library/Fonts/FreeMono12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMono18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMono24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMono9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBold12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBold18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBold24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBold9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBoldOblique12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBoldOblique18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBoldOblique24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoBoldOblique9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoOblique12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoOblique18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoOblique24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeMonoOblique9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSans12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSans18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSans24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSans9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBold12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBold18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBold24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBold9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBoldOblique12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBoldOblique18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBoldOblique24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansBoldOblique9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansOblique12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansOblique18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansOblique24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSansOblique9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerif12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerif18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerif24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerif9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBold12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBold18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBold24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBold9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBoldItalic12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBoldItalic18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBoldItalic24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifBoldItalic9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifItalic12pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifItalic18pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifItalic24pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/FreeSerifItalic9pt7b.h"
+#include "Adafruit-GFX-Library/Fonts/Org_01.h"
+#include "Adafruit-GFX-Library/Fonts/Picopixel.h"
+#include "Adafruit-GFX-Library/Fonts/Tiny3x3a2pt7b"
+#include "Adafruit-GFX-Library/Fonts/TomThumb.h"
 #define X_RES0 384
 #define Y_RES0 640
-#define X_RES1 200
+#define X_RES1 400
 #define Y_RES1 300
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
@@ -15,6 +68,7 @@
 using namespace std;
 
 uint8_t* image;
+GFXcanvas1* canvas;
 
 uint16_t x_res;
 uint16_t y_res;
@@ -126,6 +180,19 @@ void drawString(int x, int y, string str) {
     }
 }
 
+void drawFancyString(string str) {
+    for (int i = 0; i < str.length(); i++)
+        canvas->write(str[i]);
+}
+
+void drawCenteredString(string str, int16_t y){
+    int16_t x1, y1;
+    uint16_t w, h;
+    canvas->getTextBounds(str.c_str(), 0, y, &x1, &y1, &w, &h);
+    canvas->setCursor((x_res - w)/2, y);
+    drawFancyString(str);
+}
+
 unsigned char reverseByte(unsigned char x) {
     static const unsigned char table[] = {
         0x00, 0x80, 0x40, 0xc0, 0x20, 0xa0, 0x60, 0xe0,
@@ -170,6 +237,21 @@ void invert(){
     }
 }
 
+//not sure that this will work
+void rotate() {
+    GFXcanvas1* c = new GFXcanvas1(y_res, x_res);
+    for (int x = 0; x < x_res; x++) {
+        for (int y = 0; y < y_res; y++) {
+            c->drawPixel(y, x, getPixel(x, y));
+        }
+    }
+    delete canvas;
+    canvas = c;
+    int16_t temp = x_res;
+    x_res = y_res;
+    y_res = temp;
+}
+
 void mirror() {
     char temp;
     for (int y = 0; y < y_res; y++) {
@@ -188,16 +270,23 @@ void mirror() {
     }
 }
 
-void drawImage(string roomName, string date, string time, string* reservations) {
-    drawString(13,12,roomName + " Reservations");
-    drawString(90,43,date);
+void drawImage0(string roomName, string date, string time, string* reservations) {
+    //Draw room name
+    canvas->setFont(&FreeSans18pt7b);
+    canvas->setTextColor(1);
+    canvas->setTextWrap(false);
+    drawCenteredString(roomName + " Reservations", 32);
+    canvas->setFont(&FreeSans9pt7b);
+
+    //Draw Date
+    drawCenteredString(date, 52);
 
     //Outer box
     drawRect(19,67,x_res - 19*2, y_res - 67*2, 1);
     drawRect(24,72,x_res - 24*2, y_res - 72*2, 0);
 
     drawString(31,y_res - 90, "Last updated " + date + ", " + time);
-    drawString(84,y_res - 23, "reserve.et.byu.edu");
+    drawCenteredString("reserve.et.byu.edu", y_res-13);
 
     uint16_t boxCoordinates[32][2] = {
         {50,78+29*0},
@@ -275,6 +364,21 @@ void drawImage(string roomName, string date, string time, string* reservations) 
     //mirror();
 }
 
+void drawImage1(string roomName, string date, string time, string* reservations) {
+
+    //Draw room name and date
+    canvas->setFont(&FreeSansBold12pt7b);
+    canvas->setTextColor(1);
+    canvas->setTextWrap(false);
+    drawCenteredString(roomName, 22);
+    drawCenteredString(date, 45);
+
+    //Draw dividing line
+    drawRect(0,51,x_res,1,1);
+
+    invert();
+}
+
 int main(void) {
     //read from the database info
     ifstream fromDB;
@@ -296,6 +400,10 @@ int main(void) {
         y_res = Y_RES1;
     }
     initializeImage();
+    canvas = new GFXcanvas1(x_res, y_res);
+    canvas->fillScreen(0);
+    free(image);
+    image = canvas->getBuffer();
 
     string reservations[32];
     for (int i = 0; i < 32; i++) {
@@ -350,12 +458,15 @@ int main(void) {
     }
 
     //actually generate the desired image
-    drawImage(name, dateNow, "05:38pm", reservations);
+    if (deviceType.compare("0") == 0) {
+        drawImage0(name, dateNow, "05:38pm", reservations);
+    } else if (deviceType.compare("1") == 0) {
+        drawImage1(name, dateNow, "05:38pm", reservations);
+    }
 
     //write to a file
     ofstream(mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
     vector<unsigned char> compressed = compressImage();
     ofstream(mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
-    free(image);
     return 0;
 }
