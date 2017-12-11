@@ -432,7 +432,7 @@ void drawImage1(string roomName, string date, string time, string* reservations)
 		string nextTitle = reservations[blockNextStart];
 		string nextStart = reservationBlockToTime(blockNextStart);
 		int blockNextEnd = blockNextStart;
-		while (nextTitle.compare(reservations[blockNextEnd++]) == 0 && blockNextEnd < 32) {}
+		while (nextTitle.compare(reservations[++blockNextEnd]) == 0 && blockNextEnd < 32) {}
 		string nextEnd = reservationBlockToTime(blockNextEnd);
 
 		//Draw next event
