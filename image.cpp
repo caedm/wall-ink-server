@@ -74,7 +74,7 @@ uint16_t x_res;
 uint16_t y_res;
 
 uint8_t getPixel(unsigned long int x, unsigned long int y) {
-    return (image[x/8 + x_res/8*y] >> (7 - x%8)) & 0x01;
+    return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
 }
 
 vector<uint8_t> compressImage() {
@@ -86,14 +86,15 @@ vector<uint8_t> compressImage() {
     uint8_t lastEntry = getPixel(0,0);
     while (++pointer < x_res * y_res) {
        ++counter;
-       if (getPixel(pointer, 0) != lastEntry) {
-           compressed.push_back(counter);
-           counter = 0;
-           lastEntry = getPixel(pointer, 0);
-       }
        if (counter == 0xff) {
            compressed.push_back(counter);
+           //cout << (int) counter << " " << (int) lastEntry << endl;
            counter = 0;
+       } else if (getPixel(pointer, 0) != lastEntry) {
+           compressed.push_back(counter);
+           //cout << (int) counter << " " << (int) lastEntry << endl;
+           counter = 0;
+           lastEntry = getPixel(pointer, 0);
        }
     }
     compressed.push_back(++counter);
@@ -180,7 +181,8 @@ void drawString(int x, int y, string str) {
     }
 }
 
-void drawFancyString(string str) {
+void drawFancyString(string str, int16_t x, int16_t y) {
+    canvas->setCursor(x, y);
     for (int i = 0; i < str.length(); i++)
         canvas->write(str[i]);
 }
@@ -189,8 +191,7 @@ void drawCenteredString(string str, int16_t y){
     int16_t x1, y1;
     uint16_t w, h;
     canvas->getTextBounds(str.c_str(), 0, y, &x1, &y1, &w, &h);
-    canvas->setCursor((x_res - w)/2, y);
-    drawFancyString(str);
+    drawFancyString(str, (x_res-w)/2, y);
 }
 
 unsigned char reverseByte(unsigned char x) {
@@ -268,6 +269,36 @@ void mirror() {
             temp |= ((image[i]>>j) & 1)<<(7-j);
         image[i] = temp;
     }
+}
+
+string reservationBlockToTime(int block) {
+    stringstream hourStream;
+    hourStream << block/2 + 6;
+    string hour = hourStream.str();
+    if (hour.length() < 2) {
+        hour = "0" + hour;
+    }
+    stringstream minuteStream;
+    minuteStream << (block % 2) * 30;
+    string minute = minuteStream.str();
+    if (minute.length() < 2) {
+        minute += "0";
+    }
+    return hour + ":" + minute;
+}
+
+string militaryTimeToNormalPersonTime(string military) {
+    int hour = atoi(military.substr(0,2).c_str());
+    string ampm = "am";
+    if (hour > 12) {
+        hour -= 12;
+        ampm = "pm";
+    }
+    if (hour == 0)
+        hour = 12;
+    stringstream hourStream;
+    hourStream << hour;
+    return hourStream.str() + ":" + military.substr(3,2) + ampm;
 }
 
 void drawImage0(string roomName, string date, string time, string* reservations) {
@@ -370,11 +401,48 @@ void drawImage1(string roomName, string date, string time, string* reservations)
     canvas->setFont(&FreeSansBold12pt7b);
     canvas->setTextColor(1);
     canvas->setTextWrap(false);
-    drawCenteredString(roomName, 22);
-    drawCenteredString(date, 45);
+    drawCenteredString(roomName, 26);
+    drawCenteredString(date, 53);
 
     //Draw dividing line
-    drawRect(0,51,x_res,1,1);
+    drawRect(0,62,x_res,2,1);
+
+    //Get current block
+    int currentBlock;
+    currentBlock = (atoi(time.substr(0,2).c_str()) - 6) * 2;
+    currentBlock += atoi(time.substr(3,2).c_str()) / 30;
+
+    //Get current event
+    string currentTitle = reservations[currentBlock];
+    string currentStart = reservationBlockToTime(currentBlock);
+    int blockNextStart = currentBlock;
+    while (currentTitle.compare(reservations[++blockNextStart]) == 0 && blockNextStart < 32) {}
+    string currentEnd = reservationBlockToTime(blockNextStart);
+    
+    //Draw current event
+    canvas->setTextWrap(true);
+    string currentEventTime = militaryTimeToNormalPersonTime(currentStart) + " - " + militaryTimeToNormalPersonTime(currentEnd);
+    canvas->setFont(&FreeSansBold18pt7b);
+    drawFancyString(currentEventTime, 8, 100);
+    canvas->setFont(&FreeSans18pt7b);
+    drawFancyString(currentTitle, 8, 140);
+
+    //Get next event
+    if (blockNextStart < 31) {
+		string nextTitle = reservations[blockNextStart];
+		string nextStart = reservationBlockToTime(blockNextStart);
+		int blockNextEnd = blockNextStart;
+		while (nextTitle.compare(reservations[blockNextEnd++]) == 0 && blockNextEnd < 32) {}
+		string nextEnd = reservationBlockToTime(blockNextEnd);
+
+		//Draw next event
+		string nextEventTime = militaryTimeToNormalPersonTime(nextStart) + " - " + militaryTimeToNormalPersonTime(nextEnd);
+		canvas->setFont(&FreeSansBold12pt7b);
+		drawFancyString(nextEventTime, 9, 230);
+		canvas->setFont(&FreeSans12pt7b);
+		drawFancyString(nextTitle, 8, 260);
+    }
+
 
     invert();
 }
@@ -389,6 +457,8 @@ int main(void) {
     getline(fromDB, name);
     string dateNow;
     getline(fromDB, dateNow);
+    string timeNow;
+    getline(fromDB, timeNow);
     string deviceType;
     getline(fromDB, deviceType);
 
@@ -459,9 +529,9 @@ int main(void) {
 
     //actually generate the desired image
     if (deviceType.compare("0") == 0) {
-        drawImage0(name, dateNow, "05:38pm", reservations);
+        drawImage0(name, dateNow, timeNow, reservations);
     } else if (deviceType.compare("1") == 0) {
-        drawImage1(name, dateNow, "05:38pm", reservations);
+        drawImage1(name, dateNow, timeNow, reservations);
     }
 
     //write to a file

@@ -1,5 +1,6 @@
 source ./database.sh
 DATE=`date +%Y-%m-%d`
+TIME=`date +%H:%M`
 ESP_DEVICES=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id FROM \`door-display\`.devices'`
 ESP_DEVICES_ARRAY=($ESP_DEVICES);
 for resource_id in "${ESP_DEVICES_ARRAY[@]}"
@@ -16,6 +17,7 @@ do
     echo $mac_address > fromDB
     echo $name >> fromDB
     echo $DATE >> fromDB
+    echo $TIME >> fromDB
     echo $device_type >> fromDB
     for series_id in "${series_ids[@]}"
     do
