@@ -301,6 +301,28 @@ string militaryTimeToNormalPersonTime(string military) {
     return hourStream.str() + ":" + military.substr(3,2) + ampm;
 }
 
+string fancyDateFromYYYY_MM_DD(string YYYY_MM_DD) {
+    int year = atoi(YYYY_MM_DD.substr(0,4).c_str());
+    int month = atoi(YYYY_MM_DD.substr(5,2).c_str());
+    int day = atoi(YYYY_MM_DD.substr(8,2).c_str());
+    string months[12] = {"January",
+                         "February",
+                         "March",
+                         "April",
+                         "May",
+                         "June",
+                         "July",
+                         "August",
+                         "September",
+                         "October",
+                         "November",
+                         "December"};
+    string monthName = months[month-1];
+    stringstream fancyDate;
+    fancyDate << monthName << " " << day << ", " << year;
+    return fancyDate.str();
+}
+
 void drawImage0(string roomName, string date, string time, string* reservations) {
     //Draw room name
     canvas->setFont(&FreeSans18pt7b);
@@ -402,7 +424,7 @@ void drawImage1(string roomName, string date, string time, string* reservations)
     canvas->setTextColor(1);
     canvas->setTextWrap(false);
     drawCenteredString(roomName, 26);
-    drawCenteredString(date, 53);
+    drawCenteredString(fancyDateFromYYYY_MM_DD(date), 53);
 
     //Draw dividing line
     drawRect(0,62,x_res,2,1);
@@ -420,12 +442,13 @@ void drawImage1(string roomName, string date, string time, string* reservations)
     string currentEnd = reservationBlockToTime(blockNextStart);
     
     //Draw current event
-    canvas->setTextWrap(true);
     string currentEventTime = militaryTimeToNormalPersonTime(currentStart) + " - " + militaryTimeToNormalPersonTime(currentEnd);
     canvas->setFont(&FreeSansBold18pt7b);
     drawFancyString(currentEventTime, 8, 100);
     canvas->setFont(&FreeSans18pt7b);
+    canvas->setTextWrap(true);
     drawFancyString(currentTitle, 8, 140);
+    canvas->setTextWrap(false);
 
     //Get next event
     if (blockNextStart < 31) {
@@ -440,7 +463,9 @@ void drawImage1(string roomName, string date, string time, string* reservations)
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 230);
 		canvas->setFont(&FreeSans12pt7b);
+        canvas->setTextWrap(true);
 		drawFancyString(nextTitle, 8, 260);
+        canvas->setTextWrap(false);
     }
 
 
