@@ -90,21 +90,22 @@ vector<uint8_t> compressImage() {
     uint8_t* compressedTime = (uint8_t*) malloc(4);
     uint8_t* nextTime = (uint8_t*) malloc(4);
     *((uint32_t*) compressedTime) = currentTime;
-    *((uint32_t*) nextTime) = currentTime + 30;
-#if DEBUG == 1
+    *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + 30;
+//#if DEBUG == 1
     cout << hex;
     cout << "time size: " << sizeof(currentTime) << endl << "current time: " << currentTime << endl;
     cout << "compressed time: " << *((uint32_t*) compressedTime) << endl;
+    cout << "next time: " << *((uint32_t*) nextTime) << endl;
     cout << "byte by byte: " << +compressedTime[0] << " " << +compressedTime[1] << " " << +compressedTime[2] << " " << +compressedTime[3] << endl;
-#endif
-    compressed.push_back(compressedTime[3]);
-    compressed.push_back(compressedTime[2]);
-    compressed.push_back(compressedTime[1]);
+//#endif
     compressed.push_back(compressedTime[0]);
-    compressed.push_back(nextTime[3]);
-    compressed.push_back(nextTime[2]);
-    compressed.push_back(nextTime[1]);
+    compressed.push_back(compressedTime[1]);
+    compressed.push_back(compressedTime[2]);
+    compressed.push_back(compressedTime[3]);
     compressed.push_back(nextTime[0]);
+    compressed.push_back(nextTime[1]);
+    compressed.push_back(nextTime[2]);
+    compressed.push_back(nextTime[3]);
     compressed.push_back(getPixel(0, 0));
     free(compressedTime);
     free(nextTime);
