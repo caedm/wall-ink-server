@@ -22,13 +22,13 @@ do
     for series_id in "${series_ids[@]}"
     do
         echo "Series ID: " $series_id
-        reservation_instance_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT reservation_instance_id FROM collegeresv.reservation_instances WHERE series_id = $series_id AND DATE(start_date) <= DATE(NOW()) AND DATE(end_date) >= DATE(NOW())"`
+        reservation_instance_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT reservation_instance_id FROM collegeresv.reservation_instances WHERE series_id = $series_id AND DATE(CONVERT_TZ(start_date,'+00:00','-07:00')) <= DATE(NOW()) AND DATE(CONVERT_TZ(end_date,'+00:00','-07:00')) >= DATE(NOW())"`
         reservation_instance_ids=($reservation_instance_ids);
         for reservation_instance_id in "${reservation_instance_ids[@]}"
         do
             series_title=`mysql -h $server -u $username --password=$password -s -N -e "SELECT title FROM collegeresv.reservation_series WHERE series_id = $series_id"`
-            start_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT start_date FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id"`
-            end_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT end_date FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id"`
+            start_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT CONVERT_TZ(start_date,'+00:00','-07:00') FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id"`
+            end_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT CONVERT_TZ(end_date,'+00:00','-07:00') FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id"`
             echo "Reservation Instance ID: " $reservation_instance_id
             echo "Reservation Series Title: " $series_title
             echo "Start: " $start_date
@@ -47,4 +47,5 @@ do
     cp $mac_address_compressed $mac_address_compressed_web_dir
     rm $mac_address
     rm $mac_address_compressed
+#    read -p "Press [Enter] key to continue..."
 done
