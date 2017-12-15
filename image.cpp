@@ -106,6 +106,8 @@ vector<uint8_t> compressImage() {
     compressed.push_back(nextTime[1]);
     compressed.push_back(nextTime[0]);
     compressed.push_back(getPixel(0, 0));
+    free(compressedTime);
+    free(nextTime);
     uint32_t pointer = 0;
     uint8_t counter = 0;
     uint8_t lastEntry = getPixel(0,0);
