@@ -75,6 +75,7 @@ using namespace std;
 
 uint8_t* image;
 GFXcanvas1* canvas;
+uint32_t sleepTime;
 
 uint16_t x_res;
 uint16_t y_res;
@@ -90,14 +91,14 @@ vector<uint8_t> compressImage() {
     uint8_t* compressedTime = (uint8_t*) malloc(4);
     uint8_t* nextTime = (uint8_t*) malloc(4);
     *((uint32_t*) compressedTime) = currentTime;
-    *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + 30;
-//#if DEBUG == 1
+    *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + sleepTime;
+#if DEBUG == 1
     cout << hex;
     cout << "time size: " << sizeof(currentTime) << endl << "current time: " << currentTime << endl;
     cout << "compressed time: " << *((uint32_t*) compressedTime) << endl;
     cout << "next time: " << *((uint32_t*) nextTime) << endl;
     cout << "byte by byte: " << +compressedTime[0] << " " << +compressedTime[1] << " " << +compressedTime[2] << " " << +compressedTime[3] << endl;
-//#endif
+#endif
     compressed.push_back(compressedTime[0]);
     compressed.push_back(compressedTime[1]);
     compressed.push_back(compressedTime[2]);
@@ -388,7 +389,16 @@ vector<reservation> parseReservations(string* reservations) {
     return reservs;
 }
 
+void setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
+    time_t currentTimeTemp = time(nullptr);
+    uint32_t currentTime = currentTimeTemp;
+    sleepTime = (currentTimeTemp % increment) + increment/8;
+}
+
 void drawImage0(string roomName, string date, string time, string* reservations) { //portrait 7"
+    //set sleepTime
+    setSleepTime(900);
+
     //Draw room name
     canvas->setFont(&FreeSans18pt7b);
     canvas->setTextColor(1);
@@ -501,6 +511,8 @@ void drawImage0(string roomName, string date, string time, string* reservations)
 }
 
 void drawImage1(string roomName, string date, string time, string* reservations) { //landscape 4", shows 2 appointments
+    //set sleepTime
+    setSleepTime(900);
 
     //Draw room name and date
     canvas->setFont(&FreeSansBold12pt7b);
@@ -556,6 +568,9 @@ void drawImage1(string roomName, string date, string time, string* reservations)
 }
 
 void drawImage2(string roomName, string date, string time, string* reservations) { //7" landscape, shows 2 appointments plus blocks
+    //set sleepTime
+    setSleepTime(900);
+
     canvas->setFont(&FreeSans24pt7b);
     canvas->setTextColor(1);
     canvas->setTextWrap(false);
@@ -699,6 +714,9 @@ void drawImage2(string roomName, string date, string time, string* reservations)
 }
 
 void drawImage3(string roomName, string date, string time, string* reservations) { //7" landscape, shows 3 appointments plus blocks
+    //set sleepTime
+    setSleepTime(1800);
+
     canvas->setFont(&FreeSans24pt7b);
     canvas->setTextColor(1);
     canvas->setTextWrap(false);
@@ -853,10 +871,13 @@ void drawImage3(string roomName, string date, string time, string* reservations)
     invert();
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     //read from the database info
     ifstream fromDB;
-    fromDB.open("fromDB");
+    if (argc == 1)
+        fromDB.open("fromDB");
+    else
+        fromDB.open(argv[1]);
     string mac_address;
     getline(fromDB, mac_address);
     string name;
@@ -948,9 +969,9 @@ int main(void) {
         drawImage3(name, dateNow, timeNow, reservations);
     }
 
+    vector<unsigned char> compressed = compressImage();
     //write to a file
     ofstream(mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
-    vector<unsigned char> compressed = compressImage();
     ofstream(mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
 
     //free memory
