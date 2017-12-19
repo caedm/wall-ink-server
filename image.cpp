@@ -392,8 +392,8 @@ vector<reservation> parseReservations(string* reservations) {
 void setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
     time_t currentTimeTemp = time(nullptr);
     uint32_t currentTime = currentTimeTemp;
-    if (currentTime % 86400 > 75600) { //if time is past 9pm, wake at 6am
-        sleepTime = currentTime - (currentTime % 86400) + 86400 + 21600;
+    if (currentTime % 86400 > 77400) { //if time is past 9:30pm, wake at 6:30am
+        sleepTime = currentTime - (currentTime % 86400) + 86400 + 23400;
     } else {
         sleepTime = increment - (currentTime % increment) + increment/32;
     }
