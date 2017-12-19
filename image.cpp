@@ -392,7 +392,7 @@ vector<reservation> parseReservations(string* reservations) {
 void setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
     time_t currentTimeTemp = time(nullptr);
     uint32_t currentTime = currentTimeTemp;
-    sleepTime = (currentTimeTemp % increment) + increment/8;
+    sleepTime = increment - (currentTime % increment) + increment/16;
 }
 
 void drawImage0(string roomName, string date, string time, string* reservations) { //portrait 7"
