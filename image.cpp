@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <ctime>
+#include "math.h"
 #include "letters.h"
 #include "Adafruit-GFX-Library/Adafruit_GFX.cpp"
 #include "Adafruit-GFX-Library/Fonts/FreeMono12pt7b.h"
@@ -69,7 +70,7 @@
 #define Y_RES3 384
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
-#define DEBUG 0
+#define DEBUG 2
 
 using namespace std;
 
@@ -84,12 +85,13 @@ uint8_t getPixel(unsigned long int x, unsigned long int y) {
     return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
 }
 
-vector<uint8_t> compressImage() {
+vector<uint8_t> compressImage(string* reservations) {
     vector<uint8_t> compressed;
     compressed.clear();
     time_t currentTime = time(nullptr);
     uint8_t* compressedTime = (uint8_t*) malloc(4);
     uint8_t* nextTime = (uint8_t*) malloc(4);
+    uint8_t* imageHash = (uint8_t*) malloc(4);
     *((uint32_t*) compressedTime) = currentTime;
     *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + sleepTime;
 #if DEBUG == 1
@@ -107,6 +109,16 @@ vector<uint8_t> compressImage() {
     compressed.push_back(nextTime[1]);
     compressed.push_back(nextTime[2]);
     compressed.push_back(nextTime[3]);
+    //generate image hash
+    *((uint32_t*) imageHash) = 0;
+    for (int i = 0; i < x_res * y_res/8; i++) {
+        *((uint32_t*) imageHash) += (image[i] * (i+1))/2;
+    }
+    compressed.push_back(imageHash[0]);
+    compressed.push_back(imageHash[1]);
+    compressed.push_back(imageHash[2]);
+    compressed.push_back(imageHash[3]);
+
     compressed.push_back(getPixel(0, 0));
     free(compressedTime);
     free(nextTime);
@@ -389,17 +401,35 @@ vector<reservation> parseReservations(string* reservations) {
     return reservs;
 }
 
-void setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
-    time_t currentTimeTemp = time(nullptr);
-    uint32_t currentTime = currentTimeTemp;
-    if ((currentTime-7*60*60) % 86400 > 77400) { //if time is past 9:30pm, wake at 6:30am
-        sleepTime = (currentTime-7*60*60) - ((currentTime-7*60*60) % 86400) + 86400 + 23400;
-    } else {
-        sleepTime = increment - (currentTime % increment) + increment/32;
+void checkBattery(int xOffset, int yOffset, float voltage) {
+    if (voltage <= 2.5) {
+        //draw low battery symbol
+        drawRect(xOffset, yOffset, 48, 23, 1);
+        drawRect(xOffset+2, yOffset+2, 44, 19, 0);
+        drawRect(xOffset+48, yOffset+5, 4, 13, 1);
+        drawRect(xOffset+48, yOffset+7, 2, 9, 0);
+        for (int i = 0; i < 36; i++) {
+            drawRect(xOffset+41-i, yOffset-7+i, 3, 1, 1);
+        }
     }
 }
 
-void drawImage0(string roomName, string date, string time, string* reservations) { //portrait 7"
+void setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
+    time_t currentTimeTemp = time(nullptr);
+    uint32_t currentTime = currentTimeTemp;
+    if (((currentTime-7*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
+        sleepTime = 86400 + 23400 - ((currentTime-7*60*60) % 86400);
+    } else {
+        sleepTime = increment - (currentTime % increment) + increment/32;
+    }
+    #if DEBUG == 2
+        cout << "Current Time: " << currentTime % 86400 << endl;
+        cout << "Current Time with 7 hour offset: " << (currentTime-7*60*60) % 86400 << endl;
+        cout << "Sleep Time: " << sleepTime << endl;
+    #endif
+}
+
+void drawImage0(string roomName, string date, string time, string* reservations, float voltage) { //portrait 7"
     //set sleepTime
     setSleepTime(900);
 
@@ -510,13 +540,15 @@ void drawImage0(string roomName, string date, string time, string* reservations)
     drawRect(211,y_res-59,51,28,1);
     drawString(275,y_res-50,"Reserved");
 
+    checkBattery(x_res-100, y_res-100, voltage);
+
     invert();
     //mirror();
 }
 
-void drawImage1(string roomName, string date, string time, string* reservations) { //landscape 4", shows 2 appointments
+void drawImage1(string roomName, string date, string time, string* reservations, float voltage) { //landscape 4", shows 2 appointments
     //set sleepTime
-    setSleepTime(900);
+    setSleepTime(1800);
 
     //Draw room name and date
     canvas->setFont(&FreeSansBold12pt7b);
@@ -532,6 +564,10 @@ void drawImage1(string roomName, string date, string time, string* reservations)
     int currentBlock;
     currentBlock = (atoi(time.substr(0,2).c_str()) - 6) * 2;
     currentBlock += atoi(time.substr(3,2).c_str()) / 30;
+    if (currentBlock < 0)
+        currentBlock = 0;
+    if (currentBlock > 31)
+        currentBlock = 31;
 
     //Get current event
     string currentTitle = reservations[currentBlock];
@@ -567,11 +603,12 @@ void drawImage1(string roomName, string date, string time, string* reservations)
         canvas->setTextWrap(false);
     }
 
+    checkBattery(x_res-64, y_res-38, voltage);
 
     invert();
 }
 
-void drawImage2(string roomName, string date, string time, string* reservations) { //7" landscape, shows 2 appointments plus blocks
+void drawImage2(string roomName, string date, string time, string* reservations, float voltage) { //7" landscape, shows 2 appointments plus blocks
     //set sleepTime
     setSleepTime(900);
 
@@ -606,6 +643,10 @@ void drawImage2(string roomName, string date, string time, string* reservations)
     int currentBlock;
     currentBlock = (atoi(time.substr(0,2).c_str()) - 6) * 2;
     currentBlock += atoi(time.substr(3,2).c_str()) / 30;
+    if (currentBlock < 0)
+        currentBlock = 0;
+    if (currentBlock > 31)
+        currentBlock = 31;
 
     //Get current event
     string currentTitle = reservations[currentBlock];
@@ -649,75 +690,100 @@ void drawImage2(string roomName, string date, string time, string* reservations)
             hourString << hour;
         else
             hourString << hour-12;
-        drawFancyString(hourString.str(), hour*40 - 249, 380);
+        if (hourString.str().length() == 1)
+            drawFancyString(hourString.str(), hour*40 - 245, 378);
+        else
+            drawFancyString(hourString.str(), hour*40 - 249, 378);
     }
 
     //draw blocks
     for (int block = 0; block < 32; block++) {
-        drawRect(block*20, 322, 20, 37, 1);
+        drawRect(block*20, 337, 20, 22, 1);
         if (reservations[block].compare("Available") == 0) {
-            drawRect(block*20 + 1, 324, 18, 33, 0);
+            //drawRect(block*20 + 1, 324, 18, 33, 0);
+            //eliminate vertical lines
+            drawRect(block*20, 339, 20, 18, 0);
+
+            //put rounded corners on ends
+            drawRect(0, 339, 2, 18, 1);
+            drawRect(0, 337, 1, 2, 0);
+            drawRect(1, 337, 1, 1, 0);
+            drawRect(2, 339, 1, 1, 1);
+            drawRect(0, 357, 1, 2, 0);
+            drawRect(1, 358, 1, 1, 0);
+            drawRect(2, 356, 1, 1, 1);
+
+            drawRect(638, 339, 2, 18, 1);
+            drawRect(639, 337, 1, 2, 0);
+            drawRect(638, 337, 1, 1, 0);
+            drawRect(637, 339, 1, 1, 1);
+            drawRect(639, 357, 1, 2, 0);
+            drawRect(638, 358, 1, 1, 0);
+            drawRect(637, 356, 1, 1, 1);
         }
     }
 
-    //trim blocks
+    //round corners if edge case
     for (int block = 0; block < 32; block++) {
         if (reservations[block].compare("Available") == 0) {
             if (block > 0) {
-                //round corners if edge case
                 if (reservations[block-1].compare("Available") != 0) {
-                    drawRect(block*20 - 4, 322, 5, 2, 0);
-                    drawRect(block*20, 323, 1, 1, 1);
-                    drawRect(block*20 - 4, 323, 1, 1, 1);
+                    drawRect(block*20 - 4, 337, 5, 2, 0);
+                    drawRect(block*20, 338, 1, 1, 1);
+                    drawRect(block*20 - 4, 338, 1, 1, 1);
                     drawRect(block*20 - 4, 357, 5, 2, 0);
                     drawRect(block*20, 357, 1, 1, 1);
                     drawRect(block*20 - 4, 357, 1, 1, 1);
-                    drawRect(block*20 - 2, 322, 1, 37, 0);
+                    drawRect(block*20 - 2, 337, 1, 22, 0);
+                    drawRect(block*20, 339, 1, 18, 1);
+                    drawRect(block*20 + 1, 339, 1, 1, 1);
+                    drawRect(block*20 + 1, 356, 1, 1, 1);
                 }
             }
             if (block < 31) {
-                //round corners if edge case
                 if (reservations[block+1].compare("Available") != 0) {
-                    drawRect(block*20 + 19, 322, 5, 2, 0);
-                    drawRect(block*20 + 19, 323, 1, 1, 1);
-                    drawRect(block*20 + 23, 323, 1, 1, 1);
+                    drawRect(block*20 + 19, 337, 5, 2, 0);
+                    drawRect(block*20 + 19, 338, 1, 1, 1);
+                    drawRect(block*20 + 23, 338, 1, 1, 1);
                     drawRect(block*20 + 19, 357, 5, 2, 0);
                     drawRect(block*20 + 19, 357, 1, 1, 1);
                     drawRect(block*20 + 23, 357, 1, 1, 1);
-                    drawRect(block*20 + 21, 322, 1, 37, 0);
+                    drawRect(block*20 + 21, 337, 1, 22, 0);
+                    drawRect(block*20 + 19, 339, 1, 18, 1);
+                    drawRect(block*20 + 18, 339, 1, 1, 1);
+                    drawRect(block*20 + 18, 356, 1, 1, 1);
                 }
             }
         } else {
             if (block > 0) {
-                //round corners if edge case
                 if (reservations[block-1].compare(reservations[block]) != 0 && reservations[block-1].compare("Available") != 0) {
-                    drawRect(block*20 - 2, 322, 5, 2, 0);
-                    drawRect(block*20 + 2, 323, 1, 1, 1);
-                    drawRect(block*20 - 2, 323, 1, 1, 1);
+                    drawRect(block*20 - 2, 337, 5, 2, 0);
+                    drawRect(block*20 + 2, 338, 1, 1, 1);
+                    drawRect(block*20 - 2, 338, 1, 1, 1);
                     drawRect(block*20 - 2, 357, 5, 2, 0);
                     drawRect(block*20 + 2, 357, 1, 1, 1);
                     drawRect(block*20 - 2, 357, 1, 1, 1);
-                    drawRect(block*20, 322, 1, 37, 0);
+                    drawRect(block*20, 337, 1, 22, 0);
                 }
             }
         }
     }
 
-    //draw arrow
-    drawRect(currentBlock*20 - 1, 320, 2, 1, 1);
-    drawRect(currentBlock*20 - 2, 319, 4, 1, 1);
-    drawRect(currentBlock*20 - 3, 318, 6, 1, 1);
-    drawRect(currentBlock*20 - 4, 316, 8, 2, 1);
+    //draw arrow drawRect((currentBlock-currentBlock%2)*20 - 1, 335, 2, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 2, 334, 4, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 3, 333, 6, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 4, 331, 8, 2, 1);
 
     //draw time above the arrow
     canvas->setFont(&FreeSansBold9pt7b);
-    drawFancyString(militaryTimeToNormalPersonTime(currentStart), currentBlock*20 - 30, 310);
+    drawFancyString(militaryTimeToNormalPersonTime(currentStart), (currentBlock-currentBlock%2)*20 - 30, 325);
 
+    checkBattery(x_res-100, y_res-100, voltage);
 
     invert();
 }
 
-void drawImage3(string roomName, string date, string time, string* reservations) { //7" landscape, shows 3 appointments plus blocks
+void drawImage3(string roomName, string date, string time, string* reservations, float voltage) { //7" landscape, shows 3 appointments plus blocks
     //set sleepTime
     setSleepTime(1800);
 
@@ -749,12 +815,16 @@ void drawImage3(string roomName, string date, string time, string* reservations)
     drawCenteredString(fancyDateFromYYYY_MM_DD(date), 85);
 
     //draw line under date
-    drawRect(0,95,x_res,1,1);
+    drawRect(0,95,x_res,2,1);
 
     //Get current block
     int currentBlock;
     currentBlock = (atoi(time.substr(0,2).c_str()) - 6) * 2;
     currentBlock += atoi(time.substr(3,2).c_str()) / 30;
+    if (currentBlock < 0)
+        currentBlock = 0;
+    if (currentBlock > 31)
+        currentBlock = 31;
 
     //Get current event
     int currentEventIndex;
@@ -772,30 +842,30 @@ void drawImage3(string roomName, string date, string time, string* reservations)
     if (currentEventIndex > 0) {
         string prevEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex-1).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex-1).endBlock));
 		canvas->setFont(&FreeSansBold12pt7b);
-		drawFancyString(prevEventTime, 9, 125);
+		drawFancyString(prevEventTime, 9, 126);
 		canvas->setFont(&FreeSans12pt7b);
         canvas->setTextWrap(true);
-		drawFancyString(reservs.at(currentEventIndex-1).title, 8, 155);
+		drawFancyString(reservs.at(currentEventIndex-1).title, 8, 156);
         canvas->setTextWrap(false);
     }
 
     //Draw current event
     string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
     canvas->setFont(&FreeSansBold12pt7b);
-    drawFancyString(currentEventTime, 8, 200);
+    drawFancyString(currentEventTime, 8, 201);
     canvas->setFont(&FreeSans12pt7b);
     canvas->setTextWrap(true);
-    drawFancyString(reservs.at(currentEventIndex).title, 8, 230);
+    drawFancyString(reservs.at(currentEventIndex).title, 8, 231);
     canvas->setTextWrap(false);
 
     //Draw next event
     if (reservs.size() > currentEventIndex+1) {
         string nextEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex+1).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex+1).endBlock));
 		canvas->setFont(&FreeSansBold12pt7b);
-		drawFancyString(nextEventTime, 9, 275);
+		drawFancyString(nextEventTime, 9, 276);
 		canvas->setFont(&FreeSans12pt7b);
         canvas->setTextWrap(true);
-		drawFancyString(reservs.at(currentEventIndex+1).title, 8, 305);
+		drawFancyString(reservs.at(currentEventIndex+1).title, 8, 306);
         canvas->setTextWrap(false);
     }
 
@@ -807,70 +877,96 @@ void drawImage3(string roomName, string date, string time, string* reservations)
             hourString << hour;
         else
             hourString << hour-12;
-        drawFancyString(hourString.str(), hour*40 - 249, 380);
+        if (hourString.str().length() == 1)
+            drawFancyString(hourString.str(), hour*40 - 245, 378);
+        else
+            drawFancyString(hourString.str(), hour*40 - 249, 378);
     }
 
     //draw blocks
     for (int block = 0; block < 32; block++) {
-        drawRect(block*20, 322, 20, 37, 1);
+        drawRect(block*20, 337, 20, 22, 1);
         if (reservations[block].compare("Available") == 0) {
-            drawRect(block*20 + 1, 324, 18, 33, 0);
+            //drawRect(block*20 + 1, 324, 18, 33, 0);
+            //eliminate vertical lines
+            drawRect(block*20, 339, 20, 18, 0);
+
+            //put rounded corners on ends
+            drawRect(0, 339, 2, 18, 1);
+            drawRect(0, 337, 1, 2, 0);
+            drawRect(1, 337, 1, 1, 0);
+            drawRect(2, 339, 1, 1, 1);
+            drawRect(0, 357, 1, 2, 0);
+            drawRect(1, 358, 1, 1, 0);
+            drawRect(2, 356, 1, 1, 1);
+
+            drawRect(638, 339, 2, 18, 1);
+            drawRect(639, 337, 1, 2, 0);
+            drawRect(638, 337, 1, 1, 0);
+            drawRect(637, 339, 1, 1, 1);
+            drawRect(639, 357, 1, 2, 0);
+            drawRect(638, 358, 1, 1, 0);
+            drawRect(637, 356, 1, 1, 1);
         }
     }
 
-    //trim blocks
+    //round corners if edge case
     for (int block = 0; block < 32; block++) {
         if (reservations[block].compare("Available") == 0) {
             if (block > 0) {
-                //round corners if edge case
                 if (reservations[block-1].compare("Available") != 0) {
-                    drawRect(block*20 - 4, 322, 5, 2, 0);
-                    drawRect(block*20, 323, 1, 1, 1);
-                    drawRect(block*20 - 4, 323, 1, 1, 1);
+                    drawRect(block*20 - 4, 337, 5, 2, 0);
+                    drawRect(block*20, 338, 1, 1, 1);
+                    drawRect(block*20 - 4, 338, 1, 1, 1);
                     drawRect(block*20 - 4, 357, 5, 2, 0);
                     drawRect(block*20, 357, 1, 1, 1);
                     drawRect(block*20 - 4, 357, 1, 1, 1);
-                    drawRect(block*20 - 2, 322, 1, 37, 0);
+                    drawRect(block*20 - 2, 337, 1, 22, 0);
+                    drawRect(block*20, 339, 1, 18, 1);
+                    drawRect(block*20 + 1, 339, 1, 1, 1);
+                    drawRect(block*20 + 1, 356, 1, 1, 1);
                 }
             }
             if (block < 31) {
-                //round corners if edge case
                 if (reservations[block+1].compare("Available") != 0) {
-                    drawRect(block*20 + 19, 322, 5, 2, 0);
-                    drawRect(block*20 + 19, 323, 1, 1, 1);
-                    drawRect(block*20 + 23, 323, 1, 1, 1);
+                    drawRect(block*20 + 19, 337, 5, 2, 0);
+                    drawRect(block*20 + 19, 338, 1, 1, 1);
+                    drawRect(block*20 + 23, 338, 1, 1, 1);
                     drawRect(block*20 + 19, 357, 5, 2, 0);
                     drawRect(block*20 + 19, 357, 1, 1, 1);
                     drawRect(block*20 + 23, 357, 1, 1, 1);
-                    drawRect(block*20 + 21, 322, 1, 37, 0);
+                    drawRect(block*20 + 21, 337, 1, 22, 0);
+                    drawRect(block*20 + 19, 339, 1, 18, 1);
+                    drawRect(block*20 + 18, 339, 1, 1, 1);
+                    drawRect(block*20 + 18, 356, 1, 1, 1);
                 }
             }
         } else {
             if (block > 0) {
-                //round corners if edge case
                 if (reservations[block-1].compare(reservations[block]) != 0 && reservations[block-1].compare("Available") != 0) {
-                    drawRect(block*20 - 2, 322, 5, 2, 0);
-                    drawRect(block*20 + 2, 323, 1, 1, 1);
-                    drawRect(block*20 - 2, 323, 1, 1, 1);
+                    drawRect(block*20 - 2, 337, 5, 2, 0);
+                    drawRect(block*20 + 2, 338, 1, 1, 1);
+                    drawRect(block*20 - 2, 338, 1, 1, 1);
                     drawRect(block*20 - 2, 357, 5, 2, 0);
                     drawRect(block*20 + 2, 357, 1, 1, 1);
                     drawRect(block*20 - 2, 357, 1, 1, 1);
-                    drawRect(block*20, 322, 1, 37, 0);
+                    drawRect(block*20, 337, 1, 22, 0);
                 }
             }
         }
     }
-
+    
     //draw arrow
-    drawRect(currentBlock*20 - 1, 320, 2, 1, 1);
-    drawRect(currentBlock*20 - 2, 319, 4, 1, 1);
-    drawRect(currentBlock*20 - 3, 318, 6, 1, 1);
-    drawRect(currentBlock*20 - 4, 316, 8, 2, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 1, 335, 2, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 2, 334, 4, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 3, 333, 6, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 4, 331, 8, 2, 1);
 
     //draw time above the arrow
     //canvas->setFont(&FreeSansBold9pt7b);
-    //drawFancyString(militaryTimeToNormalPersonTime(currentStart), currentBlock*20 - 30, 310);
+    //drawFancyString(militaryTimeToNormalPersonTime(reservationBlockToTime(currentBlock-currentBlock%2)), (currentBlock-currentBlock%2)*20 - 30, 326);
 
+    checkBattery(x_res-100, y_res-100, voltage);
 
     invert();
 }
@@ -892,6 +988,8 @@ int main(int argc, char* argv[]) {
     getline(fromDB, timeNow);
     string deviceType;
     getline(fromDB, deviceType);
+    string voltage;
+    getline(fromDB, voltage);
 
     if (deviceType.compare("0") == 0) {
         x_res = X_RES0;
@@ -941,8 +1039,7 @@ int main(int argc, char* argv[]) {
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
         string dateTimeEnd;
         getline(fromDB, dateTimeEnd);
-        int endIndex;
-        if (dateNow.compare(dateTimeEnd.substr(0,10)) == 0) {
+        int endIndex; if (dateNow.compare(dateTimeEnd.substr(0,10)) == 0) {
             int hour = atoi(dateTimeEnd.substr(11,2).c_str());
             int minute = atoi(dateTimeEnd.substr(14,2).c_str());
             hour -= 6;
@@ -964,16 +1061,16 @@ int main(int argc, char* argv[]) {
 
     //actually generate the desired image
     if (deviceType.compare("0") == 0) {
-        drawImage0(name, dateNow, timeNow, reservations);
+        drawImage0(name, dateNow, timeNow, reservations, stof(voltage));
     } else if (deviceType.compare("1") == 0) {
-        drawImage1(name, dateNow, timeNow, reservations);
+        drawImage1(name, dateNow, timeNow, reservations, stof(voltage));
     } else if (deviceType.compare("2") == 0) {
-        drawImage2(name, dateNow, timeNow, reservations);
+        drawImage2(name, dateNow, timeNow, reservations, stof(voltage));
     } else if (deviceType.compare("3") == 0) {
-        drawImage3(name, dateNow, timeNow, reservations);
+        drawImage3(name, dateNow, timeNow, reservations, stof(voltage));
     }
 
-    vector<unsigned char> compressed = compressImage();
+    vector<unsigned char> compressed = compressImage(reservations);
     //write to a file
     ofstream(mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
     ofstream(mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
