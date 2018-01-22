@@ -318,6 +318,17 @@ void mirror() {
     }
 }
 
+void flip() {
+    char temp;
+    for (int y = 0; y < y_res/2; y++) {
+        for (int x = 0; x < x_res/8; x++) {
+            temp = image[y * x_res/8 + x]; 
+            image[y * x_res/8 + x] = image[x_res/8*(y_res-1) - y*x_res/8 + x];
+            image[x_res/8*(y_res-1) - y*x_res/8 + x] = temp;
+        }
+    }
+}
+
 string reservationBlockToTime(int block) {
     stringstream hourStream;
     hourStream << block/2 + 6;
