@@ -18,7 +18,8 @@ echo "Room Name: $name"
 echo "Resource ID: " $resource_id
 echo "Device Type: " $device_type
 echo "MAC Address: " $mac_address
-mac_address_info=$mac_address
+mac_address_info="image_data/"
+mac_address_info+=$mac_address
 mac_address_info+=".info"
 echo $mac_address > "$mac_address_info"
 echo $name >> "$mac_address_info"

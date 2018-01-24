@@ -2,7 +2,7 @@
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     `./get_image.sh $mac_address $voltage 2>&1`;
-    $file = $mac_address . ".compressed";
+    $file = "image_data/" . $mac_address . ".compressed";
     if (file_exists($file)) {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');

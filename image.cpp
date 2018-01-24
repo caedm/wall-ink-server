@@ -1036,8 +1036,8 @@ int main(int argc, char* argv[]) {
 
     vector<unsigned char> compressed = compressImage(reservations);
     //write to a file
-    ofstream(mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
-    ofstream(mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
+    ofstream("image_data/" + mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
+    ofstream("image_data/" + mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
 
     //free memory
     delete canvas;
