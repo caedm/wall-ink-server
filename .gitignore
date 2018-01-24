@@ -5,3 +5,5 @@ fromDB
 *.swp
 *.swo
 .project
+web/image_data
+web/log.txt

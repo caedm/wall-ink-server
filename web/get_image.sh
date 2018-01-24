@@ -6,10 +6,17 @@ DATE=`date +%Y-%m-%d`
 TIME=`date +%H:%M`
 mac_address=$1
 voltage=$2
-resource_id_and_device_type_and_orientation=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id,device_type,orientation FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
-resource_id=$(echo $resource_id_and_device_type_and_orientation | awk '{print $1;}')
-device_type=$(echo $resource_id_and_device_type_and_orientation | awk '{print $2;}')
-orientation=$(echo $resource_id_and_device_type_and_orientation | awk '{print $3;}')
+resource_id_and_device_type_and_orientation_and_old_voltage=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id,device_type,orientation,voltage FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
+resource_id=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $1;}')
+device_type=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $2;}')
+orientation=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $3;}')
+old_voltage=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $4;}')
+volt_comp() {
+    awk -v n1="$1" -v n2="$2" 'BEGIN {if (n1+0.25<n2+0) exit 0; exit 1}'
+}
+if volt_comp "$old_voltage" "$voltage"; then
+    `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET batteries_replaced_date = NOW() WHERE mac_address = "'$mac_address\"`
+fi
 `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET voltage = '$voltage' WHERE mac_address = "'$mac_address\"`
 name=`mysql -h $server -u $username --password=$password -s -N -e "SELECT name FROM collegeresv.resources WHERE resource_id = $resource_id"`
 series_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT series_id FROM collegeresv.reservation_resources WHERE resource_id = $resource_id AND series_id NOT IN (SELECT series_id FROM collegeresv.reservation_series WHERE status_id = 2)"`

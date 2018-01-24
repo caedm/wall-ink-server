@@ -1,5 +1,9 @@
 run:
 	g++ *.cpp -o web/genimg -w -static
+	rm -rf ../www/image_data
+	mkdir ../www/image_data
+	rm -rf ../www/css
+	mkdir ../www/css
 	cp web/css/devices.css ../www/css/
 	cp web/dbconfig.php ../www/
 	cp web/dbconnection.php ../www/
