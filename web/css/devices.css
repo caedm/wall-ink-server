@@ -1,0 +1,17 @@
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+}
+
+tr:hover {
+    background: #dadada;
+}
+
+td.low-voltage {
+    background: orange;
+}
+
+

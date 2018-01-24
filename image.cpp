@@ -946,6 +946,8 @@ int main(int argc, char* argv[]) {
     getline(fromDB, deviceType);
     string voltage;
     getline(fromDB, voltage);
+    string orientation;
+    getline(fromDB, orientation);
 
     if (deviceType.compare("0") == 0) {
         x_res = X_RES0;
@@ -1024,6 +1026,12 @@ int main(int argc, char* argv[]) {
         drawImage2(name, dateNow, timeNow, reservations, stof(voltage));
     } else if (deviceType.compare("3") == 0) {
         drawImage3(name, dateNow, timeNow, reservations, stof(voltage));
+    }
+
+    //if orientation is 1, flip image
+    if (orientation.compare("1") == 0) {
+        flip();
+        mirror();
     }
 
     vector<unsigned char> compressed = compressImage(reservations);
