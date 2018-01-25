@@ -14,7 +14,7 @@ function printResult($res) {
     $res->data_seek(0);
     echo "<table class=\"devices\">";
 
-    echo "<tr class=\"device\">";
+    echo "<tr class=\"headers\">";
 
     #echo "<th class=\"device_id\">";
     #echo "device_id";

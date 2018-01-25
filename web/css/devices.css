@@ -6,7 +6,7 @@ th, td {
     padding: 8px;
 }
 
-tr:hover {
+tr.device:hover {
     background: #dadada;
 }
 
