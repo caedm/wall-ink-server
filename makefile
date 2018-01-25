@@ -8,7 +8,7 @@ run:
 	chmod g+w ../www/css
 	cp web/css/devices.css ../www/css/
 	cp web/dbconfig.php ../www/
-	cp web/dbconnection.php ../www/
+	cp web/view_devices.php ../www/
 	cp web/genimg ../www/
 	cp web/get_image.php ../www/
 	cp web/get_image.sh ../www/
