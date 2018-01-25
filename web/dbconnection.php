@@ -2,16 +2,16 @@
 <?php include 'css/devices.css'; ?>
 </style>
 <?php
-function printResult($res) {
+function printResult($results) {
     //Display how many results there were
-    if ($res->num_rows === 0) {
+    if ($results->num_rows === 0) {
         echo "No results<br>";
         return;
     }   
     #echo "$res->num_rows entries<br>";
 
     //Display each row
-    $res->data_seek(0);
+    $results->data_seek(0);
     echo "<table class=\"devices\">";
 
     echo "<tr class=\"headers\">";
@@ -43,7 +43,7 @@ function printResult($res) {
 
     echo "</tr>";
     
-    while ($row = $res->fetch_assoc()) {
+    while ($row = $results->fetch_assoc()) {
         echo "<tr class=\"device\">";
 
         #echo "<td class=\"device_id\">";
@@ -86,7 +86,7 @@ function printResult($res) {
 #ini_set('display_errors', '1');
 include 'dbconfig.php';
 $mysqli = mysqli_connect($server, $username, $password, "door-display");
-$res = mysqli_query($mysqli, "SELECT * FROM devices");
-printResult($res);
+$results = mysqli_query($mysqli, "SELECT * FROM devices");
+printResult($results);
 ?>
 
