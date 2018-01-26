@@ -7,6 +7,7 @@ run:
 	mkdir ../www/css
 	chmod g+w ../www/css
 	cp web/css/devices.css ../www/css/
+	cp web/css/edit_device.css ../www/css/
 	cp web/dbconfig.php ../www/
 	cp web/view_devices.php ../www/
 	cp web/edit_device.php ../www/
@@ -15,6 +16,7 @@ run:
 	cp web/get_image.sh ../www/
 	cp web/print_info.php ../www/
 	cp web/unix_time.php ../www/
+	cp web/handle_edit_device.php ../www/
 
 debug:
 	g++ *.cpp -g -o genimg

@@ -1,3 +1,6 @@
+<style>
+<?php include 'css/edit_device.css'; ?>
+</style>
 <?php
     $device_id = $_GET["device_id"];
     if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
@@ -7,38 +10,50 @@
         $device = mysqli_fetch_assoc($result);
 
         echo "<form action=\"/handle_edit_device.php\" method=\"post\">";
-            echo "<div>";
-                echo "<label for=\"mac_address\">Mac Address:</label>";
-                echo "<input type=\"text\" id=\"mac_address\" mac_address=\"Mac Address\">";
+            echo "<div class=\"field\">";
+                echo "<label for=\"new_mac_address\">Mac Address:</label>";
+                echo "<input type=\"text\" id=\"mac_address\" name=\"new_mac_address\">";
             echo "</div>";
-            echo "<div>";
-                echo "<label for=\"resource_id\">Resource ID:</label>";
-                echo "<input type=\"text\" id=\"resource_id\" name=\"resource_id\">";
+            echo "<div class=\"field\">";
+                echo "<label for=\"new_resource_id\">Resource ID:</label>";
+                echo "<input type=\"text\" id=\"resource_id\" name=\"new_resource_id\">";
             echo "</div>";
-            echo "<div>";
-                echo "<label for=\"device_type\">Device Type:</label>";
-                echo "<select id=\"device_type\" name=\"device_type\">";
-                    echo "<option>1</option>";
-                    echo "<option>2</option>";
-                    echo "<option>3</option>";
-                    echo "<option>4</option>";
-                echo "</select>";
-            echo "</div>";
-            echo "<fieldset>";
+            echo "<fieldset class=\"field\">";
+                echo "<legend>Device Type</legend>";
+                echo "<ul>";
+                    echo "<li>";
+                        echo "<label for=\"0\">7\" Portrait</label>";
+                        echo "<input type=\"radio\" checked id=\"type_0\" name=\"new_device_type\" value=\"0\">";
+                    echo "</li>";
+                    echo "<li>";
+                        echo "<label for=\"1\">4\" Landscape</label>";
+                        echo "<input type=\"radio\" id=\"type_1\" name=\"new_device_type\" value=\"1\">";
+                    echo "</li>";
+                    echo "<li>";
+                        echo "<label for=\"2\">7\" Landscape 1</label>";
+                        echo "<input type=\"radio\" id=\"type_2\" name=\"new_device_type\" value=\"2\">";
+                    echo "</li>";
+                    echo "<li>";
+                        echo "<label for=\"3\">7\" Landscape 2</label>";
+                        echo "<input type=\"radio\" id=\"type_3\" name=\"new_device_type\" value=\"3\">";
+                    echo "</li>";
+                echo "</ul>";
+            echo "</fieldset>";
+            echo "<fieldset class=\"field\">";
                 echo "<legend>Display Orientation</legend>";
                 echo "<ul>";
                     echo "<li>";
                         echo "<label for=\"right-side_up\">Right-Side Up</label>";
-                        echo "<input type=\"radio\" checked id=\"right-side_up\" name=\"orientation\" value=\"right-side_up\">";
+                        echo "<input type=\"radio\" checked id=\"orientation_0\" name=\"new_orientation\" value=\"0\">";
                     echo "</li>";
                     echo "<li>";
                         echo "<label for=\"up-side_down\">Up-Side Down</label>";
-                        echo "<input type=\"radio\" id=\"up-side_down\" name=\"orientation\" value=\"up-side_down\">";
+                        echo "<input type=\"radio\" id=\"orientation_1\" name=\"new_orientation\" value=\"1\">";
                     echo "</li>";
                 echo "</ul>";
             echo "</fieldset>";
             echo "<div class=\"button\">";
-                echo "<button type=\"submit\">Submit Changes</button>";
+                echo "<button type=\"submit\">Update Device Settings</button>";
             echo "</div>";
         echo "</form>";
     }
