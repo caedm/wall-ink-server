@@ -6,7 +6,7 @@ run:
 	rm -rf ../www/css
 	mkdir ../www/css
 	chmod g+w ../www/css
-	cp web/css/devices.css ../www/css/
+	cp web/css/view_devices.css ../www/css/
 	cp web/css/edit_device.css ../www/css/
 	cp web/dbconfig.php ../www/
 	cp web/view_devices.php ../www/

@@ -1,5 +1,5 @@
 <style>
-<?php include 'css/devices.css'; ?>
+<?php include 'css/view_devices.css'; ?>
 </style>
 <?php
 function printResult($results) {
