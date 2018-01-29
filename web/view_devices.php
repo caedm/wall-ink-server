@@ -44,7 +44,7 @@ function printResult($results) {
     echo "</tr>";
     
     while ($row = $results->fetch_assoc()) {
-        echo "<tr class=\"device\">";
+        echo "<tr class=\"device\" onclick=\"document.location = 'edit_device.php?device_id=$row[device_id]'\">";
 
         #echo "<td class=\"device_id\">";
         #echo $row["device_id"];
