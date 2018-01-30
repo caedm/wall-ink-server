@@ -87,7 +87,7 @@
         echo "</fieldset>";
         echo "<div class=\"button\">";
             echo "<button type=\"submit\">Update Device Settings</button>";
-            echo "<button type=\"button\" onclick=\"window.location.href='/device_manager/handle_delete_device.php?device_id=$device[device_id]'\">Delete Device</button>";
+            echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='/device_manager/handle_delete_device.php?device_id=$device[device_id]'\">Delete Device</button>";
         echo "</div>";
     echo "</form>";
 ?>

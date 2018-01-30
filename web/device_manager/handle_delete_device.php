@@ -1,8 +1,8 @@
 <?php
 
     #Debug stuff
-    require_once("print_info.php");
-    printInfo($_POST);
+    #require_once("print_info.php");
+    #printInfo($_GET);
 
     include 'dbconfig.php';
     $mysqli = mysqli_connect($server, $username, $password, "door-display");
