@@ -9,7 +9,7 @@
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
 
-        echo "<form action=\"/handle_edit_device.php\" method=\"post\">";
+        echo "<form action=\"/device_manager/handle_edit_device.php\" method=\"post\">";
             echo "<div class=\"field\">";
                 echo "<label for=\"new_mac_address\">Mac Address:</label>";
                 echo "<input type=\"text\" id=\"mac_address\" name=\"new_mac_address\" value=\"$device[mac_address]\">";

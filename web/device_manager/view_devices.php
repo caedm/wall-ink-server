@@ -82,8 +82,8 @@ function printResult($results) {
 
 #require_once("print_info.php");
 #echo phpversion();
-#error_reporting(E_ALL);
-#ini_set('display_errors', '1');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 include 'dbconfig.php';
 $mysqli = mysqli_connect($server, $username, $password, "door-display");
 $results = mysqli_query($mysqli, "SELECT * FROM devices");
