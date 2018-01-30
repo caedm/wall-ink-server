@@ -16,6 +16,12 @@
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }
+    $mysqli = mysqli_connect($server, $username, $password, "collegeresv");
+    $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
+    $rooms = array();
+    while($room = $resources->fetch_assoc()){
+       $rooms[ $room["resource_id"] ] = $room;
+    }
 
     echo "<form action=\"/device_manager/handle_edit_device.php\" method=\"post\">";
         echo "<input type=\"hidden\" name=\"new_device_id\" value=\"$device_id\"/>";
@@ -24,8 +30,17 @@
             echo "<input type=\"text\" id=\"mac_address\" name=\"new_mac_address\" value=\"$device[mac_address]\">";
         echo "</div>";
         echo "<div class=\"field\">";
-            echo "<label for=\"new_resource_id\">Resource ID:</label>";
-            echo "<input type=\"text\" id=\"resource_id\" name=\"new_resource_id\" value=\"$device[resource_id]\">";
+            echo "<label for=\"new_resource_id\">Room:</label>";
+            echo "<select id=\"resource_id\" name=\"new_resource_id\">";
+            foreach ($rooms as &$room) {
+                echo "<option value=\"$room[resource_id]\"";
+                if ($room["resource_id"] == $device["resource_id"]) {
+                    echo " selected";
+                }
+                echo ">";
+                echo "$room[name]</option>";
+            }
+            echo "</select>";
         echo "</div>";
         echo "<fieldset class=\"field\">";
             echo "<legend>Device Type</legend>";
