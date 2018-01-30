@@ -1,7 +1,7 @@
 #!/bin/bash
-server=`grep server dbconfig.php | grep -o "[[:alnum:].]*" | grep -v server`
-username=`grep username dbconfig.php | grep -o "[[:alnum:]\-]*" | grep -v username`
-password=`grep password dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`
+server=`grep server device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v server`
+username=`grep username device_manager/dbconfig.php | grep -o "[[:alnum:]\-]*" | grep -v username`
+password=`grep password device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`
 DATE=`date +%Y-%m-%d`
 TIME=`date +%H:%M`
 mac_address=$1
