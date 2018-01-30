@@ -2,7 +2,7 @@
 <?php include 'css/view_devices.css'; ?>
 </style>
 <?php
-function printResult($devices) {
+function printResult($devices, $rooms) {
     //Display how many results there were
     #echo "$res->num_rows entries<br>";
 
@@ -16,25 +16,25 @@ function printResult($devices) {
     #echo "device_id";
     #echo "</th>";
     echo "<th class=\"mac_address\">";
-    echo "mac_address";
+    echo "MAC Address";
     echo "</th>";
-    echo "<th class=\"resource_id\">";
-    echo "resource_id";
+    echo "<th class=\"room_name\">";
+    echo "Room Name";
     echo "</th>";
     echo "<th class=\"device_type\">";
-    echo "device_type";
+    echo "Device Type";
     echo "</th>";
     echo "<th class=\"voltage\">";
-    echo "voltage";
+    echo "Voltage";
     echo "</th>";
     echo "<th class=\"orientation\">";
-    echo "orientation";
+    echo "Orientation";
     echo "</th>";
     echo "<th class=\"last_checked_in\">";
-    echo "last_checked_in";
+    echo "Last Checked In";
     echo "</th>";
     echo "<th class=\"batteries_replaced_date\">";
-    echo "batteries_replaced_date";
+    echo "Batteries Replaced Date";
     echo "</th>";
 
     echo "</tr>";
@@ -48,8 +48,8 @@ function printResult($devices) {
         echo "<td class=\"mac_address\">";
         echo $device["mac_address"];
         echo "</td>";
-        echo "<td class=\"resource_id\">";
-        echo $device["resource_id"];
+        echo "<td class=\"room_name\">";
+        echo $rooms[$device["resource_id"]];
         echo "</td>";
         echo "<td class=\"device_type\">";
         echo $device["device_type"];
@@ -93,6 +93,12 @@ ini_set('display_errors', '1');
 include 'dbconfig.php';
 $mysqli = mysqli_connect($server, $username, $password, "door-display");
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
-printResult($devices);
+$mysqli = mysqli_connect($server, $username, $password, "collegeresv");
+$resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
+$rooms = array();
+while($room = $resources->fetch_assoc()){
+   $rooms[ $room["resource_id"] ] = $room["name"];
+}
+printResult($devices, $rooms);
 ?>
 
