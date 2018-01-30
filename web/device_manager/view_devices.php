@@ -79,6 +79,12 @@ function printResult($results) {
     }
     echo "<tr class=\"device\" onclick=\"document.location = 'edit_device.php?device_id=new'\">";
     echo "<td>Add New Device</td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
     echo "</tr>";
 
     echo "</table>";
