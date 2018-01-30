@@ -14,6 +14,7 @@ run:
 	cp web/device_manager/view_devices.php ../www/device_manager/
 	cp web/device_manager/edit_device.php ../www/device_manager/
 	cp web/device_manager/handle_edit_device.php ../www/device_manager/
+	cp web/device_manager/handle_delete_device.php ../www/device_manager/
 	cp web/device_manager/print_info.php ../www/device_manager/
 	cp web/genimg ../www/
 	cp web/get_image.php ../www/

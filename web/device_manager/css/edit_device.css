@@ -4,14 +4,18 @@ form {
     align-items: center;
 }
 
-.field, button {
+.field, .button {
     width: 350px;
-    margin: 8px;
     padding: 0px;
+    display: flex;
+}
+
+.button {
+    justify-content: space-between;
 }
 
 .field {
-    display: flex;
+    margin: 8px;
 }
 
 label {
