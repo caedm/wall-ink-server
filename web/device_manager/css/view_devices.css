@@ -8,6 +8,7 @@ th, td {
 
 tr.device:hover {
     background: #dadada;
+    cursor: pointer;
 }
 
 td.low-voltage {
