@@ -46,17 +46,25 @@
             echo "<legend>Device Type</legend>";
             echo "<ul>";
                 echo "<li>";
-                    echo "<label for=\"0\">7\" Portrait</label>";
-                    echo "<input type=\"radio\" id=\"type_0\" name=\"new_device_type\" value=\"0\"";
-                    if ($device['device_type'] == 0) {
+                    echo "<label for=\"1\">4\" Landscape 1</label>";
+                    echo "<input type=\"radio\" id=\"type_1\" name=\"new_device_type\" value=\"1\"";
+                    if ($device['device_type'] == 1) {
                         echo " checked";
                     }
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"1\">4\" Landscape</label>";
-                    echo "<input type=\"radio\" id=\"type_1\" name=\"new_device_type\" value=\"1\"";
-                    if ($device['device_type'] == 1) {
+                    echo "<label for=\"4\">4\" Landscape 2</label>";
+                    echo "<input type=\"radio\" id=\"type_4\" name=\"new_device_type\" value=\"4\"";
+                    if ($device['device_type'] == 4) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
+                echo "<li>";
+                    echo "<label for=\"0\">7\" Portrait</label>";
+                    echo "<input type=\"radio\" id=\"type_0\" name=\"new_device_type\" value=\"0\"";
+                    if ($device['device_type'] == 0) {
                         echo " checked";
                     }
                     echo ">";

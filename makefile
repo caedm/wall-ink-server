@@ -1,5 +1,5 @@
 run:
-	g++ *.cpp -o web/genimg -w -static
+	g++ *.cpp -o web/genimg -static
 	rm -rf ../www/image_data
 	mkdir ../www/image_data
 	chmod g+w ../www/image_data
@@ -23,4 +23,5 @@ run:
 	cp web/unix_time.php ../www/
 
 debug:
-	g++ *.cpp -g -o genimg
+	g++ *.cpp -g -o web/genimg -static
+	cp web/genimg ../www/
