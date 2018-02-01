@@ -36,3 +36,20 @@ label {
 input, select {
     flex-grow: 1;
 }
+
+ul {
+    list-style: none;
+}
+
+li {
+    display: flex;
+    width: 250px;
+}
+
+li label {
+    flex: 0 0 150px;
+}
+
+li input {
+    flex-grow: 0;
+}
