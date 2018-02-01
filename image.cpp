@@ -977,10 +977,10 @@ void drawImage4(string roomName, string date, string time, string* reservations,
 		//Draw next event
 		string nextEventTime = militaryTimeToNormalPersonTime(nextStart) + " - " + militaryTimeToNormalPersonTime(nextEnd);
 		canvas->setFont(&FreeSansBold12pt7b);
-		drawFancyString(nextEventTime, 9, 185);
+		drawFancyString(nextEventTime, 9, 191);
 		canvas->setFont(&FreeSans12pt7b);
         canvas->setTextWrap(false);
-		drawFancyString(nextTitle, 8, 215);
+		drawFancyString(nextTitle, 8, 221);
         canvas->setTextWrap(false);
     }
 
@@ -1004,25 +1004,25 @@ void drawImage4(string roomName, string date, string time, string* reservations,
 
     //draw blocks
     for (int block = 0; block < 32; block++) {
-        drawRect(block*12+8, 253, 12, 22, 1);
+        drawRect(block*12+8, 259, 12, 16, 1);
         if (reservations[block].compare("Available") == 0) {
             
             //eliminate vertical lines
-            drawRect(block*12+8, 255, 12, 18, 0);
+            drawRect(block*12+8, 261, 12, 12, 0);
 
             //put rounded corners on ends
-            drawRect(8, 255, 2, 18, 1);
-            drawRect(8, 253, 1, 2, 0);
-            drawRect(9, 253, 1, 1, 0);
-            drawRect(10, 255, 1, 1, 1);
+            drawRect(8, 261, 2, 12, 1);
+            drawRect(8, 259, 1, 2, 0);
+            drawRect(9, 259, 1, 1, 0);
+            drawRect(10, 261, 1, 1, 1);
             drawRect(8, 273, 1, 2, 0);
             drawRect(9, 274, 1, 1, 0);
             drawRect(10, 272, 1, 1, 1);
 
-            drawRect(390, 255, 2, 18, 1);
-            drawRect(391, 253, 1, 2, 0);
-            drawRect(390, 253, 1, 1, 0);
-            drawRect(389, 255, 1, 1, 1);
+            drawRect(390, 261, 2, 12, 1);
+            drawRect(391, 259, 1, 2, 0);
+            drawRect(390, 259, 1, 1, 0);
+            drawRect(389, 261, 1, 1, 1);
             drawRect(391, 273, 1, 2, 0);
             drawRect(390, 274, 1, 1, 0);
             drawRect(389, 272, 1, 1, 1);
@@ -1034,52 +1034,52 @@ void drawImage4(string roomName, string date, string time, string* reservations,
         if (reservations[block].compare("Available") == 0) {
             if (block > 0) {
                 if (reservations[block-1].compare("Available") != 0) {
-                    drawRect(block*12 + 5, 253, 5, 2, 0);
-                    drawRect(block*12 + 9, 254, 1, 1, 1);
-                    drawRect(block*12 + 5, 254, 1, 1, 1);
+                    drawRect(block*12 + 5, 259, 5, 2, 0);
+                    drawRect(block*12 + 9, 260, 1, 1, 1);
+                    drawRect(block*12 + 5, 260, 1, 1, 1);
                     drawRect(block*12 + 5, 273, 5, 2, 0);
                     drawRect(block*12 + 9, 273, 1, 1, 1);
                     drawRect(block*12 + 5, 273, 1, 1, 1);
-                    drawRect(block*12 + 7, 253, 1, 22, 0);
-                    drawRect(block*12 + 8, 255, 2, 18, 1);
-                    drawRect(block*12 + 10, 255, 1, 1, 1);
+                    drawRect(block*12 + 7, 259, 1, 16, 0);
+                    drawRect(block*12 + 8, 261, 2, 12, 1);
+                    drawRect(block*12 + 10, 261, 1, 1, 1);
                     drawRect(block*12 + 10, 272, 1, 1, 1);
                 }
             }
             if (block < 31) {
                 if (reservations[block+1].compare("Available") != 0) {
-                    drawRect(block*12 + 18, 253, 5, 2, 0);
-                    drawRect(block*12 + 18, 254, 1, 1, 1);
-                    drawRect(block*12 + 22, 254, 1, 1, 1);
+                    drawRect(block*12 + 18, 259, 5, 2, 0);
+                    drawRect(block*12 + 18, 260, 1, 1, 1);
+                    drawRect(block*12 + 22, 260, 1, 1, 1);
                     drawRect(block*12 + 18, 273, 5, 2, 0);
                     drawRect(block*12 + 18, 273, 1, 1, 1);
                     drawRect(block*12 + 22, 273, 1, 1, 1);
-                    drawRect(block*12 + 20, 253, 1, 22, 0);
-                    drawRect(block*12 + 18, 255, 2, 18, 1);
-                    drawRect(block*12 + 17, 255, 1, 1, 1);
+                    drawRect(block*12 + 20, 259, 1, 16, 0);
+                    drawRect(block*12 + 18, 261, 2, 12, 1);
+                    drawRect(block*12 + 17, 261, 1, 1, 1);
                     drawRect(block*12 + 17, 272, 1, 1, 1);
                 }
             }
         } else {
             if (block > 0) {
                 if (reservations[block-1].compare(reservations[block]) != 0 && reservations[block-1].compare("Available") != 0) {
-                    drawRect(block*12 + 6, 253, 5, 2, 0);
-                    drawRect(block*12 + 10, 254, 1, 1, 1);
-                    drawRect(block*12 + 6, 254, 1, 1, 1);
+                    drawRect(block*12 + 6, 259, 5, 2, 0);
+                    drawRect(block*12 + 10, 260, 1, 1, 1);
+                    drawRect(block*12 + 6, 260, 1, 1, 1);
                     drawRect(block*12 + 6, 273, 5, 2, 0);
                     drawRect(block*12 + 10, 273, 1, 1, 1);
                     drawRect(block*12 + 6, 273, 1, 1, 1);
-                    drawRect(block*12 + 8, 253, 1, 22, 0);
+                    drawRect(block*12 + 8, 259, 1, 16, 0);
                 }
             }
         }
     }
     
     //draw arrow
-    drawRect((currentBlock-currentBlock%2)*12 + 8, 251, 2, 1, 1);
-    drawRect((currentBlock-currentBlock%2)*12 + 7, 250, 4, 1, 1);
-    drawRect((currentBlock-currentBlock%2)*12 + 6, 249, 6, 1, 1);
-    drawRect((currentBlock-currentBlock%2)*12 + 5, 247, 8, 2, 1);
+    drawRect((currentBlock-currentBlock%2)*12 + 8, 257, 2, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*12 + 7, 256, 4, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
     invert();
 }
