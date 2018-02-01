@@ -1,25 +1,18 @@
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <sstream>
 #include <vector>
-#include <ctime>
 #include "math.h"
 #include "fonts.h"
-#define X_RES0 384
-#define Y_RES0 640
-#define X_RES1 400
-#define Y_RES1 300
-#define X_RES2 640
-#define Y_RES2 384
-#define X_RES3 640
-#define Y_RES3 384
-#define X_RES4 400
-#define Y_RES4 300
+#include "image.h"
 #define DEBUG 2
 
 using namespace std;
+
+vector<uint8_t> compressImage(string* reservations, uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 uint8_t* image;
 GFXcanvas1* canvas;
@@ -32,66 +25,6 @@ uint8_t getPixel(unsigned long int x, unsigned long int y) {
     return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
 }
 
-vector<uint8_t> compressImage(string* reservations) {
-    vector<uint8_t> compressed;
-    compressed.clear();
-    time_t currentTime = time(nullptr);
-    uint8_t* compressedTime = (uint8_t*) malloc(4);
-    uint8_t* nextTime = (uint8_t*) malloc(4);
-    uint8_t* imageHash = (uint8_t*) malloc(4);
-    *((uint32_t*) compressedTime) = currentTime;
-    *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + sleepTime;
-#if DEBUG == 1
-    cout << hex;
-    cout << "time size: " << sizeof(currentTime) << endl << "current time: " << currentTime << endl;
-    cout << "compressed time: " << *((uint32_t*) compressedTime) << endl;
-    cout << "next time: " << *((uint32_t*) nextTime) << endl;
-    cout << "byte by byte: " << +compressedTime[0] << " " << +compressedTime[1] << " " << +compressedTime[2] << " " << +compressedTime[3] << endl;
-#endif
-    compressed.push_back(compressedTime[0]);
-    compressed.push_back(compressedTime[1]);
-    compressed.push_back(compressedTime[2]);
-    compressed.push_back(compressedTime[3]);
-    compressed.push_back(nextTime[0]);
-    compressed.push_back(nextTime[1]);
-    compressed.push_back(nextTime[2]);
-    compressed.push_back(nextTime[3]);
-    //generate image hash
-    *((uint32_t*) imageHash) = 0;
-    for (int i = 0; i < x_res * y_res/8; i++) {
-        *((uint32_t*) imageHash) += (image[i] * (i+1))/2;
-    }
-    compressed.push_back(imageHash[0]);
-    compressed.push_back(imageHash[1]);
-    compressed.push_back(imageHash[2]);
-    compressed.push_back(imageHash[3]);
-
-    compressed.push_back(getPixel(0, 0));
-    free(compressedTime);
-    free(nextTime);
-    uint32_t pointer = 0;
-    uint8_t counter = 0;
-    uint8_t lastEntry = getPixel(0,0);
-    while (++pointer < x_res * y_res) {
-       ++counter;
-       if (counter == 0xff) {
-           compressed.push_back(counter);
-#if DEBUG == 1
-           cout << (int) counter << " " << (int) lastEntry << " " << pointer % x_res << "," << pointer / x_res << endl;
-#endif
-           counter = 0;
-       } else if (getPixel(pointer, 0) != lastEntry) {
-           compressed.push_back(counter);
-#if DEBUG == 1
-           cout << (int) counter << " " << (int) lastEntry << " "<< pointer % x_res << "," << pointer / x_res << endl;
-#endif
-           counter = 0;
-           lastEntry = getPixel(pointer, 0);
-       }
-    }
-    compressed.push_back(++counter);
-    return compressed;
-}
 
 /*
 vector<unsigned char> compressImage() {
@@ -1196,7 +1129,7 @@ int main(int argc, char* argv[]) {
         mirror();
     }
 
-    vector<unsigned char> compressed = compressImage(reservations);
+    vector<unsigned char> compressed = compressImage(reservations, image, sleepTime, x_res, y_res);
     //write to a file
     ofstream("image_data/" + mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
     ofstream("image_data/" + mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
