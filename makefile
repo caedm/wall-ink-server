@@ -1,5 +1,6 @@
 run:
-	g++ *.cpp -o web/genimg -static
+	g++ image.cpp compressImage.cpp -o web/genimg -static
+	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static
 	rm -rf ../www/image_data
 	mkdir ../www/image_data
 	chmod g+w ../www/image_data
@@ -23,5 +24,6 @@ run:
 	cp web/unix_time.php ../www/
 
 debug:
-	g++ *.cpp -g -o web/genimg -static
+	g++ image.cpp compressImage.cpp -g -o web/genimg -static
+	g++ pbmToCompressed.cpp compressImage.cpp -g -o pbmToCompressed -static
 	cp web/genimg ../www/

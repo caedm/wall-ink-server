@@ -3,9 +3,11 @@
 
 using namespace std;
 
-uint8_t getPixel(unsigned long int x, unsigned long int y);
+uint8_t getPixel(unsigned long int x, unsigned long int y, uint16_t x_res, uint16_t y_res, uint8_t* image) {
+    return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
+}
 
-vector<uint8_t> compressImage(string* reservations, uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res) {
+vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res) {
     vector<uint8_t> compressed;
     compressed.clear();
     time_t currentTime = time(nullptr);
@@ -39,12 +41,12 @@ vector<uint8_t> compressImage(string* reservations, uint8_t* image, uint32_t sle
     compressed.push_back(imageHash[2]);
     compressed.push_back(imageHash[3]);
 
-    compressed.push_back(getPixel(0, 0));
+    compressed.push_back(getPixel(0, 0, x_res, y_res, image));
     free(compressedTime);
     free(nextTime);
     uint32_t pointer = 0;
     uint8_t counter = 0;
-    uint8_t lastEntry = getPixel(0,0);
+    uint8_t lastEntry = getPixel(0,0, x_res, y_res, image);
     while (++pointer < x_res * y_res) {
        ++counter;
        if (counter == 0xff) {
@@ -53,13 +55,13 @@ vector<uint8_t> compressImage(string* reservations, uint8_t* image, uint32_t sle
            cout << (int) counter << " " << (int) lastEntry << " " << pointer % x_res << "," << pointer / x_res << endl;
 #endif
            counter = 0;
-       } else if (getPixel(pointer, 0) != lastEntry) {
+       } else if (getPixel(pointer, 0, x_res, y_res, image) != lastEntry) {
            compressed.push_back(counter);
 #if DEBUG == 1
            cout << (int) counter << " " << (int) lastEntry << " "<< pointer % x_res << "," << pointer / x_res << endl;
 #endif
            counter = 0;
-           lastEntry = getPixel(pointer, 0);
+           lastEntry = getPixel(pointer, 0, x_res, y_res, image);
        }
     }
     compressed.push_back(++counter);

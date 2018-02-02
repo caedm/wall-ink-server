@@ -85,6 +85,14 @@
                     }
                     echo ">";
                 echo "</li>";
+                echo "<li>";
+                    echo "<label for=\"5\">Static Image</label>";
+                    echo "<input type=\"radio\" id=\"type_5\" name=\"new_device_type\" value=\"5\"";
+                    if ($device['device_type'] == 5) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
             echo "</ul>";
         echo "</fieldset>";
         echo "<fieldset class=\"field\">";

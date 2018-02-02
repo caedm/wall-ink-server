@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-#include <string>
 #include <sstream>
 #include <vector>
 #include "math.h"
@@ -12,7 +11,7 @@
 
 using namespace std;
 
-vector<uint8_t> compressImage(string* reservations, uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
+vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 uint8_t* image;
 GFXcanvas1* canvas;
@@ -20,49 +19,6 @@ uint32_t sleepTime;
 
 uint16_t x_res;
 uint16_t y_res;
-
-uint8_t getPixel(unsigned long int x, unsigned long int y) {
-    return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
-}
-
-
-/*
-vector<unsigned char> compressImage() {
-    vector<unsigned char> compressed;
-    compressed.clear();
-    for (int y = 0; y < y_res; y++) {
-        int switches = 0;
-        for (int x = 1; x < x_res; x++)
-            if (getPixel(x,y) != getPixel(x-1,y))
-                ++switches;
-        if (switches >= y_res/8) {
-            compressed.push_back(0);
-            for (int x = 0; x < x_res/8; x++) {
-                compressed.push_back(image[x + y*x_res/8]);
-            }
-        } else {
-            if (getPixel(0,y) == 1)
-                compressed.push_back(switches);
-            else
-                compressed.push_back(switches);
-            unsigned char counter = 1;
-            for (int x = 1; x < x_res; x++) {
-                if (getPixel(x,y) != getPixel(x-1,y)) {
-                    compressed.push_back(counter);
-                    counter = 0;
-                } else if (counter == 255) {
-                    counter = 0;
-                    compressed.push_back(0);
-                }
-                ++counter;
-            }
-            compressed.push_back(counter);
-        }
-    }
-    
-    return compressed;
-}
-*/
 
 void setPixel(int x, int y, unsigned char color) {
     if (color == 0) {
@@ -166,6 +122,7 @@ void invert(){
 }
 
 //not sure that this will work
+/*
 void rotate() {
     GFXcanvas1* c = new GFXcanvas1(y_res, x_res);
     for (int x = 0; x < x_res; x++) {
@@ -179,6 +136,7 @@ void rotate() {
     x_res = y_res;
     y_res = temp;
 }
+*/
 
 void mirror() {
     char temp;
@@ -260,13 +218,6 @@ string fancyDateFromYYYY_MM_DD(string YYYY_MM_DD) {
     fancyDate << monthName << " " << day << ", " << year;
     return fancyDate.str();
 }
-
-struct reservation {
-    public:
-        string title;
-        int startBlock;
-        int endBlock;
-};
 
 vector<reservation> parseReservations(string* reservations) {
     vector<reservation> reservs;
@@ -1129,7 +1080,7 @@ int main(int argc, char* argv[]) {
         mirror();
     }
 
-    vector<unsigned char> compressed = compressImage(reservations, image, sleepTime, x_res, y_res);
+    vector<unsigned char> compressed = compressImage(image, sleepTime, x_res, y_res);
     //write to a file
     ofstream("image_data/" + mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
     ofstream("image_data/" + mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());

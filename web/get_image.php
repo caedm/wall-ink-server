@@ -2,7 +2,13 @@
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1) {
-        `./get_image.sh $mac_address $voltage 2>&1`;
+        $mysqli = mysqli_connect($server, $username, $password, "door-display");
+        $sql_query="SELECT device_type FROM devices WHERE mac_address = \"$mac_address\"";
+        $device_type = mysqli_fetch_assoc($result);
+        if ($device_type == 5) {
+        } else {
+            `./get_image.sh $mac_address $voltage 2>&1`;
+        }
         $file = "image_data/" . $mac_address . ".compressed";
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
