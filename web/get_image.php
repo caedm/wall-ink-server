@@ -2,10 +2,15 @@
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1) {
+        include 'dbconfig.php';
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
-        $sql_query="SELECT device_type FROM devices WHERE mac_address = \"$mac_address\"";
-        $device_type = mysqli_fetch_assoc($result);
-        if ($device_type == 5) {
+        $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = $mac_address");
+        $device = mysqli_fetch_assoc($result);
+        if ($device["device_type"] == 5) {
+            if ($device["voltage"] + 0.25 < "$voltage"){
+                $sql_query="UPDATE devices SET batteries_replaced_date = NOW() WHERE mac_address = \"$mac_address\"";
+            }
+            "UPDATE devices SET voltage = $voltage, last_checked_in = NOW() WHERE mac_address = \"$mac_address\"";
         } else {
             `./get_image.sh $mac_address $voltage 2>&1`;
         }
