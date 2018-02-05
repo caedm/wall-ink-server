@@ -2,19 +2,23 @@
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1) {
-        include 'dbconfig.php';
+        include 'device_manager/dbconfig.php';
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
-        $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = $mac_address");
-        $device = mysqli_fetch_assoc($result);
+        $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
+        $device = $result->fetch_assoc();
+        $file = "image_data/" . $mac_address . ".static";
         if ($device["device_type"] == 5) {
             if ($device["voltage"] + 0.25 < "$voltage"){
                 $sql_query="UPDATE devices SET batteries_replaced_date = NOW() WHERE mac_address = \"$mac_address\"";
+                $result = mysqli_query($mysqli, $sql_query);
             }
-            "UPDATE devices SET voltage = $voltage, last_checked_in = NOW() WHERE mac_address = \"$mac_address\"";
+            $sql_query="UPDATE devices SET voltage = $voltage, last_checked_in = NOW() WHERE mac_address = \"$mac_address\"";
+            $result = mysqli_query($mysqli, $sql_query);
+            $file = "image_data/" . $mac_address . ".static";
         } else {
             `./get_image.sh $mac_address $voltage 2>&1`;
+            $file = "image_data/" . $mac_address . ".compressed";
         }
-        $file = "image_data/" . $mac_address . ".compressed";
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -28,5 +32,7 @@
             readfile($file);
             exit;
         }
+    } else {
+        echo "REGEX doesn't match";
     }
 ?>

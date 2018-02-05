@@ -7,7 +7,7 @@
 #include "math.h"
 #include "fonts.h"
 #include "image.h"
-#define DEBUG 2
+#define DEBUG 0
 
 using namespace std;
 
