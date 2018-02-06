@@ -1,6 +1,7 @@
 genimg
 pbmToCompressed
 database.sh
+dbconfig.php
 fromDB
 *~
 *.swp
