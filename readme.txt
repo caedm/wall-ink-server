@@ -1,5 +1,4 @@
-Use "make" or "make run" to build the program and run the make_images.sh script.
+Use "make" to build genimg & pbmToCompressed and to copy all relevant files to the ../www/ directory
 Use "make debug" to build this with debug flags enabled.
 
-todo:   
-        Add code to handle errors
+Up-to-date documentation can be found on the Admin:Door_Display page on the CAEDM wiki
