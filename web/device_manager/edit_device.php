@@ -2,7 +2,10 @@
 <?php include 'css/edit_device.css'; ?>
 </style>
 <?php
+    #error_reporting(E_ALL);
+    #ini_set('display_errors', '1');
     $device_id = $_GET["device_id"];
+    include 'dbconfig.php';
     if ($_GET["device_id"] == "new") {
         $device = array(
             "mac_address" => "",
@@ -11,7 +14,6 @@
             "device_type" => 0
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
-        include 'dbconfig.php';
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
@@ -119,7 +121,9 @@
         echo "<div class=\"button\">";
             echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to discard your changes?') == true) window.location.href='/device_manager/view_devices.php'\">Cancel</button>";
             echo "<button type=\"submit\" class=\"middle\">Submit</button>";
-            echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='/device_manager/handle_delete_device.php?device_id=$device[device_id]'\">Delete</button>";
+            if ($_GET["device_id"] != "new") {
+                echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='/device_manager/handle_delete_device.php?device_id=$device[device_id]'\">Delete</button>";
+            }
         echo "</div>";
     echo "</form>";
 ?>
