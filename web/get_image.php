@@ -1,4 +1,8 @@
 <?php
+    #Debug stuff
+    #require_once("print_info.php");
+    #printInfo($_POST);
+
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1) {
