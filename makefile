@@ -1,5 +1,7 @@
 run:
-	g++ image.cpp compressImage.cpp -o web/genimg -static
+	g++ -L/usr/local/lib/ -lqrencode image.cpp compressImage.cpp -o web/genimg
+	#g++ -L/usr/local/lib/ image.cpp compressImage.cpp -o web/genimg -static
+	#g++ image.cpp compressImage.cpp libqrencode/mqrspec.c libqrencode/bitstream.c libqrencode/qrinput.c libqrencode/rsecc.c libqrencode/mmask.c libqrencode/mask.c libqrencode/split.c libqrencode/qrspec.c libqrencode/qrencode.c -o web/genimg -static
 	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static
 	rm -rf ../www/image_data
 	mkdir ../www/image_data
