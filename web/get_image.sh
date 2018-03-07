@@ -53,7 +53,7 @@ do
         echo $end_date >> "$mac_address_info"
     done
 done
-echo `./genimg $mac_address_info`
+echo `LD_LIBRARY_PATH=. ./genimg $mac_address_info`
 web_dir="../www/"
 mac_address_compressed=$mac_address
 mac_address_compressed+=".compressed"

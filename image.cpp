@@ -79,13 +79,14 @@ bool drawCenteredString(string str, int16_t y){
 }
 
 void putQrCode(int x, int y, string str) {
-    //QRcode* code = QRcode_encodeString(str.data(), 0, QR_ECLEVEL_M, QR_MODE_8, 0);
-    QRcode* code = QRcode_encodeString8bit(str.data(), 0, QR_ECLEVEL_M);
+    QRcode* code = QRcode_encodeString(str.data(), 0, QR_ECLEVEL_M, QR_MODE_STRUCTURE, 0);
+    //QRcode* code = QRcode_encodeString8bit(str.data(), 0, QR_ECLEVEL_M);
     for (int x_offset = 0; x_offset < code->width; x_offset++) {
         for (int y_offset = 0; y_offset < code->width; y_offset++) {
-            setPixel(x+x_offset,y+y_offset,code->data[x_offset + y_offset*8]);
+            setPixel(x+x_offset,y+y_offset,code->data[x_offset + y_offset*8] % 2);
         }
     }
+    QRcode_free(code);
 }
 
 unsigned char reverseByte(unsigned char x) {
@@ -976,7 +977,7 @@ void drawImage4(string roomName, string date, string time, string* reservations,
     drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
-    putQrCode(50,50,"test");
+    //putQrCode(350,2,"reserve.byu.edu");
 
     invert();
 }
