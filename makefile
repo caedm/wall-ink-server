@@ -1,7 +1,12 @@
+# Diagnostics. Adding '-fsanitize=address' is helpful for most versions of Clang and newer versions of GCC.
+#CXXFLAGS += -Wall -fsanitize=undefined
+# Link libraries statically
+CXXFLAGS += -static
+LIBSRC = qr_code_generator/BitBuffer.cpp qr_code_generator/QrCode.cpp qr_code_generator/QrSegment.cpp compressImage.cpp
+
+
 run:
-	g++ image.cpp compressImage.cpp libqrencode/*.c -Wwrite-strings -fpermissive -pthread -o web/genimg -static
-	#g++ -L/usr/local/lib/ image.cpp compressImage.cpp -o web/genimg -static
-	#g++ image.cpp compressImage.cpp libqrencode/mqrspec.c libqrencode/bitstream.c libqrencode/qrinput.c libqrencode/rsecc.c libqrencode/mmask.c libqrencode/mask.c libqrencode/split.c libqrencode/qrspec.c libqrencode/qrencode.c -o web/genimg -static
+	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -O1
 	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static
 	rm -rf ../www/image_data
 	mkdir ../www/image_data
@@ -22,16 +27,14 @@ run:
 	cp web/device_manager/.htaccess ../www/device_manager/
 	cp web/index.html ../www/
 	cp web/genimg ../www/
-	cp libqrencode.so.4 web/libqrencode.so.4
 	cp web/get_image.php ../www/
 	cp web/get_image.sh ../www/
 	cp web/unix_time.php ../www/
 
 test:
-	g++ image.cpp compressImage.cpp libqrencode/*.c -Wwrite-strings -fpermissive -pthread -o web/genimg -static
-	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static
+	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -O1
+	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static -O1
 
 debug:
-	g++ image.cpp compressImage.cpp -g -o web/genimg -static
-	g++ pbmToCompressed.cpp compressImage.cpp -g -o pbmToCompressed -static
-	cp web/genimg ../www/
+	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -Og -g
+	g++ pbmToCompressed.cpp compressImage.cpp -g -o pbmToCompressed -static -Og

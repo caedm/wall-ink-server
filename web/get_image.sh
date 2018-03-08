@@ -36,6 +36,7 @@ echo $TIME >> "$mac_address_info"
 echo $device_type >> "$mac_address_info"
 echo $voltage >> "$mac_address_info"
 echo $orientation >> "$mac_address_info"
+echo $resource_id >> "$mac_address_info"
 for series_id in "${series_ids[@]}"
 do
     #echo "Series ID: " $series_id
@@ -53,7 +54,7 @@ do
         echo $end_date >> "$mac_address_info"
     done
 done
-echo `LD_LIBRARY_PATH=. ./genimg $mac_address_info`
+echo `./genimg $mac_address_info`
 web_dir="../www/"
 mac_address_compressed=$mac_address
 mac_address_compressed+=".compressed"

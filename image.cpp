@@ -7,7 +7,7 @@
 #include "math.h"
 #include "fonts.h"
 #include "image.h"
-#include "qrencode.h"
+#include "qr_code_generator/QrCode.hpp"
 #define DEBUG 0
 
 using namespace std;
@@ -79,14 +79,12 @@ bool drawCenteredString(string str, int16_t y){
 }
 
 void putQrCode(int x, int y, string str) {
-    QRcode* code = QRcode_encodeString(str.data(), 0, QR_ECLEVEL_M, QR_MODE_STRUCTURE, 0);
-    //QRcode* code = QRcode_encodeString8bit(str.data(), 0, QR_ECLEVEL_M);
-    for (int x_offset = 0; x_offset < code->width; x_offset++) {
-        for (int y_offset = 0; y_offset < code->width; y_offset++) {
-            setPixel(x+x_offset,y+y_offset,code->data[x_offset + y_offset*8] % 2);
+    qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
+    for (int y_offset = 0; y_offset < qr.getSize(); y_offset++) {
+        for (int x_offset = 0; x_offset < qr.getSize(); x_offset++) {
+            setPixel(x+x_offset,y+y_offset,qr.getModule(x_offset, y_offset));
         }
     }
-    QRcode_free(code);
 }
 
 unsigned char reverseByte(unsigned char x) {
@@ -825,7 +823,7 @@ void drawImage3(string roomName, string date, string time, string* reservations,
     invert();
 }
 
-void drawImage4(string roomName, string date, string time, string* reservations, float voltage) { //landscape 4", shows 2 appointments
+void drawImage4(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //landscape 4", shows 2 appointments
     //set sleepTime
     setSleepTime(1800);
 
@@ -977,7 +975,7 @@ void drawImage4(string roomName, string date, string time, string* reservations,
     drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
-    //putQrCode(350,2,"reserve.byu.edu");
+    putQrCode(350,5,"reserve.et.byu.edu/reservations/Web/reservation.php?rid=" + resourceID);
 
     invert();
 }
@@ -1003,6 +1001,8 @@ int main(int argc, char* argv[]) {
     getline(fromDB, voltage);
     string orientation;
     getline(fromDB, orientation);
+    string resourceID;
+    getline(fromDB, resourceID);
 
     if (deviceType.compare("0") == 0) {
         x_res = X_RES0;
@@ -1085,7 +1085,7 @@ int main(int argc, char* argv[]) {
     } else if (deviceType.compare("3") == 0) {
         drawImage3(name, dateNow, timeNow, reservations, stof(voltage));
     } else if (deviceType.compare("4") == 0) {
-        drawImage4(name, dateNow, timeNow, reservations, stof(voltage));
+        drawImage4(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
     }
 
     //if orientation is 1, flip image
