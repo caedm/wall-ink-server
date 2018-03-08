@@ -30,6 +30,7 @@ run:
 	cp web/get_image.php ../www/
 	cp web/get_image.sh ../www/
 	cp web/unix_time.php ../www/
+	cp web/r.php ../www/
 
 test:
 	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -O1
