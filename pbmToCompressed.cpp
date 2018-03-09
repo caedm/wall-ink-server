@@ -6,7 +6,7 @@
 
 using namespace std;
 
-vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
+extern vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 int main(int argc, char* argv[]) {
     //must be a raw, binary pbm file (Magic number P4)

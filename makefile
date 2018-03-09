@@ -1,13 +1,16 @@
 # Diagnostics. Adding '-fsanitize=address' is helpful for most versions of Clang and newer versions of GCC.
 #CXXFLAGS += -Wall -fsanitize=undefined
 # Link libraries statically
-CXXFLAGS += -static
-LIBSRC = qr_code_generator/BitBuffer.cpp qr_code_generator/QrCode.cpp qr_code_generator/QrSegment.cpp compressImage.cpp
+CXXFLAGS += -static -O1
+LIBSRC = BitBuffer QrCode QrSegment compressImage
+objects = image.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o
+VPATH = qr_code_generator:web
+CXX=g++
 
 
-run:
-	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -O1
-	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static
+test: genimg pbmToCompressed
+
+deploy: genimg pbmToCompressed
 	rm -rf ../www/image_data
 	mkdir ../www/image_data
 	chmod g+w ../www/image_data
@@ -29,13 +32,26 @@ run:
 	cp web/genimg ../www/
 	cp web/get_image.php ../www/
 	cp web/get_image.sh ../www/
+	cp web/rawToPng.sh ../www/
 	cp web/unix_time.php ../www/
 	cp web/r.php ../www/
 
-test:
-	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -O1
-	g++ pbmToCompressed.cpp compressImage.cpp -o pbmToCompressed -static -O1
+genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o
+	$(CXX) image.o $(LIBSRC:=.o) $(CXXFLAGS) -o web/genimg
+
+pbmToCompressed : pbmToCompressed.o compressImage.o
+	$(CXX) pbmToCompressed.o compressImage.o $(CXXFLAGS) -o pbmToCompressed
+
+image.o : image.h qr_code_generator/QrCode.hpp
+pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h
+compressImage.o : compressImage.h
+BitBuffer.o : BitBuffer.hpp
+QrCode.o : QrCode.hpp
+QrSegment.o : QrSegment.hpp
 
 debug:
-	g++ image.cpp $(LIBSRC) $(CXXFLAGS) -o web/genimg -Og -g
-	g++ pbmToCompressed.cpp compressImage.cpp -g -o pbmToCompressed -static -Og
+	$(CXX) image.cpp $(LIBSRC:=.cpp) $(CXXFLAGS) -g -o web/genimg
+	$(CXX) pbmToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o pbmToCompressed
+
+clean : 
+	rm $(objects)

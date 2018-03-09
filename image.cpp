@@ -1146,11 +1146,11 @@ void drawImage6(string roomName, string date, string time, string* reservations,
     invert();
 }
 
-void drawImage7(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //7" landscape, shows 3 appointments plus blocks & a QR code
+void drawImage7(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //7" landscape, shows 2 appointments plus blocks & a QR code
     //set sleepTime
     setSleepTime(1800);
 
-    canvas->setFont(&FreeSans24pt7b);
+    canvas->setFont(&FreeSansBold18pt7b);
     canvas->setTextColor(1);
     canvas->setTextWrap(false);
 
@@ -1158,19 +1158,19 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     vector<reservation> reservs = parseReservations(reservations);
 
     //draw room name
-    drawFancyString(roomName, 9, 45);
+    drawFancyString(roomName, 15, 45);
 
     //draw date
-    canvas->setFont(&FreeSans18pt7b);
-    drawFancyString(fancyDateFromYYYY_MM_DD(date), 9, 85);
+    canvas->setFont(&FreeSansBold12pt7b);
+    drawFancyString(fancyDateFromYYYY_MM_DD(date), 15, 80);
 
     //draw rectangle to emphasize title block
-    drawRect(0,0,7,98,3);
+    drawRect(0,0,9,98,3);
 
     //draw line under date
-    drawRect(7,96,x_res-7,2,1);
+    drawRect(9,95,x_res-9,3,1);
 
-    putQrCode(547,6,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 3);
+    putQrCode(565,20,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 2);
 
     //Get current block
     int currentBlock;
@@ -1193,44 +1193,23 @@ void drawImage7(string roomName, string date, string time, string* reservations,
         currentEventIndex--;
     }
     
-    //Draw previous event
-    if (currentEventIndex > 0) {
-        string prevEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex-1).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex-1).endBlock));
-		canvas->setFont(&FreeSansBold12pt7b);
-		drawFancyString(prevEventTime, 9, 126);
-		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
-		drawFancyString(reservs.at(currentEventIndex-1).title, 8, 156);
-        canvas->setTextWrap(false);
-    }
-
     //Draw current event
-    if (reservs.size() == 1) {
-        string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
-		canvas->setFont(&FreeSansBold18pt7b);
-		drawFancyString(currentEventTime, 9, 134);
-		canvas->setFont(&FreeSans18pt7b);
-        canvas->setTextWrap(true);
-		drawFancyString(reservs.at(currentEventIndex).title, 8, 170);
-        canvas->setTextWrap(false);
-    } else {
-        string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
-        canvas->setFont(&FreeSansBold12pt7b);
-        drawFancyString(currentEventTime, 8, 201);
-        canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
-        drawFancyString(reservs.at(currentEventIndex).title, 8, 231);
-        canvas->setTextWrap(false);
-    }
+    string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
+    canvas->setFont(&FreeSansBold18pt7b);
+    drawFancyString(currentEventTime, 15, 142);
+    canvas->setFont(&FreeSans18pt7b);
+    canvas->setTextWrap(true);
+    drawFancyString(reservs.at(currentEventIndex).title, 15, 178);
+    canvas->setTextWrap(false);
 
     //Draw next event
     if (reservs.size() > currentEventIndex+1) {
         string nextEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex+1).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex+1).endBlock));
 		canvas->setFont(&FreeSansBold12pt7b);
-		drawFancyString(nextEventTime, 9, 276);
+		drawFancyString(nextEventTime, 15, 221);
 		canvas->setFont(&FreeSans12pt7b);
         canvas->setTextWrap(true);
-		drawFancyString(reservs.at(currentEventIndex+1).title, 8, 306);
+		drawFancyString(reservs.at(currentEventIndex+1).title, 15, 251);
         canvas->setTextWrap(false);
     }
 
