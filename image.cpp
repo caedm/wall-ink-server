@@ -1146,6 +1146,196 @@ void drawImage6(string roomName, string date, string time, string* reservations,
     invert();
 }
 
+void drawImage7(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //7" landscape, shows 3 appointments plus blocks & a QR code
+    //set sleepTime
+    setSleepTime(1800);
+
+    canvas->setFont(&FreeSans24pt7b);
+    canvas->setTextColor(1);
+    canvas->setTextWrap(false);
+
+    //parse reservations
+    vector<reservation> reservs = parseReservations(reservations);
+
+    //draw room name
+    drawFancyString(roomName, 9, 45);
+
+    //draw date
+    canvas->setFont(&FreeSans18pt7b);
+    drawFancyString(fancyDateFromYYYY_MM_DD(date), 9, 85);
+
+    //draw rectangle to emphasize title block
+    drawRect(0,0,7,98,3);
+
+    //draw line under date
+    drawRect(7,96,x_res-7,2,1);
+
+    putQrCode(547,6,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 3);
+
+    //Get current block
+    int currentBlock;
+    currentBlock = (atoi(time.substr(0,2).c_str()) - 6) * 2;
+    currentBlock += atoi(time.substr(3,2).c_str()) / 30;
+    if (currentBlock < 0)
+        currentBlock = 0;
+    if (currentBlock > 31)
+        currentBlock = 31;
+
+    //Get current event
+    int currentEventIndex;
+    for (int i = 0; i < reservs.size(); i++) {
+        if (currentBlock >= reservs.at(i).startBlock && currentBlock <= reservs.at(i).endBlock)
+            currentEventIndex = i;
+    }
+    if (reservs.size() > 2 && currentEventIndex == 0) {
+        currentEventIndex++;
+    } else if (reservs.size() > 2 && currentEventIndex == reservs.size() - 1) {
+        currentEventIndex--;
+    }
+    
+    //Draw previous event
+    if (currentEventIndex > 0) {
+        string prevEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex-1).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex-1).endBlock));
+		canvas->setFont(&FreeSansBold12pt7b);
+		drawFancyString(prevEventTime, 9, 126);
+		canvas->setFont(&FreeSans12pt7b);
+        canvas->setTextWrap(true);
+		drawFancyString(reservs.at(currentEventIndex-1).title, 8, 156);
+        canvas->setTextWrap(false);
+    }
+
+    //Draw current event
+    if (reservs.size() == 1) {
+        string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
+		canvas->setFont(&FreeSansBold18pt7b);
+		drawFancyString(currentEventTime, 9, 134);
+		canvas->setFont(&FreeSans18pt7b);
+        canvas->setTextWrap(true);
+		drawFancyString(reservs.at(currentEventIndex).title, 8, 170);
+        canvas->setTextWrap(false);
+    } else {
+        string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
+        canvas->setFont(&FreeSansBold12pt7b);
+        drawFancyString(currentEventTime, 8, 201);
+        canvas->setFont(&FreeSans12pt7b);
+        canvas->setTextWrap(true);
+        drawFancyString(reservs.at(currentEventIndex).title, 8, 231);
+        canvas->setTextWrap(false);
+    }
+
+    //Draw next event
+    if (reservs.size() > currentEventIndex+1) {
+        string nextEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex+1).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex+1).endBlock));
+		canvas->setFont(&FreeSansBold12pt7b);
+		drawFancyString(nextEventTime, 9, 276);
+		canvas->setFont(&FreeSans12pt7b);
+        canvas->setTextWrap(true);
+		drawFancyString(reservs.at(currentEventIndex+1).title, 8, 306);
+        canvas->setTextWrap(false);
+    }
+
+    //draw times
+    canvas->setFont(&FreeSansBold9pt7b);
+    for (int hour = 7; hour < 22; hour++) {
+        stringstream hourString;
+        if (hour < 13)
+            hourString << hour;
+        else
+            hourString << hour-12;
+        if (hourString.str().length() == 1)
+            drawFancyString(hourString.str(), hour*40 - 245, 378);
+        else
+            drawFancyString(hourString.str(), hour*40 - 249, 378);
+    }
+
+    //draw blocks
+    for (int block = 0; block < 32; block++) {
+        drawRect(block*20, 337, 20, 22, 1);
+        if (reservations[block].compare("Available") == 0) {
+            //drawRect(block*20 + 1, 324, 18, 33, 0);
+            //eliminate vertical lines
+            drawRect(block*20, 339, 20, 18, 0);
+
+            //put rounded corners on ends
+            drawRect(0, 339, 2, 18, 1);
+            drawRect(0, 337, 1, 2, 0);
+            drawRect(1, 337, 1, 1, 0);
+            drawRect(2, 339, 1, 1, 1);
+            drawRect(0, 357, 1, 2, 0);
+            drawRect(1, 358, 1, 1, 0);
+            drawRect(2, 356, 1, 1, 1);
+
+            drawRect(638, 339, 2, 18, 1);
+            drawRect(639, 337, 1, 2, 0);
+            drawRect(638, 337, 1, 1, 0);
+            drawRect(637, 339, 1, 1, 1);
+            drawRect(639, 357, 1, 2, 0);
+            drawRect(638, 358, 1, 1, 0);
+            drawRect(637, 356, 1, 1, 1);
+        }
+    }
+
+    //round corners if edge case
+    for (int block = 0; block < 32; block++) {
+        if (reservations[block].compare("Available") == 0) {
+            if (block > 0) {
+                if (reservations[block-1].compare("Available") != 0) {
+                    drawRect(block*20 - 4, 337, 5, 2, 0);
+                    drawRect(block*20, 338, 1, 1, 1);
+                    drawRect(block*20 - 4, 338, 1, 1, 1);
+                    drawRect(block*20 - 4, 357, 5, 2, 0);
+                    drawRect(block*20, 357, 1, 1, 1);
+                    drawRect(block*20 - 4, 357, 1, 1, 1);
+                    drawRect(block*20 - 2, 337, 1, 22, 0);
+                    drawRect(block*20, 339, 1, 18, 1);
+                    drawRect(block*20 + 1, 339, 1, 1, 1);
+                    drawRect(block*20 + 1, 356, 1, 1, 1);
+                }
+            }
+            if (block < 31) {
+                if (reservations[block+1].compare("Available") != 0) {
+                    drawRect(block*20 + 19, 337, 5, 2, 0);
+                    drawRect(block*20 + 19, 338, 1, 1, 1);
+                    drawRect(block*20 + 23, 338, 1, 1, 1);
+                    drawRect(block*20 + 19, 357, 5, 2, 0);
+                    drawRect(block*20 + 19, 357, 1, 1, 1);
+                    drawRect(block*20 + 23, 357, 1, 1, 1);
+                    drawRect(block*20 + 21, 337, 1, 22, 0);
+                    drawRect(block*20 + 19, 339, 1, 18, 1);
+                    drawRect(block*20 + 18, 339, 1, 1, 1);
+                    drawRect(block*20 + 18, 356, 1, 1, 1);
+                }
+            }
+        } else {
+            if (block > 0) {
+                if (reservations[block-1].compare(reservations[block]) != 0 && reservations[block-1].compare("Available") != 0) {
+                    drawRect(block*20 - 2, 337, 5, 2, 0);
+                    drawRect(block*20 + 2, 338, 1, 1, 1);
+                    drawRect(block*20 - 2, 338, 1, 1, 1);
+                    drawRect(block*20 - 2, 357, 5, 2, 0);
+                    drawRect(block*20 + 2, 357, 1, 1, 1);
+                    drawRect(block*20 - 2, 357, 1, 1, 1);
+                    drawRect(block*20, 337, 1, 22, 0);
+                }
+            }
+        }
+    }
+    
+    //draw arrow
+    drawRect((currentBlock-currentBlock%2)*20, 335, 2, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 1, 334, 4, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 2, 333, 6, 1, 1);
+    drawRect((currentBlock-currentBlock%2)*20 - 3, 331, 8, 2, 1);
+
+    //draw time above the arrow
+    //canvas->setFont(&FreeSansBold9pt7b);
+    //drawFancyString(militaryTimeToNormalPersonTime(reservationBlockToTime(currentBlock-currentBlock%2)), (currentBlock-currentBlock%2)*20 - 30, 326);
+
+    checkBattery(x_res-100, y_res-100, voltage);
+
+    invert();
+}
+
 int main(int argc, char* argv[]) {
     //read from the database info
     ifstream fromDB;
@@ -1188,6 +1378,9 @@ int main(int argc, char* argv[]) {
     } else if (deviceType.compare("6") == 0) {
         x_res = X_RES4;
         y_res = Y_RES4;
+    } else if (deviceType.compare("7") == 0) {
+        x_res = X_RES2;
+        y_res = Y_RES2;
     }
     canvas = new GFXcanvas1(x_res, y_res);
     canvas->fillScreen(0);
@@ -1257,6 +1450,8 @@ int main(int argc, char* argv[]) {
         drawImage4(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
     } else if (deviceType.compare("6") == 0) {
         drawImage6(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
+    } else if (deviceType.compare("7") == 0) {
+        drawImage7(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
     }
 
     //if orientation is 1, flip image

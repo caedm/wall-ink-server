@@ -64,7 +64,7 @@
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"4\">4\" Landscape 3 (with QR Code)</label>";
+                    echo "<label for=\"6\">4\" Landscape 3 (with QR code)</label>";
                     echo "<input type=\"radio\" id=\"type_6\" name=\"new_device_type\" value=\"6\"";
                     if ($device['device_type'] == 6) {
                         echo " checked";
@@ -83,6 +83,14 @@
                     echo "<label for=\"2\">7\" Landscape 1</label>";
                     echo "<input type=\"radio\" id=\"type_2\" name=\"new_device_type\" value=\"2\"";
                     if ($device['device_type'] == 2) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
+                echo "<li>";
+                    echo "<label for=\"7\">7\" Landscape 3 (with QR code)</label>";
+                    echo "<input type=\"radio\" id=\"type_7\" name=\"new_device_type\" value=\"7\"";
+                    if ($device['device_type'] == 7) {
                         echo " checked";
                     }
                     echo ">";
