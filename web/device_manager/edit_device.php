@@ -88,17 +88,17 @@
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"7\">7\" Landscape 3 (with QR code)</label>";
-                    echo "<input type=\"radio\" id=\"type_7\" name=\"new_device_type\" value=\"7\"";
-                    if ($device['device_type'] == 7) {
+                    echo "<label for=\"3\">7\" Landscape 2</label>";
+                    echo "<input type=\"radio\" id=\"type_3\" name=\"new_device_type\" value=\"3\"";
+                    if ($device['device_type'] == 3) {
                         echo " checked";
                     }
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"3\">7\" Landscape 2</label>";
-                    echo "<input type=\"radio\" id=\"type_3\" name=\"new_device_type\" value=\"3\"";
-                    if ($device['device_type'] == 3) {
+                    echo "<label for=\"7\">7\" Landscape 3 (with QR code)</label>";
+                    echo "<input type=\"radio\" id=\"type_7\" name=\"new_device_type\" value=\"7\"";
+                    if ($device['device_type'] == 7) {
                         echo " checked";
                     }
                     echo ">";
