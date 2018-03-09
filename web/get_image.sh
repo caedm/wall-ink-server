@@ -13,7 +13,7 @@ device_type=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage 
 orientation=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $3;}')
 old_voltage=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $4;}')
 volt_comp() {
-    awk -v n1="$1" -v n2="$2" 'BEGIN {if (n1+0.25<n2+0) exit 0; exit 1}'
+    awk -v n1="$1" -v n2="$2" 'BEGIN {if (n1+0.35<n2+0) exit 0; exit 1}'
 }
 if volt_comp "$old_voltage" "$voltage"; then
     `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET batteries_replaced_date = NOW() WHERE mac_address = "'$mac_address\"`
