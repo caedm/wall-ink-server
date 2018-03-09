@@ -9,3 +9,4 @@ fromDB
 .project
 web/image_data
 web/log.txt
+*.o
