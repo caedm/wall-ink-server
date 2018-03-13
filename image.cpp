@@ -1187,11 +1187,6 @@ void drawImage7(string roomName, string date, string time, string* reservations,
         if (currentBlock >= reservs.at(i).startBlock && currentBlock <= reservs.at(i).endBlock)
             currentEventIndex = i;
     }
-    if (reservs.size() > 2 && currentEventIndex == 0) {
-        currentEventIndex++;
-    } else if (reservs.size() > 2 && currentEventIndex == reservs.size() - 1) {
-        currentEventIndex--;
-    }
     
     //Draw current event
     string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
