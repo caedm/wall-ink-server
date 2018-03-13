@@ -40,12 +40,12 @@ echo $resource_id >> "$mac_address_info"
 for series_id in "${series_ids[@]}"
 do
     #echo "Series ID: " $series_id
-    reservation_instance_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT reservation_instance_id FROM collegeresv.reservation_instances WHERE series_id = $series_id AND DATE(CONVERT_TZ(start_date,'+00:00','-07:00')) <= DATE(NOW()) AND DATE(CONVERT_TZ(end_date,'+00:00','-07:00')) >= DATE(NOW())"`
+    reservation_instance_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT reservation_instance_id FROM collegeresv.reservation_instances WHERE series_id = $series_id AND DATE(CONVERT_TZ(start_date,'+0:00','SYSTEM')) <= DATE(NOW()) AND DATE(CONVERT_TZ(end_date,'+0:00','SYSTEM')) >= DATE(NOW())"`
     reservation_instance_ids=($reservation_instance_ids);
     for reservation_instance_id in "${reservation_instance_ids[@]}"
     do
-        title_and_start_date_and_end_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT * FROM (SELECT CONVERT_TZ(start_date,'+00:00','-07:00'),CONVERT_TZ(end_date,'+00:00','-07:00') FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id) AS A JOIN(SELECT title FROM collegeresv.reservation_series WHERE series_id = $series_id) AS B"`
-        echo `mysql -h $server -u $username --password=$password -s -N -e "SELECT * FROM (SELECT title FROM collegeresv.reservation_series WHERE series_id = $series_id) AS A JOIN (SELECT CONVERT_TZ(start_date,'+00:00','-07:00'),CONVERT_TZ(end_date,'+00:00','-07:00') FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id) AS B"`
+        title_and_start_date_and_end_date=`mysql -h $server -u $username --password=$password -s -N -e "SELECT * FROM (SELECT CONVERT_TZ(start_date,'+00:00','SYSTEM'),CONVERT_TZ(end_date,'+00:00','SYSTEM') FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id) AS A JOIN(SELECT title FROM collegeresv.reservation_series WHERE series_id = $series_id) AS B"`
+        echo `mysql -h $server -u $username --password=$password -s -N -e "SELECT * FROM (SELECT title FROM collegeresv.reservation_series WHERE series_id = $series_id) AS A JOIN (SELECT CONVERT_TZ(start_date,'+00:00','SYSTEM'),CONVERT_TZ(end_date,'+00:00','SYSTEM') FROM collegeresv.reservation_instances WHERE reservation_instance_id = $reservation_instance_id) AS B"`
         start_date=$(echo $title_and_start_date_and_end_date | awk -F $' ' '{print $1" "$2;}')
         end_date=$(echo $title_and_start_date_and_end_date | awk -F $' ' '{print $3" "$4;}')
         series_title=$(echo $title_and_start_date_and_end_date | cut -d' ' -f 5-)
