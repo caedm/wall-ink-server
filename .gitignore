@@ -10,3 +10,5 @@ fromDB
 web/image_data
 web/log.txt
 *.o
+QrCodeGeneratorWorker
+QrCodeGeneratorDemo
