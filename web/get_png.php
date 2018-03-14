@@ -18,7 +18,7 @@
             $result = mysqli_query($mysqli, $sql_query);
             $raw = "image_data/" . $mac_address . ".static";
         } else {
-            `./get_image.sh $mac_address 10 2>&1`;
+            `./get_image.sh $mac_address $device[voltage] $_GET[layout] 2>&1`;
             $raw = "image_data/" . $mac_address;
         }
         $file = "image_data/" . $mac_address . ".png";
