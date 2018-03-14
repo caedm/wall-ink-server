@@ -13,10 +13,11 @@ resource_id=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage 
 if [ $3 -eq $7 ]
 then
     device_type=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $2;}')
+    orientation=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $3;}')
 else
     device_type=$3
+    orientation="0"
 fi
-orientation=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $3;}')
 old_voltage=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $4;}')
 volt_comp() {
     awk -v n1="$1" -v n2="$2" 'BEGIN {if (n1+0.35<n2+0) exit 0; exit 1}'
