@@ -1189,7 +1189,7 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     }
     
     //Draw current event
-    string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).startBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
+    string currentEventTime = militaryTimeToNormalPersonTime(reservationBlockToTime(currentBlock)) + " - " + militaryTimeToNormalPersonTime(reservationBlockToTime(reservs.at(currentEventIndex).endBlock));
     canvas->setFont(&FreeSansBold18pt7b);
     drawFancyString(currentEventTime, 15, 142);
     canvas->setFont(&FreeSans18pt7b);
