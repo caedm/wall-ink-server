@@ -25,7 +25,7 @@
        $rooms[ $room["resource_id"] ] = $room;
     }
 
-    echo "<form action=\"/device_manager/handle_edit_device.php\" method=\"post\">";
+    echo "<form id=\"form\" action=\"/device_manager/handle_edit_device.php\" method=\"post\">";
         echo "<input type=\"hidden\" name=\"new_device_id\" value=\"$device_id\"/>";
         echo "<div class=\"field\">";
             echo "<label for=\"new_mac_address\">Mac Address:</label>";
@@ -142,4 +142,6 @@
             }
         echo "</div>";
     echo "</form>";
+    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type] />";
+    echo "<script src=\"js/edit_device.js\"></script>";
 ?>

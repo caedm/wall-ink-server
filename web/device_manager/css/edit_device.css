@@ -53,3 +53,14 @@ li label {
 li input {
     flex-grow: 0;
 }
+
+body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    border: 1px solid;
+}

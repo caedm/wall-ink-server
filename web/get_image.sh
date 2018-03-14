@@ -10,7 +10,7 @@ voltage=$2
 resource_id_and_device_type_and_orientation_and_old_voltage=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id,device_type,orientation,voltage FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
 [[ -z "$resource_id_and_device_type_and_orientation_and_old_voltage" ]] && exit 1
 resource_id=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $1;}')
-if [ $3 -eq 0 ]
+if [ $3 -eq $7 ]
 then
     device_type=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $2;}')
 else

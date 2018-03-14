@@ -18,8 +18,11 @@ test: genimg pbmToCompressed
 	chmod g+w ../www/test/device_manager
 	mkdir ../www/test/device_manager/css
 	chmod g+w ../www/test/device_manager/css
+	mkdir ../www/test/device_manager/js
+	chmod g+w ../www/test/device_manager/js
 	cp web/device_manager/css/view_devices.css ../www/test/device_manager/css/
 	cp web/device_manager/css/edit_device.css ../www/test/device_manager/css/
+	cp web/device_manager/js/edit_device.js ../www/test/device_manager/js/
 	cp web/device_manager/dbconfig.php ../www/test/device_manager/
 	cp web/device_manager/view_devices.php ../www/test/device_manager/
 	cp web/device_manager/edit_device.php ../www/test/device_manager/
@@ -45,8 +48,11 @@ deploy: genimg pbmToCompressed
 	chmod g+w ../www/device_manager
 	mkdir ../www/device_manager/css
 	chmod g+w ../www/device_manager/css
+	mkdir ../www/device_manager/js
+	chmod g+w ../www/device_manager/js
 	cp web/device_manager/css/view_devices.css ../www/device_manager/css/
 	cp web/device_manager/css/edit_device.css ../www/device_manager/css/
+	cp web/device_manager/js/edit_device.js ../www/device_manager/js/
 	cp web/device_manager/dbconfig.php ../www/device_manager/
 	cp web/device_manager/view_devices.php ../www/device_manager/
 	cp web/device_manager/edit_device.php ../www/device_manager/
