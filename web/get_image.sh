@@ -1,4 +1,5 @@
 #!/bin/bash
+
 server=`grep server device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v server`
 username=`grep username device_manager/dbconfig.php | grep -o "[[:alnum:]\-]*" | grep -v username`
 password=`grep password device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`

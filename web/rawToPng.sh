@@ -1,3 +1,5 @@
+#!/bin/bash
+
 png="$1"
 png+=".png"
 pbm="$1"
