@@ -6,12 +6,21 @@ ini_set('display_errors', '1');
 define("UPLOAD_DIR","../image_data/");
 
 $success = FALSE;
+$error = FALSE;
 
 if (!empty($_FILES["staticImage"])) {
     $staticImage = $_FILES["staticImage"];
 
+    exec("file -bi " . $_FILES["staticImage"]["tmp_name"], $out);
+    if ($out[0] != "image/x-portable-bitmap; charset=binary") {
+        echo "<p>Image must be a binary .pbm file</p>";
+        $error = TRUE;
+        exit;
+    }
+
     if ($staticImage["error"] !== UPLOAD_ERR_OK) {
         echo "<p>Upload error</p>";
+        $error = TRUE;
         exit;
     }
 
@@ -24,6 +33,7 @@ if (!empty($_FILES["staticImage"])) {
     $success = move_uploaded_file($staticImage["tmp_name"], $pbm);
     if (!$success) {
         echo "<p>File save error</p>";
+        $error = TRUE;
         exit;
     }
 
@@ -32,12 +42,20 @@ if (!empty($_FILES["staticImage"])) {
     
     //convert image from pbm to png for device manager
     `convert $pbm $png`;
+
+    list($width, $height) = getimagesize($png);
+    if (($width != 640 && $width!= 400) || ($height != 384 && $height != 300)) {
+        echo "<p>Image must be 640x384 for 7\" screen or 400x300 for 4\" screen</p>";
+        $error = TRUE;
+        exit;
+    }
     
     //convert file from pbm to compressed for display screens
     `../pbmToCompressed $pbm $static`;
+
 }
 
-if ($success) {
+if ($success && !$error) {
     header( "refresh: 1; url=edit_device.php?device_id=$_POST[device_id]");
     echo "Image uploaded successfully";
 } else {
