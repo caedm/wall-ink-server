@@ -984,6 +984,8 @@ void drawImage4(string roomName, string date, string time, string* reservations,
     invert();
 }
 
+//layout 5 is for static 7" images
+
 void drawImage6(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //landscape 4", shows 2 appointments and has QR code
     //set sleepTime
     setSleepTime(1800);
@@ -1309,6 +1311,8 @@ void drawImage7(string roomName, string date, string time, string* reservations,
 
     invert();
 }
+
+//layout 8 is for static 4" images
 
 int main(int argc, char* argv[]) {
     //read from the database info

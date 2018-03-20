@@ -11,7 +11,7 @@
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
         $file = "image_data/" . $mac_address . ".static";
-        if ($device["device_type"] == 5) {
+        if ($device["device_type"] == 5 || $device["device_type"] == 8) {
             if ($device["voltage"] + 0.35 < "$voltage"){
                 $sql_query="UPDATE devices SET batteries_replaced_date = NOW() WHERE mac_address = \"$mac_address\"";
                 $result = mysqli_query($mysqli, $sql_query);

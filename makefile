@@ -29,9 +29,11 @@ test: genimg pbmToCompressed
 	cp web/device_manager/handle_edit_device.php ../www/test/device_manager/
 	cp web/device_manager/handle_delete_device.php ../www/test/device_manager/
 	cp web/device_manager/print_info.php ../www/test/device_manager/
+	cp web/device_manager/handle_upload.php ../www/test/device_manager/
 	cp web/device_manager/.htaccess ../www/test/device_manager/
 	cp web/index.html ../www/test/
 	cp web/genimg ../www/test/
+	cp web/pbmToCompressed ../www/test/
 	cp web/get_image.php ../www/test/
 	cp web/get_image.sh ../www/test/
 	cp web/get_png.php ../www/test/
@@ -59,9 +61,11 @@ deploy: genimg pbmToCompressed
 	cp web/device_manager/handle_edit_device.php ../www/device_manager/
 	cp web/device_manager/handle_delete_device.php ../www/device_manager/
 	cp web/device_manager/print_info.php ../www/device_manager/
+	cp web/device_manager/handle_upload.php ../www/device_manager/
 	cp web/device_manager/.htaccess ../www/device_manager/
 	cp web/index.html ../www/
 	cp web/genimg ../www/
+	cp web/pbmToCompressed ../www/
 	cp web/get_image.php ../www/
 	cp web/get_image.sh ../www/
 	cp web/get_png.php ../www/
@@ -73,7 +77,7 @@ genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o
 	$(CXX) image.o $(LIBSRC:=.o) $(CXXFLAGS) -o web/genimg
 
 pbmToCompressed : pbmToCompressed.o compressImage.o
-	$(CXX) pbmToCompressed.o compressImage.o $(CXXFLAGS) -o pbmToCompressed
+	$(CXX) pbmToCompressed.o compressImage.o $(CXXFLAGS) -o web/pbmToCompressed
 
 image.o : image.h qr_code_generator/QrCode.hpp
 pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h

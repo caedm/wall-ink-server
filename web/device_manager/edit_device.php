@@ -25,7 +25,8 @@
        $rooms[ $room["resource_id"] ] = $room;
     }
 
-    echo "<form id=\"form\" action=\"/device_manager/handle_edit_device.php\" method=\"post\">";
+    echo "<div>";
+    echo "<form id=\"form\" action=\"handle_edit_device.php\" method=\"post\">";
         echo "<input type=\"hidden\" name=\"new_device_id\" value=\"$device_id\"/>";
         echo "<div class=\"field\">";
             echo "<label for=\"new_mac_address\">Mac Address:</label>";
@@ -72,6 +73,14 @@
                     echo ">";
                 echo "</li>";
                 echo "<li>";
+                    echo "<label for=\"8\">4\" Static Image</label>";
+                    echo "<input type=\"radio\" id=\"type_8\" name=\"new_device_type\" value=\"8\"";
+                    if ($device['device_type'] == 8) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
+                echo "<li>";
                     echo "<label for=\"0\">7\" Portrait</label>";
                     echo "<input type=\"radio\" id=\"type_0\" name=\"new_device_type\" value=\"0\"";
                     if ($device['device_type'] == 0) {
@@ -104,7 +113,7 @@
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"5\">Static Image</label>";
+                    echo "<label for=\"7\">7\" Static Image</label>";
                     echo "<input type=\"radio\" id=\"type_5\" name=\"new_device_type\" value=\"5\"";
                     if ($device['device_type'] == 5) {
                         echo " checked";
@@ -113,7 +122,11 @@
                 echo "</li>";
             echo "</ul>";
         echo "</fieldset>";
-        echo "<fieldset class=\"field\">";
+        echo "<fieldset id=\"orientation\" class=\"field\"";
+        if ($device['device_type'] == 5 || $device['device_type'] == 8) {
+            echo " style=\"display: none\"";
+        }
+        echo ">";
             echo "<legend>Display Orientation</legend>";
             echo "<ul>";
                 echo "<li>";
@@ -135,13 +148,27 @@
             echo "</ul>";
         echo "</fieldset>";
         echo "<div class=\"button\">";
-            echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to discard your changes?') == true) window.location.href='/device_manager/view_devices.php'\">Cancel</button>";
+            echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to discard your changes?') == true) window.location.href='view_devices.php'\">Cancel</button>";
             echo "<button type=\"submit\" class=\"middle\">Submit</button>";
             if ($_GET["device_id"] != "new") {
-                echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='/device_manager/handle_delete_device.php?device_id=$device[device_id]'\">Delete</button>";
+                echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='handle_delete_device.php?device_id=$device[device_id]'\">Delete</button>";
             }
         echo "</div>";
     echo "</form>";
+
+    echo "<form id=\"upload\" action=\"handle_upload.php\" method=\"post\" enctype=\"multipart/form-data\"";
+    if ($device['device_type'] != 5 && $device['device_type'] != 8) {
+        echo " style=\"display: none\"";
+    }
+    echo ">";
+        echo "<input type=\"file\" name=\"staticImage\">";
+        echo "<br>";
+        echo "<input type=\"submit\" value=\"Upload\">";
+        echo "<input type=\"hidden\" name=\"mac_address\" value=\"$device[mac_address]\">";
+        echo "<input type=\"hidden\" name=\"device_id\" value=\"$device[device_id]\">";
+    echo "</form>";
+    echo "</div>";
+
     echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type] />";
     echo "<script src=\"js/edit_device.js\"></script>";
 ?>

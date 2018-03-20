@@ -8,28 +8,28 @@
     #error_reporting(E_ALL);
 
     $mac_address = $_GET["mac_address"];
+    $png = "image_data/" . $mac_address . ".png";
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1) {
         include 'device_manager/dbconfig.php';
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
-        $raw = "image_data/" . $mac_address . ".static";
-        if ($device["device_type"] == 5) {
-            $result = mysqli_query($mysqli, $sql_query);
-            $raw = "image_data/" . $mac_address . ".static";
+        if ($_GET["layout"] == 5 || $_GET["layout"] == 8) {
+            #$result = mysqli_query($mysqli, $sql_query);
+            $pbm = "image_data/" . $mac_address . ".static.pbm";
+            `convert $pbm $png`;
         } else {
             `./get_image.sh $mac_address $device[voltage] $_GET[layout] 2>&1`;
             $raw = "image_data/" . $mac_address;
+            `./rawToPng.sh $raw $_GET[layout]`;
         }
-        $file = "image_data/" . $mac_address . ".png";
-        `./rawToPng.sh $raw 640 384`;
-        if (file_exists($file)) {
+        if (file_exists($png)) {
             header('Content-Type: image/png');
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
             header('Pragma: public');
-            readfile($file);
+            readfile($png);
             exit;
         }
     } else {
