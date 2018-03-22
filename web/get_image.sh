@@ -10,10 +10,13 @@ voltage=$2
 resource_id_and_device_type_and_orientation_and_old_voltage=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id,device_type,orientation,voltage FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
 [[ -z "$resource_id_and_device_type_and_orientation_and_old_voltage" ]] && exit 1
 resource_id=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $1;}')
+
+#if there is a 3rd parameter, that means this is being called from get_png.php. Otherwise, it's probably a display being updated.
 if [ $3 -eq $7 ]
 then
     device_type=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $2;}')
     orientation=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage | awk '{print $3;}')
+    `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET voltage = '$voltage', last_checked_in = NOW() WHERE mac_address = "'$mac_address\"`
 else
     device_type=$3
     orientation="0"
@@ -25,7 +28,6 @@ volt_comp() {
 if volt_comp "$old_voltage" "$voltage"; then
     `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET batteries_replaced_date = NOW() WHERE mac_address = "'$mac_address\"`
 fi
-`mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET voltage = '$voltage', last_checked_in = NOW() WHERE mac_address = "'$mac_address\"`
 name=`mysql -h $server -u $username --password=$password -s -N -e "SELECT name FROM collegeresv.resources WHERE resource_id = $resource_id"`
 series_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT series_id FROM collegeresv.reservation_resources WHERE resource_id = $resource_id AND series_id NOT IN (SELECT series_id FROM collegeresv.reservation_series WHERE status_id = 2)"`
 series_ids=($series_ids);
