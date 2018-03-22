@@ -164,8 +164,9 @@
         echo "<input type=\"file\" name=\"staticImage\">";
         echo "<br>";
         echo "<input type=\"submit\" value=\"Upload\">";
-        echo "<input type=\"hidden\" name=\"mac_address\" value=\"$device[mac_address]\">";
-        echo "<input type=\"hidden\" name=\"device_id\" value=\"$device[device_id]\">";
+        echo "<input type=\"hidden\" id=\"hidden_mac\" name=\"mac_address\" value=\"$device[mac_address]\">";
+        echo "<input type=\"hidden\" id=\"hidden_device_id\" name=\"device_id\" value=\"$device[device_id]\">";
+        echo "<input type=\"hidden\" id=\"hidden_device_type\" name=\"layout\" value=\"$device[device_type]\">";
     echo "</form>";
     echo "</div>";
 

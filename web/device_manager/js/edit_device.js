@@ -6,7 +6,11 @@ function refreshPreview() {
         document.getElementById('orientation').style.display = "initial";
         document.getElementById('upload').style.display = "none";
     }
-    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value
+
+    document.getElementById('hidden_mac').value = document.getElementById('mac_address').value;
+    document.getElementById('hidden_device_type').value = document.querySelector('input[name="new_device_type"]:checked').value;
+
+    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value;
 }
 
 inputs = document.getElementsByTagName('input');

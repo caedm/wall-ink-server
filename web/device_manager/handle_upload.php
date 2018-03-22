@@ -27,7 +27,13 @@ if (!empty($_FILES["staticImage"])) {
     $macAddress = UPLOAD_DIR . $_POST["mac_address"];
     $pbm = $macAddress . ".static.pbm";
     $png = $macAddress . ".png";
+    $pbmBackup = $macAddress . ".static.pbmbackup";
+    $pngBackup = $macAddress . ".pngbackup";
     $static = $macAddress . ".static";
+
+    //make backup of old image
+    rename($pbm, $pbmBackup);
+    rename($png, $pngBackup);
 
     //preserve file from temp directory
     $success = move_uploaded_file($staticImage["tmp_name"], $pbm);
@@ -38,15 +44,19 @@ if (!empty($_FILES["staticImage"])) {
     }
 
     //set permissions on the new image
-    chmod($pbm, 0664);
+    chmod($pbm, 0660);
     
     //convert image from pbm to png for device manager
     `convert $pbm $png`;
 
+    $layout = $_POST["layout"];
+
     list($width, $height) = getimagesize($png);
-    if (($width != 640 && $width!= 400) || ($height != 384 && $height != 300)) {
+    if (!(($width==640 && $height==384 && $layout==5) || ($width==400 && $height==300 && $layout==8))) {
         echo "<p>Image must be 640x384 for 7\" screen or 400x300 for 4\" screen</p>";
         $error = TRUE;
+        rename($pbmBackup, $pbm);
+        rename($pngBackup, $png);
         exit;
     }
     
