@@ -54,21 +54,6 @@ void initializeImage() {
     }
 }
 
-void drawCharacter(int x, int y, char c) {
-   for (int i = 0; i < LETTER_HEIGHT; i++){
-       image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i)] = image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i)] | (letters[c - ASCII_OFFSET][i] >> (x%8));
-       if (x%8 > 0) {
-           image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i) + 1] = image[x/8 + x_res/8*(y+LETTER_HEIGHT-1-i) + 1] | (letters[c - ASCII_OFFSET][i] << (8-x%8));
-       }
-   } 
-}
-
-void drawString(int x, int y, string str) {
-    for (int i = 0; i < str.length(); i++) {
-        drawCharacter(x + 9*i, y, str[i]);
-    }
-}
-
 void drawFancyString(string str, int16_t x, int16_t y) {
     canvas->setCursor(x, y);
     for (int i = 0; i < str.length(); i++)
@@ -312,7 +297,7 @@ void drawImage0(string roomName, string date, string time, string* reservations,
     canvas->setFont(&FreeSans9pt7b);
 
     //Draw Date
-    drawCenteredString(fancyDateFromYYYY_MM_DD(date), 53);
+    drawCenteredString(fancyDateFromYYYY_MM_DD(date), 54);
 
     //Outer box
     drawRect(19,67,x_res - 19*2, y_res - 67*2, 1);
@@ -356,7 +341,10 @@ void drawImage0(string roomName, string date, string time, string* reservations,
         {195,78+29*15}
     };
 
-    //For each time
+    canvas->setFont(&FreeMono9pt7b);
+    canvas->setTextColor(1);
+
+    //For each time of day
     for (int i = 0; i < 32; i++) {
 
         //generate and display time string
@@ -376,7 +364,7 @@ void drawImage0(string roomName, string date, string time, string* reservations,
         if (i % 2 == 0)
             time << "0";
         time << ampm;
-        drawString(boxCoordinates[i][0], boxCoordinates[i][1]+8, time.str()); 
+        drawFancyString(time.str(), boxCoordinates[i][0] - 11, boxCoordinates[i][1]+19); 
 
         //draw black boxes
         drawRect(boxCoordinates[i][0]+70, boxCoordinates[i][1], 51, 29, 1);
@@ -394,9 +382,9 @@ void drawImage0(string roomName, string date, string time, string* reservations,
     //key
     drawRect(52,y_res-59,51,28,1);
     drawRect(57,y_res-55,41,20,0);
-    drawString(111,y_res-50,"Available");
+    drawFancyString("Available",108,y_res-39);
     drawRect(211,y_res-59,51,28,1);
-    drawString(275,y_res-50,"Reserved");
+    drawFancyString("Reserved",264,y_res-39);
 
     checkBattery(x_res-100, y_res-100, voltage);
 

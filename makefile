@@ -88,7 +88,7 @@ QrSegment.o : QrSegment.hpp
 
 debug:
 	$(CXX) image.cpp $(LIBSRC:=.cpp) $(CXXFLAGS) -g -o web/genimg
-	$(CXX) pbmToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o pbmToCompressed
+	$(CXX) pbmToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o web/pbmToCompressed
 
 clean : 
 	rm $(objects)

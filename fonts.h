@@ -51,6 +51,5 @@
 #include "Adafruit-GFX-Library/Fonts/Picopixel.h"
 #include "Adafruit-GFX-Library/Fonts/Tiny3x3a2pt7b"
 #include "Adafruit-GFX-Library/Fonts/TomThumb.h"
-#include "letters.h"
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
