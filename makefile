@@ -14,12 +14,15 @@ test: genimg pbmToCompressed
 	chmod g+w ../www/test
 	mkdir ../www/test/image_data
 	chmod g+w ../www/test/image_data
+	mkdir ../www/test/voltage_monitor
+	chmod g+w ../www/test/voltage_monitor
 	mkdir ../www/test/device_manager
 	chmod g+w ../www/test/device_manager
 	mkdir ../www/test/device_manager/css
 	chmod g+w ../www/test/device_manager/css
 	mkdir ../www/test/device_manager/js
 	chmod g+w ../www/test/device_manager/js
+	cp web/voltage_monitor/collect_data.sh ../www/test/voltage_monitor/
 	cp web/device_manager/css/view_devices.css ../www/test/device_manager/css/
 	cp web/device_manager/css/edit_device.css ../www/test/device_manager/css/
 	cp web/device_manager/js/edit_device.js ../www/test/device_manager/js/
@@ -45,6 +48,8 @@ deploy: genimg pbmToCompressed
 	rm -rf ../www/image_data
 	mkdir ../www/image_data
 	chmod g+w ../www/image_data
+	mkdir ../www/voltage_monitor
+	chmod g+w ../www/voltage_monitor
 	rm -rf ../www/device_manager
 	mkdir ../www/device_manager
 	chmod g+w ../www/device_manager
@@ -52,6 +57,7 @@ deploy: genimg pbmToCompressed
 	chmod g+w ../www/device_manager/css
 	mkdir ../www/device_manager/js
 	chmod g+w ../www/device_manager/js
+	cp web/voltage_monitor/collect_data.sh ../www/voltage_monitor/
 	cp web/device_manager/css/view_devices.css ../www/device_manager/css/
 	cp web/device_manager/css/edit_device.css ../www/device_manager/css/
 	cp web/device_manager/js/edit_device.js ../www/device_manager/js/
