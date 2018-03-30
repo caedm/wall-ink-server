@@ -263,8 +263,12 @@ void setSleepTime(uint32_t increment) { //increment is the target number of seco
     if (((currentTime-7*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
         sleepTime = 86400 + 23400 - ((currentTime-7*60*60) % 86400);
     } else {
+        //Add a few seconds to make sure we sleep for long enough
         sleepTime = increment - (currentTime % increment) + increment/32;
     }
+    //wake 2 minutes early so that it is showing the schedule for the next block ahead of time
+    sleepTime -= 120;
+
     #if DEBUG == 2
         cout << "Current Time: " << currentTime % 86400 << endl;
         cout << "Current Time with 7 hour offset: " << (currentTime-7*60*60) % 86400 << endl;

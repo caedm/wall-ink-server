@@ -3,8 +3,8 @@
 server=`grep server device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v server`
 username=`grep username device_manager/dbconfig.php | grep -o "[[:alnum:]\-]*" | grep -v username`
 password=`grep password device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`
-DATE=`date +%Y-%m-%d`
-TIME=`date +%H:%M`
+DATE=`date -d "+2 minutes" +%Y-%m-%d`
+TIME=`date -d "+2 minutes" +%H:%M`
 mac_address=$1
 voltage=$2
 resource_id_and_device_type_and_orientation_and_old_voltage=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id,device_type,orientation,voltage FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
