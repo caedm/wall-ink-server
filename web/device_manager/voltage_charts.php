@@ -6,9 +6,12 @@ function printResult($devices, $rooms) {
     //Display each row
     $devices->data_seek(0);
 
+    echo "<a href=\"view_devices.php\"><h4>Home</h4></a>";
+
     while ($device = $devices->fetch_assoc()) {
         echo "<h4>$device[mac_address]</h4>";
-        echo "<img src=\"/voltage_monitor/data/$device[mac_address].png\">";
+        echo "<img src=\"/voltage_monitor/data/recent_$device[mac_address].png\">";
+        echo "<img src=\"/voltage_monitor/data/year_$device[mac_address].png\">";
     }
 
 }

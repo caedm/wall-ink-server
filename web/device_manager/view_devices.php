@@ -82,6 +82,15 @@ function printResult($devices, $rooms) {
     echo "<td></td>";
     echo "<td></td>";
     echo "</tr>";
+    echo "<tr class=\"device\" onclick=\"document.location = 'voltage_charts.php'\">";
+    echo "<td>Battery History</td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "<td></td>";
+    echo "</tr>";
 
     echo "</table>";
 }
