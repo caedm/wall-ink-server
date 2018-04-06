@@ -1,3 +1,6 @@
+<style>
+<?php include 'css/voltage_charts.css'; ?>
+</style>
 <?php
 function printResult($devices, $rooms) {
     //Display how many results there were
@@ -10,8 +13,10 @@ function printResult($devices, $rooms) {
 
     while ($device = $devices->fetch_assoc()) {
         echo "<h4>$device[mac_address]</h4>";
+        echo "<div>";
         echo "<img src=\"/voltage_monitor/data/recent_$device[mac_address].png\">";
         echo "<img src=\"/voltage_monitor/data/year_$device[mac_address].png\">";
+        echo "</div>";
     }
 
 }
