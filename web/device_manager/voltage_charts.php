@@ -12,9 +12,12 @@ function printResult($devices, $rooms) {
     echo "<a href=\"view_devices.php\"><h4>Home</h4></a>";
 
     while ($device = $devices->fetch_assoc()) {
-        echo "<h4>$device[mac_address]</h4>";
+        echo "<h4>$device[mac_address] - ";
+        echo $rooms[$device["resource_id"]];
+        echo "</h4>";
         echo "<div>";
-        echo "<img src=\"/voltage_monitor/data/recent_$device[mac_address].png\">";
+        echo "<img src=\"/voltage_monitor/data/week_$device[mac_address].png\">";
+        echo "<img src=\"/voltage_monitor/data/month_$device[mac_address].png\">";
         echo "<img src=\"/voltage_monitor/data/year_$device[mac_address].png\">";
         echo "</div>";
     }

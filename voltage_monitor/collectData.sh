@@ -20,11 +20,17 @@ do
     fi
     rrdtool update /auto/grp3/door-display/voltage_data/$mac_address.rrd N:$voltage
     rrdtool graph \
-        /auto/grp3/door-display/www/voltage_monitor/data/recent_$mac_address.png \
+        /auto/grp3/door-display/www/voltage_monitor/data/week_$mac_address.png \
         -u 3.3 -l 2.3 -r \
         --end now --start end-167h \
         DEF:voltagea=/auto/grp3/door-display/voltage_data/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past week"
+    rrdtool graph \
+        /auto/grp3/door-display/www/voltage_monitor/data/month_$mac_address.png \
+        -u 3.3 -l 2.3 -r \
+        --end now --start end-1m \
+        DEF:voltagea=/auto/grp3/door-display/voltage_data/$mac_address.rrd:voltage:AVERAGE \
+        LINE1:voltagea#0000FF:"Voltage over past month"
     rrdtool graph \
         /auto/grp3/door-display/www/voltage_monitor/data/year_$mac_address.png \
         -u 3.3 -l 2.3 -r \
@@ -32,6 +38,7 @@ do
         DEF:voltagea=/auto/grp3/door-display/voltage_data/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past year"
 
-    chmod 660 /auto/grp3/door-display/www/voltage_monitor/data/recent_$mac_address.png 
+    chmod 660 /auto/grp3/door-display/www/voltage_monitor/data/week_$mac_address.png 
+    chmod 660 /auto/grp3/door-display/www/voltage_monitor/data/month_$mac_address.png 
     chmod 660 /auto/grp3/door-display/www/voltage_monitor/data/year_$mac_address.png 
 done
