@@ -73,6 +73,14 @@
                     echo ">";
                 echo "</li>";
                 echo "<li>";
+                    echo "<label for=\"9\">4\" Landscape 4 (with QR code)</label>";
+                    echo "<input type=\"radio\" id=\"type_9\" name=\"new_device_type\" value=\"9\"";
+                    if ($device['device_type'] == 9) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
+                echo "<li>";
                     echo "<label for=\"8\">4\" Static Image</label>";
                     echo "<input type=\"radio\" id=\"type_8\" name=\"new_device_type\" value=\"8\"";
                     if ($device['device_type'] == 8) {
