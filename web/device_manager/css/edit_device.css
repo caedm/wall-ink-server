@@ -5,7 +5,7 @@ form {
 }
 
 .field, .button {
-    width: 350px;
+    width: 400px;
     padding: 0px;
     display: flex;
 }
@@ -29,7 +29,7 @@ form {
 
 label {
     flex: 0 0 120px;
-    max-width: 220px;
+    max-width: 250px;
     padding-top: 8px;
 }
 
@@ -43,11 +43,11 @@ ul {
 
 li {
     display: flex;
-    width: 250px;
+    width: 300px;
 }
 
 li label {
-    flex: 0 0 150px;
+    flex: 0 0 400px;
 }
 
 li input {
