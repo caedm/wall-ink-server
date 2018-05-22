@@ -1,7 +1,7 @@
 # Diagnostics. Adding '-fsanitize=address' is helpful for most versions of Clang and newer versions of GCC.
 #CXXFLAGS += -Wall -fsanitize=undefined
 # Link libraries statically
-CXXFLAGS += -static -O1
+CXXFLAGS += -static -O1 -g -std=c++11
 LIBSRC = BitBuffer QrCode QrSegment compressImage
 objects = image.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o
 VPATH = qr_code_generator:web

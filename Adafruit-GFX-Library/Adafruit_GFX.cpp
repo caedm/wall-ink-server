@@ -798,6 +798,8 @@ size_t Adafruit_GFX::write(uint8_t c) {
     }
 #if ARDUINO >= 100
     return 1;
+#else
+    return 1;
 #endif
 }
 
