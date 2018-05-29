@@ -391,8 +391,6 @@ void drawImage0(string roomName, string date, string time, string* reservations,
     drawFancyString("Reserved",264,y_res-39);
 
     checkBattery(x_res-100, y_res-100, voltage);
-
-    invert();
     //mirror();
 }
 
@@ -454,8 +452,6 @@ void drawImage1(string roomName, string date, string time, string* reservations,
     }
 
     checkBattery(x_res-64, y_res-44, voltage);
-
-    invert();
 }
 
 void drawImage2(string roomName, string date, string time, string* reservations, float voltage) { //7" landscape, shows 2 appointments plus blocks
@@ -629,8 +625,6 @@ void drawImage2(string roomName, string date, string time, string* reservations,
     drawFancyString(militaryTimeToNormalPersonTime(currentStart), (currentBlock-currentBlock%2)*20 - 30, 325);
 
     checkBattery(x_res-100, y_res-100, voltage);
-
-    invert();
 }
 
 void drawImage3(string roomName, string date, string time, string* reservations, float voltage) { //7" landscape, shows 3 appointments plus blocks
@@ -817,8 +811,6 @@ void drawImage3(string roomName, string date, string time, string* reservations,
     //drawFancyString(militaryTimeToNormalPersonTime(reservationBlockToTime(currentBlock-currentBlock%2)), (currentBlock-currentBlock%2)*20 - 30, 326);
 
     checkBattery(x_res-100, y_res-100, voltage);
-
-    invert();
 }
 
 void drawImage4(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //landscape 4", shows 2 appointments
@@ -972,8 +964,6 @@ void drawImage4(string roomName, string date, string time, string* reservations,
     drawRect((currentBlock-currentBlock%2)*12 + 7, 256, 4, 1, 1);
     drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
-
-    invert();
 }
 
 //layout 5 is for static 7" images
@@ -1136,8 +1126,6 @@ void drawImage6(string roomName, string date, string time, string* reservations,
     putQrCode(333,10,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 2);
 
     checkBattery(x_res-64, y_res-44, voltage);
-
-    invert();
 }
 
 void drawImage7(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //7" landscape, shows 2 appointments plus blocks & a QR code
@@ -1163,8 +1151,22 @@ void drawImage7(string roomName, string date, string time, string* reservations,
 
     //draw line under date
     drawRect(9,95,x_res-9,3,1);
+    drawRect(459,95,163,3,0);
 
-    putQrCode(565,20,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 2);
+    //draw reserve.byu.edu
+    canvas->setFont(&Org_01);
+    //drawFancyString("RESERVE.ET.BYU.EDU",540,12);
+    //drawFancyString("RESERVE NOW",556,88);
+    //canvas->setFont(&Picopixel);
+    //drawFancyString("RESERVE.ET.BYU.EDU",390,150);
+    //canvas->setFont(&Tiny3x3a2pt7b);
+    //drawFancyString("RESERVE.ET.BYU.EDU",390,110);
+    canvas->setFont(&TomThumb);
+    //drawFancyString("RESERVE.ET.BYU.EDU",556,13);
+    canvas->setFont(&FreeSansBold9pt7b);
+    drawFancyString("reserve.et.byu.edu",463,100);
+
+    putQrCode(560,20,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 2);
 
     //Get current block
     int currentBlock;
@@ -1300,8 +1302,6 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     //drawFancyString(militaryTimeToNormalPersonTime(reservationBlockToTime(currentBlock-currentBlock%2)), (currentBlock-currentBlock%2)*20 - 30, 326);
 
     checkBattery(x_res-100, y_res-100, voltage);
-
-    invert();
 }
 
 //layout 8 is for static 4" images
@@ -1474,8 +1474,6 @@ void drawImage9(string roomName, string date, string time, string* reservations,
     putQrCode(333,10,"door-display.groups.et.byu.net/r.php?r=" + resourceID, 2);
 
     checkBattery(x_res-64, y_res-44, voltage);
-
-    invert();
 }
 
 int main(int argc, char* argv[]) {

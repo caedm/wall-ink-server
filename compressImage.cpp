@@ -1,5 +1,9 @@
 #include <iostream>
 #include "compressImage.h"
+#include "sha1.h"
+#include <bitset>
+
+#define IMAGE_KEY "hunter2"
 
 using namespace std;
 
@@ -13,7 +17,6 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     time_t currentTime = time(nullptr);
     uint8_t* compressedTime = (uint8_t*) malloc(4);
     uint8_t* nextTime = (uint8_t*) malloc(4);
-    uint8_t* imageHash = (uint8_t*) malloc(4);
     *((uint32_t*) compressedTime) = currentTime;
     *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + sleepTime;
 #if DEBUG == 1
@@ -32,14 +35,37 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     compressed.push_back(nextTime[2]);
     compressed.push_back(nextTime[3]);
     //generate image hash
-    *((uint32_t*) imageHash) = 0;
-    for (int i = 0; i < x_res * y_res/8; i++) {
-        *((uint32_t*) imageHash) += (image[i] * (i+1))/2;
+    uint8_t imageHash[40];
+    SHA1Context sha;
+    int err;
+    err = SHA1Reset(&sha);
+    err = SHA1Input(&sha, image, x_res*y_res/8);
+    err = SHA1Result(&sha, imageHash);
+    char imageKey[] = IMAGE_KEY;
+    err = SHA1Reset(&sha);
+    err = SHA1Input(&sha, (uint8_t*) imageKey, sizeof(imageKey));
+    err = SHA1Result(&sha, imageHash+20);
+    uint8_t finalHash[20];
+    err = SHA1Reset(&sha);
+    err = SHA1Input(&sha, (uint8_t*) imageHash, 40);
+    err = SHA1Result(&sha, finalHash);
+    if (err)
+    {
+        fprintf(stderr,
+        "SHA1Result Error %d, could not compute message digest.\n",
+        err );
     }
-    compressed.push_back(imageHash[0]);
-    compressed.push_back(imageHash[1]);
-    compressed.push_back(imageHash[2]);
-    compressed.push_back(imageHash[3]);
+    else
+    {
+        printf("\t");
+        for(int i = 0; i < 20 ; ++i)
+        {
+            printf("%02X ", imageHash[i]);
+        }
+        printf("\n");
+    }
+    for (int i = 0; i < 20; i++)
+        compressed.push_back(finalHash[i]);
 
     compressed.push_back(getPixel(0, 0, x_res, y_res, image));
     free(compressedTime);
@@ -55,6 +81,10 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
            cout << (int) counter << " " << (int) lastEntry << " " << pointer % x_res << "," << pointer / x_res << endl;
 #endif
            counter = 0;
+           if (pointer < x_res * y_res && getPixel(pointer, 0, x_res, y_res, image) != lastEntry) {
+               compressed.push_back(counter);
+               lastEntry = getPixel(pointer+1, 0, x_res, y_res, image);
+           }
        } else if (getPixel(pointer, 0, x_res, y_res, image) != lastEntry) {
            compressed.push_back(counter);
 #if DEBUG == 1
