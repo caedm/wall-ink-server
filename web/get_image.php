@@ -5,11 +5,19 @@
 
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
-    if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1) {
+    $firmware_version = $_GET["firmware"];
+    if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z.]*$/', $firmware_version) === 1) {
         include 'device_manager/dbconfig.php';
+
+        //get additional info
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
+        
+        //update firmware version
+        $sql_query="UPDATE devices SET firmware_version = \"$firmware_version\" WHERE mac_address = \"$mac_address\"";
+        $result = mysqli_query($mysqli, $sql_query);
+
         $file = "image_data/" . $mac_address . ".static";
         if ($device["device_type"] == 5 || $device["device_type"] == 8) {
             if ($device["voltage"] + 0.35 < "$voltage"){

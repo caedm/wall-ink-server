@@ -30,6 +30,9 @@ function printResult($devices, $rooms) {
     echo "<th class=\"orientation\">";
     echo "Orientation";
     echo "</th>";
+    echo "<th class=\"firmware_version\">";
+    echo "Firmware Version";
+    echo "</th>";
     echo "<th class=\"last_checked_in\">";
     echo "Last Checked In";
     echo "</th>";
@@ -64,6 +67,9 @@ function printResult($devices, $rooms) {
         echo "<td class=\"orientation\">";
         echo $device["orientation"];
         echo "</td>";
+        echo "<td class=\"firmware_version\">";
+        echo $device["firmware_version"];
+        echo "</td>";
         echo "<td class=\"last_checked_in\">";
         echo $device["last_checked_in"];
         echo "</td>";
@@ -81,9 +87,11 @@ function printResult($devices, $rooms) {
     echo "<td></td>";
     echo "<td></td>";
     echo "<td></td>";
+    echo "<td></td>";
     echo "</tr>";
     echo "<tr class=\"device\" onclick=\"document.location = 'voltage_charts.php'\">";
     echo "<td>Battery History</td>";
+    echo "<td></td>";
     echo "<td></td>";
     echo "<td></td>";
     echo "<td></td>";
