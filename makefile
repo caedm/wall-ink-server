@@ -18,6 +18,8 @@ test: genimg pbmToCompressed
 	chmod g+w ../www/test/image_data
 	mkdir ../www/test/voltage_monitor
 	chmod g+w ../www/test/voltage_monitor
+	mkdir ../www/test/voltage_monitor/data
+	chmod g+w ../www/test/voltage_monitor/data
 	mkdir ../www/test/device_manager
 	chmod g+w ../www/test/device_manager
 	mkdir ../www/test/device_manager/css
@@ -54,6 +56,9 @@ deploy: genimg pbmToCompressed
 	rm -rf ../www/voltage_monitor
 	mkdir ../www/voltage_monitor
 	chmod g+w ../www/voltage_monitor
+	rm -rf ../www/voltage_monitor/data
+	mkdir ../www/voltage_monitor/data
+	chmod g+w ../www/voltage_monitor/data
 	rm -rf ../www/device_manager
 	mkdir ../www/device_manager
 	chmod g+w ../www/device_manager
