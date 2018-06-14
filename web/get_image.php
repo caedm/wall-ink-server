@@ -6,7 +6,7 @@
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     $firmware_version = $_GET["firmware"];
-    if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z.]*$/', $firmware_version) === 1) {
+    if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1) {
         include 'device_manager/dbconfig.php';
 
         //get additional info
