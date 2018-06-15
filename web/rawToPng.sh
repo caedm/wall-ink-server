@@ -20,4 +20,4 @@ head -n $(($2 + 1)) <<EOF | tail -n 1 >> $pbm
 EOF
 
 cat $1 >> $pbm
-convert -negate $pbm $png
+convert $pbm $png
