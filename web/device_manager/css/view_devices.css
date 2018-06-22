@@ -6,8 +6,12 @@ th, td {
     padding: 8px;
 }
 
-tr.device:hover {
+tr.device:hover, tr.fake_device:hover {
     background: #dadada;
+    cursor: pointer;
+}
+
+th:hover {
     cursor: pointer;
 }
 
