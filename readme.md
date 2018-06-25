@@ -8,7 +8,7 @@ The door display server houses several important functions:
 
 The following diagram roughly illustrates the information passed between the parts of the system:
 
-[[File:Door_display_sequence_diagram_v1.png|800px]]
+![Door display sequence diagram](https://i.imgur.com/YZ32F0h.png)
 
 # Build
 These instructions assume that your web root is hosted in a ```www``` folder adjancent to the folder the repo resides in.
@@ -66,7 +66,8 @@ Binary Linux executable which takes in a raw, binary .pbm image and outputs a co
 Must supply an image with the precisely correct resolution for the target display!
 
 # Compression Algorithm
-The images are compressed with a very simple run-length encoding algorithm. The first 4 bytes contain the current Unix time. The next 4 bytes contain the Unix time when the device should next wake up and contact the server. The next 20 bytes contain a sha1 hash of the image. The next byte contains the value of the first pixel in the image. The rest of the bytes each contain the number of pixels before a differing pixel is encountered. If the value is greater than 255, more than one byte will be used (for example, 255 255 16 for 526 identical pixels in a row). If the value is an exact multiple of 255, a zero will be appended (for example, 255 255 0 for 510 identical pixels in a row).  For example, this 16x16 image: [[File:Compression_example.png|64px]]
+The images are compressed with a very simple run-length encoding algorithm. The first 4 bytes contain the current Unix time. The next 4 bytes contain the Unix time when the device should next wake up and contact the server. The next 20 bytes contain a sha1 hash of the image. The next byte contains the value of the first pixel in the image. The rest of the bytes each contain the number of pixels before a differing pixel is encountered. If the value is greater than 255, more than one byte will be used (for example, 255 255 16 for 526 identical pixels in a row). If the value is an exact multiple of 255, a zero will be appended (for example, 255 255 0 for 510 identical pixels in a row).  For example, this 16x16 image: 
+![Picture of the number 5](https://i.imgur.com/71pE4rY.png)
 would be encoded as this:
 ```
 2c00 185b 3407 185b 9318 7c12 5b9f c496
