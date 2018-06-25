@@ -78,7 +78,7 @@ ba16 663c d789 e0b6 a346 4269 0011 0e02
 0602 0e02 0e11 0a                      
 ```
 
-On a 7" screen, this reduces the image size from 30 kilobytes to about 5500 kilobytes. Although there are other algorithms which can achieve better compression, this custom algorithm was used because it was relatively easy to implement and we weren't able to find any pre-made compression/decompression software which worked with the ESP8266.
+On a 7" screen, this reduces the image size from 30 kilobytes to about 5.5 kilobytes. Although there are other algorithms which can achieve better compression, this custom algorithm was used because it was relatively easy to implement and we weren't able to find any pre-made compression/decompression software which worked with the ESP8266.
 
 # Database
 The ```devices``` table in the door-display database was generated with the following code, and runs on MariaDB:
