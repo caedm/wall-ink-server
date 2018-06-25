@@ -1,10 +1,10 @@
 # Summary
 The door display server houses several important functions:
 
-* It generates new images for the displays
-* It serves images to the displays
-* It notifies the database when the displays are updated
-* It hosts a website for the configuration of the displays
+* It generates new images for the [Wall-Ink](https://github.com/caedm/wall-ink) displays
+* It serves images to the Wall-Ink displays
+* It notifies the database when the Wall-Ink displays are updated
+* It hosts a website for the configuration of the Wall-Ink displays
 
 The following diagram roughly illustrates the information passed between the parts of the system:
 
@@ -14,10 +14,12 @@ The following diagram roughly illustrates the information passed between the par
 These instructions assume that your web root is hosted in a ```www``` folder adjancent to the folder the repo resides in.
 To build and deploy to the test server (hosted at ```../www/test```), go to ```/wall-ink-server``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at ```../www```), use the command ```make deploy``` instead.
 
+After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
+
 # Device Manager
 The Device Manager website is hosted at the web root. It acts as an aid in keeping track of your devices.
 ## Important Files
-The files for the configuration website can be found at ```door-display/image_gen/web/device_manager```.
+The files for the configuration website can be found at ```wall-ink-server/web/device_manager```.
 #### dbconfig.php
 Contains information for connecting to the database
 #### view_devices.php
@@ -34,7 +36,7 @@ A handler for the "Upload" button on ```edit_device.php```
 Makes sure only those with proper credentials can access the site
 
 # Image Generation and Hosting
-The image generation code is located at ```door-display/image_gen```. GCC 8.1.0 was used to build it.
+The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it.
 ## Important Files
 #### makefile
 Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```. Builds the code with debug flags but does not deploy it with ```make debug```.
