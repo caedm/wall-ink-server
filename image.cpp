@@ -1485,8 +1485,6 @@ int main(int argc, char* argv[]) {
         fromDB.open(argv[1]);
     string mac_address;
     getline(fromDB, mac_address);
-    string name;
-    getline(fromDB, name);
     string dateNow;
     getline(fromDB, dateNow);
     string timeNow;
@@ -1499,6 +1497,8 @@ int main(int argc, char* argv[]) {
     getline(fromDB, orientation);
     string resourceID;
     getline(fromDB, resourceID);
+    string name;
+    getline(fromDB, name);
 
     if (deviceType.compare("0") == 0) {
         x_res = X_RES0;

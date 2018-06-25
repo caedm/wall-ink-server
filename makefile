@@ -45,6 +45,7 @@ test: genimg pbmToCompressed
 	cp web/pbmToCompressed ../www/test/
 	cp web/get_image.php ../www/test/
 	cp web/get_image.sh ../www/test/
+	cp web/booked.sh ../www/test/
 	cp web/get_png.php ../www/test/
 	cp web/rawToPng.sh ../www/test/
 	cp web/unix_time.php ../www/test/
@@ -86,6 +87,7 @@ deploy: genimg pbmToCompressed
 	cp web/pbmToCompressed ../www/
 	cp web/get_image.php ../www/
 	cp web/get_image.sh ../www/
+	cp web/booked.sh ../www/
 	cp web/get_png.php ../www/
 	cp web/rawToPng.sh ../www/
 	cp web/unix_time.php ../www/
