@@ -10,7 +10,6 @@ getInfo() {
     password=`grep password device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`
     name=`mysql -h $server -u $username --password=$password -s -N -e "SELECT name FROM collegeresv.resources WHERE resource_id = $resource_id"`
     echo $name >> "$mac_address_info"
-    echo $name
     series_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT series_id FROM collegeresv.reservation_resources WHERE resource_id = $resource_id AND series_id NOT IN (SELECT series_id FROM collegeresv.reservation_series WHERE status_id = 2)"`
     series_ids=($series_ids);
     for series_id in "${series_ids[@]}"
@@ -27,9 +26,6 @@ getInfo() {
             echo $series_title >> "$mac_address_info"
             echo $start_date >> "$mac_address_info"
             echo $end_date >> "$mac_address_info"
-            echo $series_title
-            echo $start_date
-            echo $end_date
         done
     done
 }
