@@ -1,3 +1,5 @@
+# Introduction
+This project is a server-side companion to the [Wall-Ink](https://github.com/caedm/wall-ink) project. The focus is on scheduling systems, but it could be used for other digital signage purposes also. Right now it integrates with the Booked scheduling system, but it can be integrated with any scheduling system that has a decent API. A Google Calendar plugin is currently being built, and is nearly finished.
 # Summary
 The door display server houses several important functions:
 
@@ -10,11 +12,47 @@ The following diagram roughly illustrates the information passed between the par
 
 ![Door display sequence diagram](https://i.imgur.com/YZ32F0h.png)
 
+# Installation
+1. Clone this repo into a directory adjacent to your web root, which our makefile currently assumes is located in ```../www``` (this will hopefully be improved in the future).
+1. Edit the credentials in ```database.sh.example``` and save the file as ```database.sh```
+1. Edit the credentials in ```web/device_manager/dbconfig.php.default``` to be the same as the credentials in ```database.sh```. Note that these are read in a strange way, and you may need to edit ```web/get_image.sh``` to get non-alphanumeric passwords to work right.
+1. (optional) Edit the image key in ```compressImage.cpp```; don't forget to also edit the key in the Arduino sketch if you do this!
+1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one
+1. (recommended) You'll probably want to change the website that the QR codes point to. This is found in image.cpp.
+1. Follow the steps below to build the project
+
 # Build
 These instructions assume that your web root is hosted in a ```www``` folder adjancent to the folder the repo resides in.
 To build and deploy to the test server (hosted at ```../www/test```), go to ```/wall-ink-server``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at ```../www```), use the command ```make deploy``` instead.
 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
+
+# Integrating with other scheduling systems
+If you want to integrate with a scheduling system other than Booked, you need to create your own plugin. This isn't too hard! All your plugin needs to do is take a filename in as a parameter, then append some text to that file; for example:
+
+```
+CTB 450 Group Space 2
+Yacht Club Meeting
+2018-06-25 09:00:00
+2018-06-25 13:30:00
+Test reservation
+2018-06-25 15:00:00
+2018-06-25 15:30:00
+```
+
+The first line is the name of the room or resource being scheduled. This line is followed by information about any number of meetings or events. Each meeting is formatted in the following way:
+
+* Line 1: The name of the meeting
+* Line 2: The beginning time/date of the meeting, in the format shown above
+* Line 3: The ending time/date of the meeting, in the format shown above
+
+After you have created this, you need to edit the ```web/get_image.sh``` file to call your plugin instead of the ```web/booked.sh``` file.
+
+### Limitations:
+If you integrate your own plugin, the device manager tool cannot be easily used to set the room or resource associated with the device. Of course, you could fix this by changing the following files:
+ * ```web/device_manager/edit_device.php```
+ * ```web/device_manager/handle_edit_device.php```
+You might also need to change how the database is organized.
 
 # Device Manager
 The Device Manager website is hosted at the web root. It acts as an aid in keeping track of your devices.
@@ -99,5 +137,3 @@ CREATE TABLE `devices` (
   UNIQUE KEY `mac_address_UNIQUE` (`mac_address`)
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1
 ```
-
-The scheduling information was taken from the Booked database, ```collegeresv```. In the near future, we want to set up a system for plugins to be added to interface with other scheduling systems, such as Exchange.
