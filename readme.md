@@ -14,6 +14,7 @@ The following diagram roughly illustrates the information passed between the par
 
 # Installation
 1. Clone this repo into a directory adjacent to your web root, which our makefile currently assumes is located in ```../www``` (this will hopefully be improved in the future).
+1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit the credentials in ```database.sh.example``` and save the file as ```database.sh```
 1. Edit the credentials in ```web/device_manager/dbconfig.php.default``` to be the same as the credentials in ```database.sh```. Note that these are read in a strange way, and you may need to edit ```web/get_image.sh``` to get non-alphanumeric passwords to work right.
 1. (optional) Edit the image key in ```compressImage.cpp```; don't forget to also edit the key in the Arduino sketch if you do this!
@@ -119,21 +120,3 @@ ba16 663c d789 e0b6 a346 4269 0011 0e02
 ```
 
 On a 7" screen, this reduces the image size from 30 kilobytes to about 5.5 kilobytes. Although there are other algorithms which can achieve better compression, this custom algorithm was used because it was relatively easy to implement and we weren't able to find any pre-made compression/decompression software which worked with the ESP8266.
-
-# Database
-The ```devices``` table in the door-display database was generated with the following code, and runs on MariaDB:
-```sql
-CREATE TABLE `devices` (
-  `device_id` int(11) NOT NULL AUTO_INCREMENT,
-  `resource_id` int(11) NOT NULL,
-  `device_type` int(11) NOT NULL,
-  `mac_address` char(12) NOT NULL,
-  `voltage` float NOT NULL DEFAULT '0',
-  `orientation` int(11) NOT NULL DEFAULT '0',
-  `last_checked_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `batteries_replaced_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `firmware_version` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`device_id`),
-  UNIQUE KEY `mac_address_UNIQUE` (`mac_address`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1
-```
