@@ -113,6 +113,7 @@ The contents of the file sent to the screen are as follows:
 1. A sha1 hash of the sha1 hash of the raw image buffer followed by the sha1 hash of the imagekey (20 bytes)
 1. The value of the first pixel in the image
 1. The run-length encoded image (explained below)
+
 The images are compressed with a very simple run-length encoding algorithm. Each byte contains the number of pixels before a differing pixel is encountered. If the value is greater than 255, more than one byte will be used (for example, 255 255 16 for 526 identical pixels in a row). If the value is an exact multiple of 255, a zero will be appended (for example, 255 255 0 for 510 identical pixels in a row).  For example, this 16x16 image: 
 ![Picture of the number 5](https://i.imgur.com/71pE4rY.png)
 would be encoded as this:
@@ -125,5 +126,6 @@ ba16 663c d789 e0b6 a346 4269 0011 0e02
 0602 0e02 0e11 0a                      
 ```
 
-On a 7" screen, this reduces the image size from 30 kilobytes to about 5.5 kilobytes. Although there are other algorithms which can achieve better compression, this custom algorithm was used because it was relatively easy to implement and we weren't able to find any pre-made compression/decompression software which worked with the ESP8266.
 All values are little endian.
+
+On a 7" screen, this reduces the image size from 30 kilobytes to about 5.5 kilobytes. Although there are other algorithms which can achieve better compression, this custom algorithm was used because it was relatively easy to implement and we weren't able to find any pre-made compression/decompression software which worked with the ESP8266.
