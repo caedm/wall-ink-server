@@ -6,7 +6,8 @@
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     $firmware_version = $_GET["firmware"];
-    if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1) {
+    $errorCode = $_GET["error"];
+    if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1 && preg_match('/^[[:digit:]]+$/', $errorCode) === 1) {
         include 'device_manager/dbconfig.php';
 
         //get additional info
@@ -28,7 +29,7 @@
             $result = mysqli_query($mysqli, $sql_query);
             $file = "image_data/" . $mac_address . ".static";
         } else {
-            `./get_image.sh $mac_address $voltage 2>&1`;
+            `./get_image.sh $mac_address $voltage $errorCode 2>&1`;
             $file = "image_data/" . $mac_address . ".compressed";
         }
         if (file_exists($file)) {

@@ -19,7 +19,7 @@
             $pbm = "image_data/" . $mac_address . ".static.pbm";
             `convert $pbm $png`;
         } else {
-            `./get_image.sh $mac_address $device[voltage] $_GET[layout] 2>&1`;
+            `./get_image.sh $mac_address $device[voltage] 0 $_GET[layout] 2>&1`;
             $raw = "image_data/" . $mac_address;
             `./rawToPng.sh $raw $_GET[layout]`;
         }
