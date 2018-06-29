@@ -2,9 +2,9 @@
 #CXXFLAGS += -Wall -fsanitize=undefined
 # Link libraries statically
 CXXFLAGS += -static -O1 -g -std=c++11
-LIBSRC = BitBuffer QrCode QrSegment compressImage sha1
-objects = image.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o
-VPATH = qr_code_generator:web
+LIBSRC = BitBuffer QrCode QrSegment compressImage sha1 layouts Adafruit_GFX
+objects = image.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
+VPATH = qr_code_generator:web:Adafruit-GFX-Library
 CXX=g++
 CC=gcc
 CFLAGS += -static
@@ -93,19 +93,21 @@ deploy: genimg pbmToCompressed
 	cp web/unix_time.php ../www/
 	cp web/r.php ../www/
 
-genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o
+genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o layouts.o Adafruit_GFX.o
 	$(CXX) image.o $(LIBSRC:=.o) $(CXXFLAGS) -o web/genimg
 
 pbmToCompressed : pbmToCompressed.o compressImage.o
 	$(CXX) pbmToCompressed.o compressImage.o sha1.o $(CXXFLAGS) -o web/pbmToCompressed
 
-image.o : image.h qr_code_generator/QrCode.hpp
+image.o : image.h qr_code_generator/QrCode.hpp layouts.o Adafruit_GFX.o
 pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h
 compressImage.o : compressImage.h sha1.o
 BitBuffer.o : BitBuffer.hpp
 QrCode.o : QrCode.hpp
 QrSegment.o : QrSegment.hpp
 sha1.o : sha1.h
+layouts.o : layouts.h
+Adafruit_GFX.o : Adafruit_GFX.h
 
 debug:
 	$(CXX) image.cpp $(LIBSRC:=.cpp) $(CXXFLAGS) -g -o web/genimg

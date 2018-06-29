@@ -79,8 +79,10 @@ The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was us
 ## Important Files
 #### makefile
 Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```. Builds the code with debug flags but does not deploy it with ```make debug```.
+#### layouts.cpp
+Contains the code used to generate individual image layouts
 #### image.cpp
-Contains most of the code used to generate the images from reservation data. This file is bloated, and should be split up.
+Contains many of the libraries used by ```layouts.cpp``` to generate the images from reservation data.
 #### compressImage.cpp
 Contains the code used to convert an array of bytes into a compressed image for the use of a display
 #### fonts.h

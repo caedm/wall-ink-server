@@ -1,4 +1,7 @@
-#include "Adafruit-GFX-Library/Adafruit_GFX.cpp"
+#ifndef FONTS_h
+#define FONTS_h
+
+#include "Adafruit-GFX-Library/Adafruit_GFX.h"
 #include "Adafruit-GFX-Library/Fonts/FreeMono12pt7b.h"
 #include "Adafruit-GFX-Library/Fonts/FreeMono18pt7b.h"
 #include "Adafruit-GFX-Library/Fonts/FreeMono24pt7b.h"
@@ -53,3 +56,5 @@
 #include "Adafruit-GFX-Library/Fonts/TomThumb.h"
 #define ASCII_OFFSET 32
 #define LETTER_HEIGHT 13
+
+#endif
