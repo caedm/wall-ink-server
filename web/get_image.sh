@@ -42,8 +42,17 @@ echo $device_type >> "$mac_address_info"
 echo $voltage >> "$mac_address_info"
 echo $orientation >> "$mac_address_info"
 echo $resource_id >> "$mac_address_info"
+
+#Booked Integration
 source ./booked.sh
 getInfo $mac_address $mac_address_info
+
+#Google Calendar Integration
+#cd google
+#plugin=`./gcal -cal lbmpjq16bt2ef678evn3jacdgk@group.calendar.google.com -sec="./client_secret.json"`
+#cd ..
+#printf "$plugin" >> $mac_address_info
+
 echo `./genimg $mac_address_info`
 web_dir="../www/"
 mac_address_compressed=$mac_address
@@ -57,14 +66,10 @@ actual_size=$(wc -c <"log.txt")
 if [[ $actualsize -ge $maximum_size ]]; then
     mv log.txt log.txt.prev
 fi
-echo "\nMAC Address:" >> log.txt
-echo $mac_address >> log.txt
-echo "Voltage:" >> log.txt
-echo $voltage >> log.txt
-echo "Date:" >> log.txt
-echo $DATE >> log.txt
-echo "Time:" >> log.txt
-echo $TIME >> log.txt
-echo "ErrorCode:" >> log.txt
-echo $errorCode >> log.txt
-
+echo "MAC Address: $mac_address" >> log.txt
+echo "Voltage: $voltage" >> log.txt
+echo "$DATE $TIME" >> log.txt
+echo "ErrorCode: $errorCode" >> log.txt
+echo "" >> log.txt
+cd google
+echo `pwd` >> log.txt

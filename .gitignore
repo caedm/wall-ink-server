@@ -12,3 +12,5 @@ web/log.txt
 *.o
 QrCodeGeneratorWorker
 QrCodeGeneratorDemo
+web/google/client_secret.json
+web/google/token.json
