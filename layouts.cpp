@@ -2,8 +2,8 @@
 #include "image.h"
 #include "fonts.h"
 #include <sstream>
-#define QR_CODE_BASE_URL "door-display.groups.et.byu.net/r.php?r="
-#define BASE_SCHEDULING_URL "reserve.byu.edu"
+#define QR_CODE_BASE_URL "theoldpurple.com/r.php?r="
+#define BASE_SCHEDULING_URL "theoldpurple.com"
 
 extern GFXcanvas1* canvas;
 extern uint16_t x_res;
