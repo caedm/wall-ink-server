@@ -1016,6 +1016,16 @@ void drawImage7(string roomName, string date, string time, string* reservations,
             }
         }
     }
+
+    //round corners of overall bottom rectangle
+    drawRect(0,337,2,1,0);
+    drawRect(0,338,1,1,0);
+    drawRect(638,337,2,1,0);
+    drawRect(639,338,1,1,0);
+    drawRect(0,358,2,1,0);
+    drawRect(0,357,1,1,0);
+    drawRect(638,358,2,1,0);
+    drawRect(639,357,1,1,0);
     
     //draw arrow
     drawRect((currentBlock-currentBlock%2)*20, 335, 2, 1, 1);

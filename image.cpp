@@ -365,7 +365,8 @@ int main(int argc, char* argv[]) {
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
         string dateTimeEnd;
         getline(fromDB, dateTimeEnd);
-        int endIndex; if (dateNow.compare(dateTimeEnd.substr(0,10)) == 0) {
+        int endIndex;
+        if (dateNow.compare(dateTimeEnd.substr(0,10)) == 0) {
             int hour = atoi(dateTimeEnd.substr(11,2).c_str());
             int minute = atoi(dateTimeEnd.substr(14,2).c_str());
             hour -= 6;
@@ -374,10 +375,10 @@ int main(int argc, char* argv[]) {
             endIndex = hour + minute;
             if (endIndex < 0)
                 endIndex = 0;
-            if (endIndex > 31)
-                endIndex = 31;
+            if (endIndex > 32)
+                endIndex = 32;
         } else {
-            endIndex = 31;
+            endIndex = 32;
         }
 
         for (int i = startIndex; i < endIndex; i++) {
