@@ -29,6 +29,7 @@ void initializeImage();
 void drawCharacter(int x, int y, char c);
 void drawString(int x, int y, std::string str);
 void drawFancyString(std::string str, int16_t x, int16_t y);
+uint16_t getTextWidth(std::string str); 
 bool drawCenteredString(std::string str, int16_t y);
 void putQrCode(int x, int y, std::string str, int scale);
 unsigned char reverseByte(unsigned char x);

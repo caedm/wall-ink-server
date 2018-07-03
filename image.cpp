@@ -60,10 +60,15 @@ void drawFancyString(string str, int16_t x, int16_t y) {
         canvas->write(str[i]);
 }
 
-bool drawCenteredString(string str, int16_t y){
+uint16_t getTextWidth(string str) {
     int16_t x1, y1;
     uint16_t w, h;
-    canvas->getTextBounds(str.c_str(), 0, y, &x1, &y1, &w, &h);
+    canvas->getTextBounds(str.c_str(), 0, 50, &x1, &y1, &w, &h); //50 was arbitrarily chosen
+    return w;
+}
+
+bool drawCenteredString(string str, int16_t y){
+    uint16_t w = getTextWidth(str);
     if (w <= x_res)
     	drawFancyString(str, (x_res-w)/2, y);
     return w <= x_res;

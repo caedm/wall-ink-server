@@ -3,6 +3,7 @@
 #include "fonts.h"
 #include <sstream>
 #define QR_CODE_BASE_URL "door-display.groups.et.byu.net/r.php?r="
+#define BASE_SCHEDULING_URL "reserve.byu.edu"
 
 extern GFXcanvas1* canvas;
 extern uint16_t x_res;
@@ -42,7 +43,7 @@ void drawImage0(string roomName, string date, string time, string* reservations,
     drawRect(24,72,x_res - 24*2, y_res - 72*2, 0);
 
     drawCenteredString("Last updated " + militaryTimeToNormalPersonTime(time), y_res-80);
-    drawCenteredString("reserve.et.byu.edu", y_res-13);
+    drawCenteredString(BASE_SCHEDULING_URL, y_res-13);
 
     uint16_t boxCoordinates[32][2] = {
         {50,78+29*0},
@@ -884,21 +885,12 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     drawRect(0,0,9,98,3);
 
     //draw line under date
-    drawRect(9,95,x_res-9,3,1);
-    drawRect(459,95,163,3,0);
-
-    //draw reserve.byu.edu
-    canvas->setFont(&Org_01);
-    //drawFancyString("RESERVE.ET.BYU.EDU",540,12);
-    //drawFancyString("RESERVE NOW",556,88);
-    //canvas->setFont(&Picopixel);
-    //drawFancyString("RESERVE.ET.BYU.EDU",390,150);
-    //canvas->setFont(&Tiny3x3a2pt7b);
-    //drawFancyString("RESERVE.ET.BYU.EDU",390,110);
-    canvas->setFont(&TomThumb);
-    //drawFancyString("RESERVE.ET.BYU.EDU",556,13);
     canvas->setFont(&FreeSansBold9pt7b);
-    drawFancyString("reserve.et.byu.edu",463,100);
+    drawRect(9,95,x_res-9,3,1);
+    drawRect(624-getTextWidth(BASE_SCHEDULING_URL)-12,95,getTextWidth(BASE_SCHEDULING_URL)+12,3,0);
+
+    //draw base scheduling url
+    drawFancyString(BASE_SCHEDULING_URL,617 - getTextWidth(BASE_SCHEDULING_URL),100);
 
     putQrCode(560,20,QR_CODE_BASE_URL + resourceID, 2);
 
