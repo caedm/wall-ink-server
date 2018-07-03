@@ -29,7 +29,7 @@ To build and deploy to the test server (hosted at ```../www/test```), go to ```/
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 
 # Integrating with other scheduling systems
-If you want to integrate with a scheduling system other than Booked, you need to create your own plugin. This isn't too hard! All your plugin needs to do is take a filename in as a parameter, then append some text to that file; for example:
+If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is take a filename in as a parameter, then append some text to that file; for example:
 
 ```
 CTB 450 Group Space 2
@@ -47,7 +47,7 @@ The first line is the name of the room or resource being scheduled. This line is
 * Line 2: The beginning time/date of the meeting, in the format shown above
 * Line 3: The ending time/date of the meeting, in the format shown above
 
-After you have created this, you need to edit the ```web/get_image.sh``` file to call your plugin instead of the ```web/booked.sh``` file.
+After you have created this, you need to edit the ```web/get_image.sh``` file to call your plugin for screens set to use it.
 
 ### Limitations:
 If you integrate your own plugin, the device manager tool cannot be easily used to set the room or resource associated with the device. Of course, you could fix this by changing the following files:
