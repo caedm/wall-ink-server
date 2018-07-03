@@ -1,0 +1,4 @@
+<FilesMatch "^genimg$">
+Order Deny,Allow
+Deny from All
+</FilesMatch>
