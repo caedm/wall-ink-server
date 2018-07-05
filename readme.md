@@ -52,8 +52,7 @@ After you have created this, you need to edit the ```web/get_image.sh``` file to
 ### Limitations:
 If you integrate your own plugin, the device manager tool cannot be easily used to set the room or resource associated with the device. Of course, you could fix this by changing the following files:
  * ```web/device_manager/edit_device.php```
- * ```web/device_manager/handle_edit_device.php```
-You might also need to change how the database is organized.
+ * ```web/device_manager/view_devices.php```
 
 # Device Manager
 The Device Manager website is hosted at the web root. It acts as an aid in keeping track of your devices.
