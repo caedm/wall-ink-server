@@ -53,7 +53,7 @@
             echo " hidden";
         }
         echo "\">";
-            echo "<label for=\"new_resource_id\">Room:</label>";
+            echo "<label for=\"new_resource_id\">Booked resource:</label>";
             echo "<select id=\"booked_resource_id\" name=\"new_resource_id\">";
             foreach ($booked_rooms as &$room) {
                 echo "<option value=\"$room[resource_id]\"";
@@ -71,7 +71,7 @@
         }
         echo "\">";
         include '../google/quickstart.php';
-            echo "<label for=\"new_resource_id\">Room:</label>";
+            echo "<label for=\"new_resource_id\">Google calendar:</label>";
             echo "<select id=\"google_resource_id\" name=\"new_resource_id\">";
             foreach ($calendarList->getItems() as $calendarListEntry) {
                 echo "<option value=\"";
