@@ -77,7 +77,7 @@
                 echo "<option value=\"";
                 echo strtok($calendarListEntry->getId(), "@");
                 echo "\"";
-                if ($calendarListEntry->getId() == $device["resource_id"]) {
+                if (strtok($calendarListEntry->getId(), "@") == $device["resource_id"]) {
                     echo " selected";
                 }
                 echo ">";
