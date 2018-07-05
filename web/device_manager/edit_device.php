@@ -2,8 +2,6 @@
 <?php include 'css/edit_device.css'; ?>
 </style>
 <?php
-    #error_reporting(E_ALL);
-    #ini_set('display_errors', '1');
     $device_id = $_GET["device_id"];
     include 'dbconfig.php';
     if ($_GET["device_id"] == "new") {
@@ -11,7 +9,8 @@
             "mac_address" => "",
             "resource_id" => "",
             "orientation" => 0,
-            "device_type" => 0
+            "device_type" => 0,
+            "scheduling_system" => 0
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
@@ -20,9 +19,9 @@
     }
     $mysqli = mysqli_connect($server, $username, $password, "collegeresv");
     $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
-    $rooms = array();
+    $booked_rooms = array();
     while($room = $resources->fetch_assoc()){
-       $rooms[ $room["resource_id"] ] = $room;
+       $booked_rooms[ $room["resource_id"] ] = $room;
     }
 
     echo "<div>";
@@ -33,15 +32,57 @@
             echo "<input type=\"text\" id=\"mac_address\" name=\"new_mac_address\" value=\"$device[mac_address]\">";
         echo "</div>";
         echo "<div class=\"field\">";
+            echo "<label for=\"new_scheduling_system\">Scheduling System:</label>";
+            echo "<select id=\"scheduling_system\" name=\"new_scheduling_system\">";
+                echo "<option value=\"0\"";
+                if ($device["scheduling_system"] == 0) {
+                    echo " selected";
+                }
+                echo ">";
+                echo "Booked</option>";
+                echo "<option value=\"1\"";
+                if ($device["scheduling_system"] == 1) {
+                    echo " selected";
+                }
+                echo ">";
+                echo "Google Calendar</option>";
+            echo "</select>";
+        echo "</div>";
+        echo "<div class=\"field resource";
+        if ($device["scheduling_system"] != 0) {
+            echo " hidden";
+        }
+        echo "\">";
             echo "<label for=\"new_resource_id\">Room:</label>";
-            echo "<select id=\"resource_id\" name=\"new_resource_id\">";
-            foreach ($rooms as &$room) {
+            echo "<select id=\"booked_resource_id\" name=\"new_resource_id\">";
+            foreach ($booked_rooms as &$room) {
                 echo "<option value=\"$room[resource_id]\"";
                 if ($room["resource_id"] == $device["resource_id"]) {
                     echo " selected";
                 }
                 echo ">";
                 echo "$room[name]</option>";
+            }
+            echo "</select>";
+        echo "</div>";
+        echo "<div class=\"field resource";
+        if ($device["scheduling_system"] != 1) {
+            echo " hidden";
+        }
+        echo "\">";
+        include '../google/quickstart.php';
+            echo "<label for=\"new_resource_id\">Room:</label>";
+            echo "<select id=\"google_resource_id\" name=\"new_resource_id\">";
+            foreach ($calendarList->getItems() as $calendarListEntry) {
+                echo "<option value=\"";
+                echo strtok($calendarListEntry->getId(), "@");
+                echo "\"";
+                if ($calendarListEntry->getId() == $device["resource_id"]) {
+                    echo " selected";
+                }
+                echo ">";
+                echo $calendarListEntry->getSummary();
+                echo "</option>";
             }
             echo "</select>";
         echo "</div>";
@@ -157,7 +198,7 @@
         echo "</fieldset>";
         echo "<div class=\"button\">";
             echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to discard your changes?') == true) window.location.href='view_devices.php'\">Cancel</button>";
-            echo "<button type=\"submit\" class=\"middle\">Submit</button>";
+            echo "<button type=\"button\" class=\"middle\" onclick=\"deleteLists(); document.getElementById('form').submit()\">Submit</button>";
             if ($_GET["device_id"] != "new") {
                 echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='handle_delete_device.php?device_id=$device[device_id]'\">Delete</button>";
             }

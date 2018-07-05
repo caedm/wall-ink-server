@@ -18,4 +18,23 @@ for(i=0; i<inputs.length; i++) {
     inputs[i].addEventListener('change', refreshPreview, false);
 }
         
+function deleteLists() {
+    var elements = document.getElementsByClassName("hidden");
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
 
+var schedulingSystem = document.getElementById("scheduling_system");
+schedulingSystem.addEventListener('change', function() {
+    var hiddenFields = document.getElementsByClassName("hidden");
+    for (i = 0; i < hiddenFields.length; i++) {
+        hiddenFields[i].classList.remove("hidden");
+    }
+    var resources = document.getElementsByClassName("resource");
+    for (i = 0; i < resources.length; i++) {
+        if (i != schedulingSystem.value) {
+            resources[i].classList.add("hidden");
+        }
+    }
+});

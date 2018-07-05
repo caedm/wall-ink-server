@@ -105,8 +105,8 @@ function printResult($devices, $rooms) {
 
 #require_once("print_info.php");
 #echo phpversion();
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+#error_reporting(E_ALL);
+#ini_set('display_errors', '1');
 include 'dbconfig.php';
 $mysqli = mysqli_connect($server, $username, $password, "door-display");
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
@@ -115,6 +115,10 @@ $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
 $rooms = array();
 while($room = $resources->fetch_assoc()){
    $rooms[ $room["resource_id"] ] = $room["name"];
+}
+include '../google/quickstart.php';
+foreach ($calendarList->getItems() as $calendarListEntry) {
+    $rooms[ strtok($calendarListEntry->getID(),"@") ] = $calendarListEntry->getSummary();
 }
 echo "<script src='js/view_devices.js'></script>";
 printResult($devices, $rooms);

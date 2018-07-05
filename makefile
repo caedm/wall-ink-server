@@ -27,6 +27,7 @@ test: genimg pbmToCompressed
 	mkdir ../www/test/device_manager/js
 	chmod g+w ../www/test/device_manager/js
 	cp -r web/google ../www/test/google
+	chmod g+w ../www/test/google/token.json
 	cp web/.htaccess ../www/test/
 	cp web/device_manager/css/view_devices.css ../www/test/device_manager/css/
 	cp web/device_manager/css/edit_device.css ../www/test/device_manager/css/
@@ -71,6 +72,7 @@ deploy: genimg pbmToCompressed
 	mkdir ../www/device_manager/js
 	chmod g+w ../www/device_manager/js
 	cp -r web/google ../www/google
+	chmod g+w ../www/google/token.json
 	cp web/.htaccess ../www/
 	cp web/device_manager/css/view_devices.css ../www/device_manager/css/
 	cp web/device_manager/css/edit_device.css ../www/device_manager/css/
