@@ -11,6 +11,7 @@ CFLAGS += -static
 
 
 test: genimg pbmToCompressed
+	go build -o web/google/gcal web/google/gcal.go
 	rm -rf ../www/test/
 	mkdir ../www/test
 	mkdir ../www/test/image_data
@@ -33,6 +34,7 @@ test: genimg pbmToCompressed
 	chmod -R g+rw ../www/test
 
 deploy: genimg pbmToCompressed
+	go build -o web/google/gcal web/google/gcal.go 
 	rm -rf ../www/google
 	rm -rf ../www/config
 	rm -rf ../www/device_manager

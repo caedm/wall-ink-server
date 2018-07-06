@@ -21,6 +21,7 @@ The following diagram roughly illustrates the information passed between the par
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) For those using Google Calendar, follow the steps below:
+    1. Install ```go```
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
     1. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
     1. Open terminal and navigate to ```wall-ink-server/image_gen/web/google```
