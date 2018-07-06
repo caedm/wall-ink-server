@@ -20,6 +20,7 @@ The following diagram roughly illustrates the information passed between the par
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) If you want to use the built-in voltage monitoring tool, follow the steps below:
+    1. Install the optional ```rrdtool``` dependency
     1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to have correct filepaths
     1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/voltage_monitor/collectData.sh``` script once every 30 minutes
 1. (optional) For those using Google Calendar, follow the steps below:
