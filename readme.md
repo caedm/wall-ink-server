@@ -19,6 +19,7 @@ The following diagram roughly illustrates the information passed between the par
 1. Edit the credentials in ```database.sh.example``` and save the file as ```database.sh```
 1. Edit the credentials in ```web/device_manager/dbconfig.php.default``` to be the same as the credentials in ```database.sh```. Note that these are read in a strange way, and you may need to edit ```web/get_image.sh``` to get non-alphanumeric passwords to work right.
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
+1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) For those using Google Calendar, follow the steps below:
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
     1. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
