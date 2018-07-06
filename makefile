@@ -81,7 +81,7 @@ genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o layouts.o Adaf
 pbmToCompressed : pbmToCompressed.o compressImage.o
 	$(CXX) pbmToCompressed.o compressImage.o sha1.o $(CXXFLAGS) -o web/pbmToCompressed
 
-image.o : image.h qr_code_generator/QrCode.hpp layouts.o Adafruit_GFX.o
+image.o : image.h
 pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h
 compressImage.o : compressImage.h sha1.o
 BitBuffer.o : BitBuffer.hpp
