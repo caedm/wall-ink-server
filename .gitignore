@@ -14,3 +14,5 @@ QrCodeGeneratorWorker
 QrCodeGeneratorDemo
 web/google/client_secret.json
 web/google/token.json
+web/config/database.sh
+web/config/dbconfig.php

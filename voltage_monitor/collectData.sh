@@ -1,6 +1,6 @@
  #!/bin/bash
 
-source /auto/grp3/door-display/image_gen/database.sh
+source /auto/grp3/door-display/image_gen/web/config/database.sh
 if [[ ! -e "/auto/grp3/door-display/www/voltage_monitor/data" ]]; then
     mkdir /auto/grp3/door-display/www/voltage_monitor/data
 fi

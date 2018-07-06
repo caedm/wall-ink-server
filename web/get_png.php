@@ -10,7 +10,7 @@
     $mac_address = $_GET["mac_address"];
     $png = "image_data/" . $mac_address . ".png";
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1) {
-        include 'device_manager/dbconfig.php';
+        include 'config/dbconfig.php';
         $mysqli = mysqli_connect($server, $username, $password, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();

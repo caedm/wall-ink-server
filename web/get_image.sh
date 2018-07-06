@@ -1,8 +1,6 @@
 #!/bin/bash
 
-server=`grep server device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v server`
-username=`grep username device_manager/dbconfig.php | grep -o "[[:alnum:]\-]*" | grep -v username`
-password=`grep password device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`
+source ./config/database.sh
 DATE=`date -d "+2 minutes" +%Y-%m-%d`
 TIME=`date -d "+2 minutes" +%H:%M`
 mac_address=$1

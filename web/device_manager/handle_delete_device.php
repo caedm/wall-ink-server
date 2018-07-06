@@ -4,7 +4,7 @@
     #require_once("print_info.php");
     #printInfo($_GET);
 
-    include 'dbconfig.php';
+    include '../config/dbconfig.php';
     $mysqli = mysqli_connect($server, $username, $password, "door-display");
     $sql_query="DELETE FROM devices WHERE device_id = $_GET[device_id]";
     if ($mysqli->query($sql_query) === TRUE) {

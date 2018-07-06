@@ -5,9 +5,7 @@
 getInfo() {
     mac_address=$1
     mac_address_info=$2
-    server=`grep server device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v server`
-    username=`grep username device_manager/dbconfig.php | grep -o "[[:alnum:]\-]*" | grep -v username`
-    password=`grep password device_manager/dbconfig.php | grep -o "[[:alnum:].]*" | grep -v password`
+    source ./config/database.sh
     name=`mysql -h $server -u $username --password=$password -s -N -e "SELECT name FROM collegeresv.resources WHERE resource_id = $resource_id"`
     echo $name >> "$mac_address_info"
     series_ids=`mysql -h $server -u $username --password=$password -s -N -e "SELECT series_id FROM collegeresv.reservation_resources WHERE resource_id = $resource_id AND series_id NOT IN (SELECT series_id FROM collegeresv.reservation_series WHERE status_id = 2)"`

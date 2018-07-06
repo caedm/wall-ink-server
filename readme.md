@@ -16,8 +16,8 @@ The following diagram roughly illustrates the information passed between the par
 # Installation
 1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```make``` (tested with GNU Make), MariaDB or MySQL
 1. Clone this repo into a directory adjacent to your server's web root, which our makefile currently assumes is located in ```../www``` (this will hopefully be improved in the future)
-1. Edit the credentials in ```database.sh.example``` and save the file as ```database.sh```
-1. Edit the credentials in ```web/device_manager/dbconfig.php.default``` to be the same as the credentials in ```database.sh```. Note that these are read in a strange way, and you may need to edit ```web/get_image.sh``` to get non-alphanumeric passwords to work right.
+1. Edit the credentials in ```wall-ink-server/web/config/database.sh.example``` and save the file as ```wall-ink-server/config/database.sh```
+1. Edit the credentials in ```wall-ink-server/web/config/dbconfig.php.example``` to be the same as the credentials in ```database.sh``` and save the file as ```wall-ink-server/config/dbconfig.php```
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) For those using Google Calendar, follow the steps below:
@@ -33,7 +33,7 @@ The following diagram roughly illustrates the information passed between the par
 
 # Build
 These instructions assume that your web root is hosted in a ```www``` folder adjancent to the folder the repo resides in.
-To build and deploy to the test server (hosted at ```../www/test```), go to ```/wall-ink-server``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at ```../www```), use the command ```make deploy``` instead.
+To build and deploy to the test server (hosted at ```../www/test```), go to ```wall-ink-server/``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at ```../www```), use the command ```make deploy``` instead.
 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 

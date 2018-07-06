@@ -107,7 +107,7 @@ function printResult($devices, $rooms) {
 #echo phpversion();
 #error_reporting(E_ALL);
 #ini_set('display_errors', '1');
-include 'dbconfig.php';
+include '../config/dbconfig.php';
 $mysqli = mysqli_connect($server, $username, $password, "door-display");
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
 $mysqli = mysqli_connect($server, $username, $password, "collegeresv");

@@ -3,7 +3,7 @@
 </style>
 <?php
     $device_id = $_GET["device_id"];
-    include 'dbconfig.php';
+    include '../config/dbconfig.php';
     if ($_GET["device_id"] == "new") {
         $device = array(
             "mac_address" => "",

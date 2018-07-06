@@ -5,7 +5,7 @@
     #printInfo($_POST);
 
     $mac = strtoupper(str_replace(":","",$_POST["new_mac_address"]));
-    include 'dbconfig.php';
+    include '../config/dbconfig.php';
     $mysqli = mysqli_connect($server, $username, $password, "door-display");
     if ($_POST["new_device_id"] == "new") {
         $sql_query="INSERT INTO devices(mac_address,resource_id,orientation,device_type,scheduling_system) VALUES (\"$mac\",\"$_POST[new_resource_id]\",$_POST[new_orientation],$_POST[new_device_type],$_POST[new_scheduling_system])";
