@@ -19,6 +19,9 @@ The following diagram roughly illustrates the information passed between the par
 1. Edit the credentials in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/config/settings.cfg```
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
+1. (optional) If you want to use the built-in voltage monitoring tool, follow the steps below:
+    1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to have correct filepaths
+    1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/voltage_monitor/collectData.sh``` script once every 30 minutes
 1. (optional) For those using Google Calendar, follow the steps below:
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
     1. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
