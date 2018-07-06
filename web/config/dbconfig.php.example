@@ -1,5 +1,0 @@
-<?php
-    $server="serverurl";
-    $username="databaseusername";
-    $password="databasepassword";
-?>

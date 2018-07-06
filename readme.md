@@ -16,8 +16,7 @@ The following diagram roughly illustrates the information passed between the par
 # Installation
 1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```go```, ```make``` (tested with GNU Make), MariaDB or MySQL
 1. Clone this repo into a directory adjacent to your server's web root, which our makefile currently assumes is located in ```../www``` (this will hopefully be improved in the future)
-1. Edit the credentials in ```wall-ink-server/web/config/database.sh.example``` and save the file as ```wall-ink-server/config/database.sh```
-1. Edit the credentials in ```wall-ink-server/web/config/dbconfig.php.example``` to be the same as the credentials in ```database.sh``` and save the file as ```wall-ink-server/config/dbconfig.php```
+1. Edit the credentials in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/config/settings.cfg```
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) For those using Google Calendar, follow the steps below:
