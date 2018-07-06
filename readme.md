@@ -14,14 +14,13 @@ The following diagram roughly illustrates the information passed between the par
 ![Door display sequence diagram](https://i.imgur.com/YZ32F0h.png)
 
 # Installation
-1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```make``` (tested with GNU Make), MariaDB or MySQL
+1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```go```, ```make``` (tested with GNU Make), MariaDB or MySQL
 1. Clone this repo into a directory adjacent to your server's web root, which our makefile currently assumes is located in ```../www``` (this will hopefully be improved in the future)
 1. Edit the credentials in ```wall-ink-server/web/config/database.sh.example``` and save the file as ```wall-ink-server/config/database.sh```
 1. Edit the credentials in ```wall-ink-server/web/config/dbconfig.php.example``` to be the same as the credentials in ```database.sh``` and save the file as ```wall-ink-server/config/dbconfig.php```
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) For those using Google Calendar, follow the steps below:
-    1. Install ```go```
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
     1. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
     1. Open terminal and navigate to ```wall-ink-server/image_gen/web/google```
