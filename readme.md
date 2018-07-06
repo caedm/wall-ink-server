@@ -19,11 +19,11 @@ The following diagram roughly illustrates the information passed between the par
 1. Edit the credentials in ```web/device_manager/dbconfig.php.default``` to be the same as the credentials in ```database.sh```. Note that these are read in a strange way, and you may need to edit ```web/get_image.sh``` to get non-alphanumeric passwords to work right.
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. (optional) For those using Google Calendar, follow the steps below:
-2. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
-2. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
-2. Open terminal and navigate to ```wall-ink-server/image_gen/web/google```
-2. Run the command ```./gcal``` and follow the onscreen instructions
-2. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
+    1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
+    1. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
+    1. Open terminal and navigate to ```wall-ink-server/image_gen/web/google```
+    1. Run the command ```./gcal``` and follow the onscreen instructions
+    1. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
 1. (optional) Edit the image key in ```compressImage.cpp```; don't forget to also edit the key in the Arduino sketch if you do this!
 1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one
 1. (recommended) You'll probably want to change the website that the QR codes point to. This is found in image.cpp.
