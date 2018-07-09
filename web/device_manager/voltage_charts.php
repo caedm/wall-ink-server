@@ -37,6 +37,10 @@ $rooms = array();
 while($room = $resources->fetch_assoc()){
    $rooms[ $room["resource_id"] ] = $room["name"];
 }
+include '../google/quickstart.php';
+foreach ($calendarList->getItems() as $calendarListEntry) {
+    $rooms[ strtok($calendarListEntry->getID(),"@") ] = $calendarListEntry->getSummary();
+}
 printResult($devices, $rooms);
 ?>
 
