@@ -26,12 +26,12 @@ function printResult($devices, $rooms) {
 
 #require_once("print_info.php");
 #echo phpversion();
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+#error_reporting(E_ALL);
+#ini_set('display_errors', '1');
 include '../config/dbconfig.php';
-$mysqli = mysqli_connect($server, $username, $password, "door-display");
+$mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, "door-display");
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
-$mysqli = mysqli_connect($server, $username, $password, "collegeresv");
+$mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, "collegeresv");
 $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
 $rooms = array();
 while($room = $resources->fetch_assoc()){

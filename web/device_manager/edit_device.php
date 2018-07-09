@@ -13,11 +13,11 @@
             "scheduling_system" => 0
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
-        $mysqli = mysqli_connect($server, $username, $password, "door-display");
+        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }
-    $mysqli = mysqli_connect($server, $username, $password, "collegeresv");
+    $mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, "collegeresv");
     $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
     $booked_rooms = array();
     while($room = $resources->fetch_assoc()){

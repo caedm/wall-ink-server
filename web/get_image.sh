@@ -6,7 +6,7 @@ TIME=`date -d "+2 minutes" +%H:%M`
 mac_address=$1
 voltage=$2
 errorCode=$3
-resource_id_and_device_type_and_orientation_and_old_voltage_and_scheduling_system=`mysql -h $server -u $username --password=$password -s -N -e 'SELECT resource_id,device_type,orientation,voltage,scheduling_system FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
+resource_id_and_device_type_and_orientation_and_old_voltage_and_scheduling_system=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword -s -N -e 'SELECT resource_id,device_type,orientation,voltage,scheduling_system FROM \`door-display\`.devices WHERE mac_address = "'$mac_address\"`
 [[ -z "$resource_id_and_device_type_and_orientation_and_old_voltage_and_scheduling_system" ]] && exit 1
 resource_id=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage_and_scheduling_system | awk '{print $1;}')
 
@@ -15,7 +15,7 @@ if [ $4 -eq $7 ]
 then
     device_type=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage_and_scheduling_system | awk '{print $2;}')
     orientation=$(echo $resource_id_and_device_type_and_orientation_and_old_voltage_and_scheduling_system | awk '{print $3;}')
-    `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET voltage = '$voltage', last_checked_in = NOW() WHERE mac_address = "'$mac_address\"`
+    `mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword -s -N -e 'UPDATE \`door-display\`.devices SET voltage = '$voltage', last_checked_in = NOW() WHERE mac_address = "'$mac_address\"`
 else
     device_type=$4
     orientation="0"
@@ -26,7 +26,7 @@ volt_comp() {
     awk -v n1="$1" -v n2="$2" 'BEGIN {if (n1+0.35<n2+0) exit 0; exit 1}'
 }
 if volt_comp "$old_voltage" "$voltage"; then
-    `mysql -h $server -u $username --password=$password -s -N -e 'UPDATE \`door-display\`.devices SET batteries_replaced_date = NOW() WHERE mac_address = "'$mac_address\"`
+    `mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword -s -N -e 'UPDATE \`door-display\`.devices SET batteries_replaced_date = NOW() WHERE mac_address = "'$mac_address\"`
 fi
 echo "Resource ID: " $resource_id
 echo "Device Type: " $device_type

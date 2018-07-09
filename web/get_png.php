@@ -11,7 +11,7 @@
     $png = "image_data/" . $mac_address . ".png";
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1) {
         include 'config/dbconfig.php';
-        $mysqli = mysqli_connect($server, $username, $password, "door-display");
+        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
         if ($_GET["layout"] == 5 || $_GET["layout"] == 8) {

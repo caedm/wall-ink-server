@@ -11,7 +11,7 @@
         include 'config/dbconfig.php';
 
         //get additional info
-        $mysqli = mysqli_connect($server, $username, $password, "door-display");
+        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, "door-display");
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
         
