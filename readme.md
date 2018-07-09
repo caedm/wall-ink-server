@@ -67,9 +67,9 @@ If you integrate your own plugin, the device manager tool cannot be easily used 
  * ```web/device_manager/view_devices.php```
 
 # Device Manager
-The Device Manager website is hosted at the web root. It acts as an aid in keeping track of your devices.
+The Device Manager website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
 ## Important Files
-The files for the configuration website can be found at ```wall-ink-server/web/device_manager```.
+The files for the configuration website can be found at ```wall-ink-server/web/device_manager```
 #### view_devices.php
 This is the homepage; it shows a list of devices
 #### edit_device
@@ -81,13 +81,15 @@ A handler for the "Delete" button on ```edit_device.php```
 #### handle_upload
 A handler for the "Upload" button on ```edit_device.php```
 #### .htaccess
-Makes sure only those with proper credentials can access the site
+Makes sure only those with proper credentials can access the site; needs to be edited to include accurate information about your organization
 
 # Image Generation and Hosting
 The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it.
 ## Important Files
 #### makefile
-Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```. Builds the code with debug flags but does not deploy it with ```make debug```.
+Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```
+#### web/config/settings.cfg
+Contains configuration for the database connections; must run ```make``` after each edit
 #### layouts.cpp
 Contains the code used to generate individual image layouts
 #### image.cpp
