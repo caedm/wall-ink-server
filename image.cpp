@@ -335,6 +335,9 @@ int main(int argc, char* argv[]) {
     } else if (deviceType.compare("9") == 0) {
         x_res = X_RES4;
         y_res = Y_RES4;
+    } else if (deviceType.compare("10") == 0) {
+        x_res = X_RES2;
+        y_res = Y_RES2;
     }
     canvas = new GFXcanvas1(x_res, y_res);
     canvas->fillScreen(0);
@@ -409,6 +412,8 @@ int main(int argc, char* argv[]) {
         drawImage7(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("9") == 0) {
         drawImage9(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
+    } else if (deviceType.compare("10") == 0) {
+        drawImage10(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     }
 
     //if orientation is 1, flip image
