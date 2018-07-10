@@ -16,7 +16,7 @@ The following diagram roughly illustrates the information passed between the par
 # Installation
 1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```go```, ```make``` (tested with GNU Make), MariaDB or MySQL
 1. Clone this repo into a directory adjacent to your server's web root, which our makefile currently assumes is located in ```../www``` (this will hopefully be improved in the future)
-1. Edit the credentials in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```
+1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```
 1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
 1. (optional) If you want to use the built-in voltage monitoring tool, follow the steps below:
@@ -31,7 +31,6 @@ The following diagram roughly illustrates the information passed between the par
     1. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
 1. (optional) Edit the image key in ```compressImage.cpp```; don't forget to also edit the key in the Arduino sketch if you do this!
 1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one
-1. (recommended) You'll probably want to change the website that the QR codes point to. This is found in image.cpp.
 1. Follow the steps below to build the project
 
 # Build
