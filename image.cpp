@@ -302,6 +302,12 @@ int main(int argc, char* argv[]) {
     getline(fromDB, orientation);
     string resourceID;
     getline(fromDB, resourceID);
+    string displayUrl;
+    getline(fromDB, displayUrl);
+    string qrCodeBaseUrlBeginning;
+    getline(fromDB, qrCodeBaseUrlBeginning);
+    string qrCodeBaseUrlEnd;
+    getline(fromDB, qrCodeBaseUrlEnd);
     string name;
     getline(fromDB, name);
 
@@ -388,21 +394,21 @@ int main(int argc, char* argv[]) {
 
     //actually generate the desired image
     if (deviceType.compare("0") == 0) {
-        drawImage0(name, dateNow, timeNow, reservations, stof(voltage));
+        drawImage0(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("1") == 0) {
-        drawImage1(name, dateNow, timeNow, reservations, stof(voltage));
+        drawImage1(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("2") == 0) {
-        drawImage2(name, dateNow, timeNow, reservations, stof(voltage));
+        drawImage2(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("3") == 0) {
-        drawImage3(name, dateNow, timeNow, reservations, stof(voltage));
+        drawImage3(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("4") == 0) {
-        drawImage4(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
+        drawImage4(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("6") == 0) {
-        drawImage6(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
+        drawImage6(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("7") == 0) {
-        drawImage7(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
+        drawImage7(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     } else if (deviceType.compare("9") == 0) {
-        drawImage9(name, dateNow, timeNow, reservations, stof(voltage), resourceID);
+        drawImage9(name, dateNow, timeNow, reservations, stof(voltage), resourceID, displayUrl, qrCodeBaseUrlBeginning, qrCodeBaseUrlEnd);
     }
 
     //if orientation is 1, flip image

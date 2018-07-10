@@ -45,11 +45,17 @@ echo $resource_id >> "$mac_address_info"
 if [ $scheduling_system == 0 ]
 then
     #Booked Integration
+    echo $bookedDisplayUrl >> "$mac_address_info"
+    echo $bookedQrCodeBaseUrlBeginning >> "$mac_address_info"
+    echo $bookedQrCodeBaseUrlEnd >> "$mac_address_info"
     source ./booked.sh
     getInfo $mac_address $mac_address_info
 elif [ $scheduling_system == 1 ]
 then
     #Google Calendar Integration
+    echo $googleCalendarDisplayUrl >> "$mac_address_info"
+    echo $googleCalendarQrCodeBaseUrlBeginning >> "$mac_address_info"
+    echo $googleCalendarQrCodeBaseUrlEnd >> "$mac_address_info"
     cd google
     plugin=`./gcal -cal "$resource_id@group.calendar.google.com" -sec="./client_secret.json"`
     cd ..

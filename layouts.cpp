@@ -2,8 +2,6 @@
 #include "image.h"
 #include "fonts.h"
 #include <sstream>
-#define QR_CODE_BASE_URL "theoldpurple.com/r.php?r="
-#define BASE_SCHEDULING_URL "theoldpurple.com"
 
 extern GFXcanvas1* canvas;
 extern uint16_t x_res;
@@ -11,7 +9,7 @@ extern uint16_t y_res;
 
 using namespace std;
 
-void drawImage0(string roomName, string date, string time, string* reservations, float voltage) { //portrait 7"
+void drawImage0(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //portrait 7"
     //set sleepTime
     setSleepTime(900);
 
@@ -43,7 +41,7 @@ void drawImage0(string roomName, string date, string time, string* reservations,
     drawRect(24,72,x_res - 24*2, y_res - 72*2, 0);
 
     drawCenteredString("Last updated " + militaryTimeToNormalPersonTime(time), y_res-80);
-    drawCenteredString(BASE_SCHEDULING_URL, y_res-13);
+    drawCenteredString(displayUrl, y_res-13);
 
     uint16_t boxCoordinates[32][2] = {
         {50,78+29*0},
@@ -129,7 +127,7 @@ void drawImage0(string roomName, string date, string time, string* reservations,
     //mirror();
 }
 
-void drawImage1(string roomName, string date, string time, string* reservations, float voltage) { //landscape 4", shows 2 appointments
+void drawImage1(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //landscape 4", shows 2 appointments
     //set sleepTime
     setSleepTime(1800);
 
@@ -189,7 +187,7 @@ void drawImage1(string roomName, string date, string time, string* reservations,
     checkBattery(x_res-64, y_res-44, voltage);
 }
 
-void drawImage2(string roomName, string date, string time, string* reservations, float voltage) { //7" landscape, shows 2 appointments plus blocks
+void drawImage2(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //7" landscape, shows 2 appointments plus blocks
     //set sleepTime
     setSleepTime(900);
 
@@ -362,7 +360,7 @@ void drawImage2(string roomName, string date, string time, string* reservations,
     checkBattery(x_res-100, y_res-100, voltage);
 }
 
-void drawImage3(string roomName, string date, string time, string* reservations, float voltage) { //7" landscape, shows 3 appointments plus blocks
+void drawImage3(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //7" landscape, shows 3 appointments plus blocks
     //set sleepTime
     setSleepTime(1800);
 
@@ -548,7 +546,7 @@ void drawImage3(string roomName, string date, string time, string* reservations,
     checkBattery(x_res-100, y_res-100, voltage);
 }
 
-void drawImage4(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //landscape 4", shows 2 appointments
+void drawImage4(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //landscape 4", shows 2 appointments
     //set sleepTime
     setSleepTime(1800);
 
@@ -703,7 +701,7 @@ void drawImage4(string roomName, string date, string time, string* reservations,
 
 //layout 5 is for static 7" images
 
-void drawImage6(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //landscape 4", shows 2 appointments and has QR code
+void drawImage6(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //landscape 4", shows 2 appointments and has QR code
     //set sleepTime
     setSleepTime(1800);
 
@@ -858,12 +856,12 @@ void drawImage6(string roomName, string date, string time, string* reservations,
     drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
-    putQrCode(333,10,QR_CODE_BASE_URL + resourceID, 2);
+    putQrCode(333,10,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
 
     checkBattery(x_res-64, y_res-44, voltage);
 }
 
-void drawImage7(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //7" landscape, shows 2 appointments plus blocks & a QR code
+void drawImage7(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //7" landscape, shows 2 appointments plus blocks & a QR code
     //set sleepTime
     setSleepTime(1800);
 
@@ -887,12 +885,12 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     //draw line under date
     canvas->setFont(&FreeSansBold9pt7b);
     drawRect(9,95,x_res-9,3,1);
-    drawRect(624-getTextWidth(BASE_SCHEDULING_URL)-12,95,getTextWidth(BASE_SCHEDULING_URL)+12,3,0);
+    drawRect(624-getTextWidth(displayUrl)-12,95,getTextWidth(displayUrl)+12,3,0);
 
     //draw base scheduling url
-    drawFancyString(BASE_SCHEDULING_URL,617 - getTextWidth(BASE_SCHEDULING_URL),100);
+    drawFancyString(displayUrl,617 - getTextWidth(displayUrl),100);
 
-    putQrCode(560,20,QR_CODE_BASE_URL + resourceID, 2);
+    putQrCode(560,20,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
 
     //Get current block
     int currentBlock;
@@ -1042,7 +1040,7 @@ void drawImage7(string roomName, string date, string time, string* reservations,
 
 //layout 8 is for static 4" images
 
-void drawImage9(string roomName, string date, string time, string* reservations, float voltage, string resourceID) { //landscape 4", shows 2 appointments and has QR code. More battery efficient than layout 6.
+void drawImage9(string roomName, string date, string time, string* reservations, float voltage, string resourceID, string displayUrl, string qrCodeBaseUrlBeginning, string qrCodeBaseUrlEnd) { //landscape 4", shows 2 appointments and has QR code. More battery efficient than layout 6.
     //set sleepTime
     setSleepTime(1800);
 
@@ -1207,7 +1205,7 @@ void drawImage9(string roomName, string date, string time, string* reservations,
     //drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     //drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
-    putQrCode(333,10,QR_CODE_BASE_URL + resourceID, 2);
+    putQrCode(333,10,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
 
     checkBattery(x_res-64, y_res-44, voltage);
 }
