@@ -49,7 +49,12 @@ then
     echo $bookedQrCodeBaseUrlBeginning >> "$mac_address_info"
     echo $bookedQrCodeBaseUrlEnd >> "$mac_address_info"
     source ./booked.sh
-    getInfo $mac_address $mac_address_info
+    plugin=""
+    while [ -z "$plugin" ]
+    do
+        plugin=`getInfo $mac_address $mac_address_info`
+    done
+    printf "$plugin" >> $mac_address_info
 elif [ $scheduling_system == 1 ]
 then
     #Google Calendar Integration
@@ -57,7 +62,11 @@ then
     echo $googleCalendarQrCodeBaseUrlBeginning >> "$mac_address_info"
     echo $googleCalendarQrCodeBaseUrlEnd >> "$mac_address_info"
     cd google
-    plugin=`./gcal -cal "$resource_id@group.calendar.google.com" -sec="./client_secret.json"`
+    plugin=""
+    while [ -z "$plugin" ]
+    do
+        plugin=`./gcal -cal "$resource_id@group.calendar.google.com" -sec="./client_secret.json"`
+    done
     cd ..
     printf "$plugin" >> $mac_address_info
 fi

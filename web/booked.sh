@@ -7,7 +7,7 @@ getInfo() {
     mac_address_info=$2
     source ./config/database.sh
     name=`mysql -h $bookedDatabaseServer -u $bookedDatabaseUsername --password=$bookedDatabasePassword -s -N -e "SELECT name FROM collegeresv.resources WHERE resource_id = $resource_id"`
-    echo $name >> "$mac_address_info"
+    echo $name
     series_ids=`mysql -h $bookedDatabaseServer -u $bookedDatabaseUsername --password=$bookedDatabasePassword -s -N -e "SELECT series_id FROM collegeresv.reservation_resources WHERE resource_id = $resource_id AND series_id NOT IN (SELECT series_id FROM collegeresv.reservation_series WHERE status_id = 2)"`
     series_ids=($series_ids);
     for series_id in "${series_ids[@]}"
@@ -21,9 +21,9 @@ getInfo() {
             start_date=$(echo $title_and_start_date_and_end_date | awk -F $' ' '{print $1" "$2;}')
             end_date=$(echo $title_and_start_date_and_end_date | awk -F $' ' '{print $3" "$4;}')
             series_title=$(echo $title_and_start_date_and_end_date | cut -d' ' -f 5-)
-            echo $series_title >> "$mac_address_info"
-            echo $start_date >> "$mac_address_info"
-            echo $end_date >> "$mac_address_info"
+            echo $series_title
+            echo $start_date
+            echo $end_date
         done
     done
 }
