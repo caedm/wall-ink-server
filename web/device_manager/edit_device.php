@@ -162,7 +162,7 @@
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"10\">10\" Landscape 4 (with QR code), 30 minute refresh cycle, better battery</label>";
+                    echo "<label for=\"10\">7\" Landscape 4 (with QR code), 30 minute refresh cycle, better battery</label>";
                     echo "<input type=\"radio\" id=\"type_10\" name=\"new_device_type\" value=\"10\"";
                     if ($device['device_type'] == 10) {
                         echo " checked";
