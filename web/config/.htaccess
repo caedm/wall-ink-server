@@ -1,3 +1,1 @@
-Order Deny,allow
-Deny from all
-#Options +ExecCGI
+Require all denied

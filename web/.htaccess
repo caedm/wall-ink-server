@@ -1,8 +1,6 @@
 <FilesMatch "^genimg$">
-Order Deny,Allow
-Deny from All
+Require all denied
 </FilesMatch>
 <FilesMatch "^pbmToCompressed$">
-Order Deny,Allow
-Deny from All
+Require all denied
 </FilesMatch>

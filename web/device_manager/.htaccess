@@ -4,7 +4,6 @@
 AuthType Basic
 AuthName "Enter your CAEDM username and password"
 AuthBasicProvider ldap
-AuthzLDAPAuthoritative on
 AuthLDAPURL ldaps://server.et.byu.edu:636/ou=accounts,ou=caedm,dc=et,dc=byu,dc=edu?uid
 Require ldap-group cn=erato,ou=groups,ou=caedm,dc=et,dc=byu,dc=edu
 AuthLDAPGroupAttributeIsDN off
