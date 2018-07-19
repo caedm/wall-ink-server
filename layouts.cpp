@@ -890,7 +890,8 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     //draw base scheduling url
     drawFancyString(displayUrl,617 - getTextWidth(displayUrl),100);
 
-    putQrCode(560,20,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    int s = getQrCodeSize(qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd);
+    putQrCode(597-s,44-s,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
 
     //Get current block
     int currentBlock;
@@ -1239,7 +1240,8 @@ void drawImage10(string roomName, string date, string time, string* reservations
     //draw base scheduling url
     drawFancyString(displayUrl,617 - getTextWidth(displayUrl),100);
 
-    putQrCode(560,20,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    int s = getQrCodeSize(qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd);
+    putQrCode(597-s,44-s,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
 
     //Get current block
     int currentBlock;

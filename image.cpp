@@ -74,13 +74,19 @@ bool drawCenteredString(string str, int16_t y){
     return w <= x_res;
 }
 
-void putQrCode(int x, int y, string str, int scale) {
+int getQrCodeSize(string str) {
+    qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
+    return qr.getSize();
+}
+
+int putQrCode(int x, int y, string str, int scale) {
     qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
     for (int y_offset = 0; y_offset < qr.getSize(); y_offset++) {
         for (int x_offset = 0; x_offset < qr.getSize(); x_offset++) {
             drawRect(x+x_offset*scale,y+y_offset*scale,scale,scale,qr.getModule(x_offset, y_offset));
         }
     }
+    return qr.getSize();
 }
 
 unsigned char reverseByte(unsigned char x) {
