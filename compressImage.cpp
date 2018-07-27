@@ -2,6 +2,7 @@
 #include "compressImage.h"
 #include "sha1.h"
 #include <bitset>
+#include <cstring>
 
 #define IMAGE_KEY "hunter2"
 
@@ -17,8 +18,11 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     time_t currentTime = time(nullptr);
     uint8_t* compressedTime = (uint8_t*) malloc(4);
     uint8_t* nextTime = (uint8_t*) malloc(4);
+    uint8_t* time = (uint8_t*) malloc(8);
     *((uint32_t*) compressedTime) = currentTime;
     *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + sleepTime;
+    memcpy(time, compressedTime, 4);
+    memcpy(time+4, nextTime, 4);
 #if DEBUG == 1
     cout << hex;
     cout << "time size: " << sizeof(currentTime) << endl << "current time: " << currentTime << endl;
@@ -30,7 +34,7 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     SHA1Context sha;
     int err;
     err = SHA1Reset(&sha);
-    err = SHA1Input(&sha, compressedTime, 8);
+    err = SHA1Input(&sha, time, 8);
     err = SHA1Result(&sha, timeHash);
     char imageKey[] = IMAGE_KEY;
     err = SHA1Reset(&sha);
