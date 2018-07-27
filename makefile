@@ -1,6 +1,3 @@
-# Diagnostics. Adding '-fsanitize=address' is helpful for most versions of Clang and newer versions of GCC.
-#CXXFLAGS += -Wall -fsanitize=undefined
-# Link libraries statically
 CXXFLAGS += -static -O1 -g -std=c++11
 LIBSRC = BitBuffer QrCode QrSegment compressImage sha1 layouts Adafruit_GFX
 objects = image.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
@@ -10,53 +7,68 @@ CC=gcc
 CFLAGS += -static
 SHELL := /bin/bash
 
-
+$(info MAKELEVEL=$(MAKELEVEL))
+ifeq ($(MAKELEVEL), 0)
+test:
+	bash -c "source ./web/config/settings.cfg; \
+		for var in \$$(compgen -v); do export \$$var; done; \
+		$(MAKE) $@"
+else
 test: genimg pbmToCompressed genconfig gcal
-	rm -rf ../www/test/
-	mkdir ../www/test
-	mkdir ../www/test/image_data
-	mkdir ../www/test/voltage_monitor
-	mkdir ../www/test/voltage_monitor/data
-	cp -r web/google ../www/test/google
-	cp -r web/config ../www/test/config
-	cp -r web/device_manager ../www/test/device_manager
-	cp web/.htaccess ../www/test/
-	cp web/index.html ../www/test/
-	cp web/genimg ../www/test/
-	cp web/pbmToCompressed ../www/test/
-	cp web/get_image.php ../www/test/
-	cp web/get_image.sh ../www/test/
-	cp web/booked.sh ../www/test/
-	cp web/get_png.php ../www/test/
-	cp web/rawToPng.sh ../www/test/
-	cp web/unix_time.php ../www/test/
-	cp web/r.php ../www/test/
-	chmod -R g+rw ../www/test
+	rm -rf $(webDirectory)/test/
+	mkdir $(webDirectory)/test
+	mkdir $(webDirectory)/test/image_data
+	mkdir $(webDirectory)/test/voltage_monitor
+	mkdir $(webDirectory)/test/voltage_monitor/data
+	cp -r web/google $(webDirectory)/test/google
+	cp -r web/config $(webDirectory)/test/config
+	cp -r web/device_manager $(webDirectory)/test/device_manager
+	cp web/.htaccess $(webDirectory)/test/
+	cp web/index.html $(webDirectory)/test/
+	cp web/genimg $(webDirectory)/test/
+	cp web/pbmToCompressed $(webDirectory)/test/
+	cp web/get_image.php $(webDirectory)/test/
+	cp web/get_image.sh $(webDirectory)/test/
+	cp web/booked.sh $(webDirectory)/test/
+	cp web/get_png.php $(webDirectory)/test/
+	cp web/rawToPng.sh $(webDirectory)/test/
+	cp web/unix_time.php $(webDirectory)/test/
+	cp web/r.php $(webDirectory)/test/
+	chmod -R g+rw $(webDirectory)/test
+endif
 
+ifeq ($(MAKELEVEL), 0)
+deploy:
+	bash -c "source ./web/config/settings.cfg; \
+		for var in \$$(compgen -v); do export \$$var; done; \
+		$(MAKE) $@"
+else
 deploy: genimg pbmToCompressed genconfig gcal
-	rm -rf ../www/google
-	rm -rf ../www/config
-	rm -rf ../www/device_manager
-	rm -rf ../www/image_data
-	rm -rf ../www/voltage_monitor
-	mkdir ../www/image_data
-	mkdir ../www/voltage_monitor
-	mkdir ../www/voltage_monitor/data
-	cp -r web/google ../www/google
-	cp -r web/config ../www/config
-	cp -r web/device_manager ../www/device_manager
-	cp web/.htaccess ../www/
-	cp web/index.html ../www/
-	cp web/genimg ../www/
-	cp web/pbmToCompressed ../www/
-	cp web/get_image.php ../www/
-	cp web/get_image.sh ../www/
-	cp web/booked.sh ../www/
-	cp web/get_png.php ../www/
-	cp web/rawToPng.sh ../www/
-	cp web/unix_time.php ../www/
-	cp web/r.php ../www/
-	chmod -Rf g+rw ../www
+	source ./web/config/settings.cfg
+	rm -rf $(webDirectory)/google
+	rm -rf $(webDirectory)/config
+	rm -rf $(webDirectory)/device_manager
+	rm -rf $(webDirectory)/image_data
+	rm -rf $(webDirectory)/voltage_monitor
+	mkdir $(webDirectory)/image_data
+	mkdir $(webDirectory)/voltage_monitor
+	mkdir $(webDirectory)/voltage_monitor/data
+	cp -r web/google $(webDirectory)/google
+	cp -r web/config $(webDirectory)/config
+	cp -r web/device_manager $(webDirectory)/device_manager
+	cp web/.htaccess $(webDirectory)/
+	cp web/index.html $(webDirectory)/
+	cp web/genimg $(webDirectory)/
+	cp web/pbmToCompressed $(webDirectory)/
+	cp web/get_image.php $(webDirectory)/
+	cp web/get_image.sh $(webDirectory)/
+	cp web/booked.sh $(webDirectory)/
+	cp web/get_png.php $(webDirectory)/
+	cp web/rawToPng.sh $(webDirectory)/
+	cp web/unix_time.php $(webDirectory)/
+	cp web/r.php $(webDirectory)/
+	chmod -Rf g+rw $(webDirectory)
+endif
 
 gcal : 
 	go build -o web/google/gcal web/google/gcal.go 
