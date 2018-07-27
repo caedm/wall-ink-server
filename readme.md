@@ -120,6 +120,7 @@ Must supply an image with the precisely correct resolution for the target displa
 
 # Image file format
 The contents of the file sent to the screen are as follows:
+1. A sha1 hash of the sha1 hash of the next 8 bytes followed by the sha1 hash of the imagekey (20 bytes)
 1. The current Unix time (4 bytes)
 1. The Unix time when the device should next wake and contact the server (4 bytes)
 1. A sha1 hash of the sha1 hash of the raw image buffer followed by the sha1 hash of the imagekey (20 bytes)
@@ -130,12 +131,13 @@ The images are compressed with a very simple run-length encoding algorithm. Each
 ![Picture of the number 5](https://i.imgur.com/71pE4rY.png)
 would be encoded as this:
 ```
-2c00 185b 3407 185b 9318 7c12 5b9f c496
-ba16 663c d789 e0b6 a346 4269 0011 0e02
-0406 0402 0401 0902 0401 0902 0404 0602
-0401 0302 0402 0901 0402 0901 0402 0901
-0402 0401 0401 0402 0401 0301 0502 0503
-0602 0e02 0e11 0a                      
+9008 9e7f 544f 8bb6 d3c8 ba22 9790 b894
+6ee7 38b6 2c00 185b 3407 185b 9318 7c12
+5b9f c496 ba16 663c d789 e0b6 a346 4269
+0011 0e02 0406 0402 0401 0902 0401 0902
+0404 0602 0401 0302 0402 0901 0402 0901
+0402 0901 0402 0401 0401 0402 0401 0301
+0502 0503 0602 0e02 0e11 0a                      
 ```
 
 All values are little endian.

@@ -26,6 +26,22 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     cout << "next time: " << *((uint32_t*) nextTime) << endl;
     cout << "byte by byte: " << +compressedTime[0] << " " << +compressedTime[1] << " " << +compressedTime[2] << " " << +compressedTime[3] << endl;
 #endif
+    uint8_t timeHash[40];
+    SHA1Context sha;
+    int err;
+    err = SHA1Reset(&sha);
+    err = SHA1Input(&sha, compressedTime, 8);
+    err = SHA1Result(&sha, timeHash);
+    char imageKey[] = IMAGE_KEY;
+    err = SHA1Reset(&sha);
+    err = SHA1Input(&sha, (uint8_t*) imageKey, sizeof(imageKey));
+    err = SHA1Result(&sha, timeHash+20);
+    uint8_t finalTimeHash[20];
+    err = SHA1Reset(&sha);
+    err = SHA1Input(&sha, (uint8_t*) timeHash, 40);
+    err = SHA1Result(&sha, finalTimeHash);
+    for (int i = 0; i < 20; i++)
+        compressed.push_back(finalTimeHash[i]);
     compressed.push_back(compressedTime[0]);
     compressed.push_back(compressedTime[1]);
     compressed.push_back(compressedTime[2]);
@@ -36,12 +52,9 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     compressed.push_back(nextTime[3]);
     //generate image hash
     uint8_t imageHash[40];
-    SHA1Context sha;
-    int err;
     err = SHA1Reset(&sha);
     err = SHA1Input(&sha, image, x_res*y_res/8);
     err = SHA1Result(&sha, imageHash);
-    char imageKey[] = IMAGE_KEY;
     err = SHA1Reset(&sha);
     err = SHA1Input(&sha, (uint8_t*) imageKey, sizeof(imageKey));
     err = SHA1Result(&sha, imageHash+20);
