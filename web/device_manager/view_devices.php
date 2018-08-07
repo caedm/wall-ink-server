@@ -59,7 +59,7 @@ function printResult($devices, $rooms) {
         echo "</td>";
         echo "<td class=\"voltage";
         if ($device["voltage"] < 2.5) {
-            echo " low-voltage";
+            echo " orange";
         }
         echo "\">";
         echo $device["voltage"];
@@ -70,7 +70,11 @@ function printResult($devices, $rooms) {
         echo "<td class=\"firmware_version\">";
         echo $device["firmware_version"];
         echo "</td>";
-        echo "<td class=\"last_checked_in\">";
+        echo "<td class=\"last_checked_in";
+        if (substr($device["last_checked_in"], 0, 10) !== date('Y-m-d')) {
+            echo " orange";
+        }
+        echo "\">";
         echo $device["last_checked_in"];
         echo "</td>";
         echo "<td class=\"batteries_replaced_date\">";

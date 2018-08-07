@@ -15,7 +15,7 @@ th:hover {
     cursor: pointer;
 }
 
-td.low-voltage {
+td.orange {
     background: orange;
 }
 
