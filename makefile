@@ -19,6 +19,7 @@ else
 test: genimg pbmToCompressed genconfig gcal
 	rm -rf $(webDirectory)/test/
 	mkdir $(webDirectory)/test
+	mkdir $(webDirectory)/test/log
 	mkdir $(webDirectory)/test/image_data
 	mkdir $(webDirectory)/test/voltage_monitor
 	mkdir $(webDirectory)/test/voltage_monitor/data
@@ -52,6 +53,8 @@ deploy: genimg pbmToCompressed genconfig gcal
 	rm -rf $(webDirectory)/device_manager
 	rm -rf $(webDirectory)/image_data
 	rm -rf $(webDirectory)/voltage_monitor
+	rm -rf $(webDirectory)/log
+	mkdir $(webDirectory)/log
 	mkdir $(webDirectory)/image_data
 	mkdir $(webDirectory)/voltage_monitor
 	mkdir $(webDirectory)/voltage_monitor/data

@@ -79,11 +79,4 @@ mac_address_compressed_web_dir=$web_dir
 mac_address_compressed_web_dir+=$mac_address_compressed
 #    read -p "Press [Enter] key to continue..."
 
-maximum_size=100000
-actual_size=$(wc -c <"log.txt")
-if [[ $actualsize -ge $maximum_size ]]; then
-    mv log.txt log.txt.prev
-fi
-echo "MAC Address: $mac_address, Voltage: $voltage, timestamp: $DATE $TIME, ErrorCode: $errorCode" >> log.txt
-cd google
-echo `pwd` >> log.txt
+echo "MAC Address: $mac_address, Voltage: $voltage, timestamp: $DATE $TIME, ErrorCode: $errorCode" >> "log/$mac_address.log"
