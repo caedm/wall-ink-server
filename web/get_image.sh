@@ -1,8 +1,8 @@
 #!/bin/bash
 
 source ./config/database.sh
-DATE=`date -d "+2 minutes" +%Y-%m-%d`
-TIME=`date -d "+2 minutes" +%H:%M`
+DATE=`date -d "+4 minutes" +%Y-%m-%d`
+TIME=`date -d "+4 minutes" +%H:%M`
 mac_address=$1
 voltage=$2
 errorCode=$3
