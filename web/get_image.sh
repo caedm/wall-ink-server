@@ -84,10 +84,6 @@ actual_size=$(wc -c <"log.txt")
 if [[ $actualsize -ge $maximum_size ]]; then
     mv log.txt log.txt.prev
 fi
-echo "MAC Address: $mac_address" >> log.txt
-echo "Voltage: $voltage" >> log.txt
-echo "$DATE $TIME" >> log.txt
-echo "ErrorCode: $errorCode" >> log.txt
-echo "" >> log.txt
+echo "MAC Address: $mac_address, Voltage: $voltage, timestamp: $DATE $TIME, ErrorCode: $errorCode" >> log.txt
 cd google
 echo `pwd` >> log.txt
