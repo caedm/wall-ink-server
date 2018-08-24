@@ -198,10 +198,10 @@ string reservationBlockToTime(int block) {
 string militaryTimeToNormalPersonTime(string military) {
     int hour = atoi(military.substr(0,2).c_str());
     string ampm = "am";
-    if (hour > 12) {
+    if (hour > 12)
         hour -= 12;
+    if (hour > 11)
         ampm = "pm";
-    }
     if (hour == 0)
         hour = 12;
     stringstream hourStream;
