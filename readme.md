@@ -120,11 +120,11 @@ Must supply an image with the precisely correct resolution for the target displa
 
 # Image file format
 The contents of the file sent to the screen are as follows:
-1. A sha1 hash of the sha1 hash of the next 8 bytes followed by the sha1 hash of the imagekey (20 bytes)
+1. A sha1 hash of the sha1 hash of the next 8 bytes (2 & 3) followed by the sha1 hash of the imagekey (20 bytes)
 1. The current Unix time (4 bytes)
 1. The Unix time when the device should next wake and contact the server (4 bytes)
 1. A sha1 hash of the sha1 hash of the raw image buffer followed by the sha1 hash of the imagekey (20 bytes)
-1. The value of the first pixel in the image
+1. The value of the first pixel in the image (1 byte)
 1. The run-length encoded image (explained below)
 
 The images are compressed with a very simple run-length encoding algorithm. Each byte contains the number of pixels before a differing pixel is encountered. If the value is greater than 255, more than one byte will be used (for example, 255 255 16 for 526 identical pixels in a row). If the value is an exact multiple of 255, a zero will be appended (for example, 255 255 0 for 510 identical pixels in a row).  For example, this 16x16 image: 
