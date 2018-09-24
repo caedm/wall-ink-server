@@ -1444,7 +1444,7 @@ void drawImage11(string roomName, string date, string time, string* reservations
     canvas->setFont(&FreeSans18pt7b);
     canvas->setTextWrap(true);
     if (reservs.at(currentEventIndex).title.compare("Available") == 0) {
-        drawFancyString("No Event", 15, 178);
+        drawFancyString("No Events", 15, 178);
     } else {
         drawFancyString(reservs.at(currentEventIndex).title, 15, 178);
     }
@@ -1458,7 +1458,7 @@ void drawImage11(string roomName, string date, string time, string* reservations
 		canvas->setFont(&FreeSans12pt7b);
         canvas->setTextWrap(true);
         if (reservs.at(currentEventIndex+1).title.compare("Available") == 0) {
-            drawFancyString("No Event", 15, 251);
+            drawFancyString("No Events", 15, 251);
         } else {
             drawFancyString(reservs.at(currentEventIndex+1).title, 15, 251);
         }
