@@ -177,6 +177,14 @@
                     }
                     echo ">";
                 echo "</li>";
+                echo "<li>";
+                    echo "<label for=\"7\">7\" landscape for event spaces</label>";
+                    echo "<input type=\"radio\" id=\"type_11\" name=\"new_device_type\" value=\"11\"";
+                    if ($device['device_type'] == 11) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
             echo "</ul>";
         echo "</fieldset>";
         echo "<fieldset id=\"orientation\" class=\"field\"";
