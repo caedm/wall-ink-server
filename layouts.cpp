@@ -1027,10 +1027,10 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     drawRect(639,357,1,1,0);
     
     //draw arrow
-    drawRect((currentBlock-currentBlock%2)*20, 335, 2, 1, 1);
-    drawRect((currentBlock-currentBlock%2)*20 - 1, 334, 4, 1, 1);
-    drawRect((currentBlock-currentBlock%2)*20 - 2, 333, 6, 1, 1);
-    drawRect((currentBlock-currentBlock%2)*20 - 3, 331, 8, 2, 1);
+    drawRect(currentBlock*20, 335, 2, 1, 1);
+    drawRect(currentBlock*20 - 1, 334, 4, 1, 1);
+    drawRect(currentBlock*20 - 2, 333, 6, 1, 1);
+    drawRect(currentBlock*20 - 3, 331, 8, 2, 1);
 
     //draw time above the arrow
     //canvas->setFont(&FreeSansBold9pt7b);
