@@ -29,13 +29,12 @@ The following diagram roughly illustrates the information passed between the par
     1. Open terminal and navigate to ```wall-ink-server/image_gen/web/google```
     1. Run the command ```./gcal``` and follow the onscreen instructions
     1. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
-1. (optional) Edit the image key in ```compressImage.cpp```; don't forget to also edit the key in the Arduino sketch if you do this!
+1. Copy the ```key.h.example``` to ```key.h``` and edit the file with your image key; don't forget to also edit the key in the Arduino sketch!
 1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one
 1. Follow the steps below to build the project
 
 # Build
-These instructions assume that your web root is hosted in a ```www``` folder adjancent to the folder the repo resides in.
-To build and deploy to the test server (hosted at ```../www/test```), go to ```wall-ink-server/``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at ```../www```), use the command ```make deploy``` instead.
+To build and deploy to the test server (hosted at ```$webdirectory/test```), go to ```wall-ink-server/``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at your web directory as defined in settings.cfg), use the command ```make deploy``` instead.
 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 

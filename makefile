@@ -37,7 +37,7 @@ test: genimg pbmToCompressed genconfig gcal
 	cp web/rawToPng.sh $(webDirectory)/test/
 	cp web/unix_time.php $(webDirectory)/test/
 	cp web/r.php $(webDirectory)/test/
-	chmod -R g+rw $(webDirectory)/test
+	chmod -R -f g+rw $(webDirectory)/test
 endif
 
 ifeq ($(MAKELEVEL), 0)
@@ -52,12 +52,9 @@ deploy: genimg pbmToCompressed genconfig gcal
 	rm -rf $(webDirectory)/config
 	rm -rf $(webDirectory)/device_manager
 	rm -rf $(webDirectory)/image_data
-	rm -rf $(webDirectory)/voltage_monitor
-	rm -rf $(webDirectory)/log
-	mkdir $(webDirectory)/log
+	mkdir -p $(webDirectory)/log
 	mkdir $(webDirectory)/image_data
-	mkdir $(webDirectory)/voltage_monitor
-	mkdir $(webDirectory)/voltage_monitor/data
+	mkdir -p $(webDirectory)/voltage_monitor/data
 	cp -r web/google $(webDirectory)/google
 	cp -r web/config $(webDirectory)/config
 	cp -r web/device_manager $(webDirectory)/device_manager
@@ -72,7 +69,7 @@ deploy: genimg pbmToCompressed genconfig gcal
 	cp web/rawToPng.sh $(webDirectory)/
 	cp web/unix_time.php $(webDirectory)/
 	cp web/r.php $(webDirectory)/
-	chmod -Rf g+rw $(webDirectory)
+	chmod -R -f g+rw $(webDirectory)
 endif
 
 gcal : 
@@ -100,7 +97,7 @@ pbmToCompressed : pbmToCompressed.o compressImage.o
 
 image.o : image.h
 pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h
-compressImage.o : compressImage.h sha1.o
+compressImage.o : compressImage.h sha1.o key.h
 BitBuffer.o : BitBuffer.hpp
 QrCode.o : QrCode.hpp
 QrSegment.o : QrSegment.hpp

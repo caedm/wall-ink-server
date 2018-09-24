@@ -3,8 +3,7 @@
 #include "sha1.h"
 #include <bitset>
 #include <cstring>
-
-#define IMAGE_KEY "hunter2"
+#include "key.h"
 
 using namespace std;
 
