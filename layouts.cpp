@@ -164,9 +164,7 @@ void drawImage1(string roomName, string date, string time, string* reservations,
     canvas->setFont(&FreeSansBold18pt7b);
     drawFancyString(currentEventTime, 8, 100);
     canvas->setFont(&FreeSans18pt7b);
-    canvas->setTextWrap(true);
     drawFancyString(currentTitle, 8, 140);
-    canvas->setTextWrap(false);
 
     //Get next event
     if (blockNextStart < 31) {
@@ -181,9 +179,7 @@ void drawImage1(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 230);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
 		drawFancyString(nextTitle, 8, 260);
-        canvas->setTextWrap(false);
     }
 
     checkBattery(x_res-64, y_res-44, voltage);
@@ -242,9 +238,7 @@ void drawImage2(string roomName, string date, string time, string* reservations,
     canvas->setFont(&FreeSansBold18pt7b);
     drawFancyString(currentEventTime, 8, 130);
     canvas->setFont(&FreeSans18pt7b);
-    canvas->setTextWrap(true);
     drawFancyString(currentTitle, 8, 170);
-    canvas->setTextWrap(false);
 
     //Get next event
     if (blockNextStart < 31) {
@@ -259,9 +253,7 @@ void drawImage2(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 250);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
 		drawFancyString(nextTitle, 8, 280);
-        canvas->setTextWrap(false);
     }
 
     //draw times
@@ -425,9 +417,7 @@ void drawImage3(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(prevEventTime, 9, 126);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
 		drawFancyString(reservs.at(currentEventIndex-1).title, 8, 156);
-        canvas->setTextWrap(false);
     }
 
     //Draw current event
@@ -435,9 +425,7 @@ void drawImage3(string roomName, string date, string time, string* reservations,
     canvas->setFont(&FreeSansBold12pt7b);
     drawFancyString(currentEventTime, 8, 201);
     canvas->setFont(&FreeSans12pt7b);
-    canvas->setTextWrap(true);
     drawFancyString(reservs.at(currentEventIndex).title, 8, 231);
-    canvas->setTextWrap(false);
 
     //Draw next event
     if (reservs.size() > currentEventIndex+1) {
@@ -445,9 +433,7 @@ void drawImage3(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 276);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
 		drawFancyString(reservs.at(currentEventIndex+1).title, 8, 306);
-        canvas->setTextWrap(false);
     }
 
     //draw times
@@ -587,7 +573,7 @@ void drawImage4(string roomName, string date, string time, string* reservations,
     drawFancyString(currentEventTime, 8, 101);
     canvas->setFont(&FreeSans18pt7b);
     canvas->setTextWrap(false);
-    drawFancyString(currentTitle, 8, 141); canvas->setTextWrap(false); 
+    drawFancyString(currentTitle, 8, 141);
     //Get next event
     if (blockNextStart < 31) {
 		string nextTitle = reservations[blockNextStart];
@@ -601,9 +587,7 @@ void drawImage4(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 191);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(false);
 		drawFancyString(nextTitle, 8, 221);
-        canvas->setTextWrap(false);
     }
 
     checkBattery(x_res-64, y_res-44, voltage);
@@ -747,7 +731,7 @@ void drawImage6(string roomName, string date, string time, string* reservations,
     drawFancyString(currentEventTime, 8, 114);
     canvas->setFont(&FreeSans18pt7b);
     canvas->setTextWrap(false);
-    drawFancyString(currentTitle, 8, 154); canvas->setTextWrap(false); 
+    drawFancyString(currentTitle, 8, 154);
     //Get next event
     if (blockNextStart < 31) {
 		string nextTitle = reservations[blockNextStart];
@@ -761,9 +745,7 @@ void drawImage6(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 199);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(false);
 		drawFancyString(nextTitle, 8, 229);
-        canvas->setTextWrap(false);
     }
 
     
@@ -921,9 +903,7 @@ void drawImage7(string roomName, string date, string time, string* reservations,
     canvas->setFont(&FreeSansBold18pt7b);
     drawFancyString(currentEventTime, 15, 142);
     canvas->setFont(&FreeSans18pt7b);
-    canvas->setTextWrap(true);
     drawFancyString(reservs.at(currentEventIndex).title, 15, 178);
-    canvas->setTextWrap(false);
 
     //Draw next event
     if (reservs.size() > currentEventIndex+1) {
@@ -931,9 +911,7 @@ void drawImage7(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 15, 221);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(true);
 		drawFancyString(reservs.at(currentEventIndex+1).title, 15, 251);
-        canvas->setTextWrap(false);
     }
 
     //draw times
@@ -1099,7 +1077,7 @@ void drawImage9(string roomName, string date, string time, string* reservations,
     drawFancyString(currentEventTime, 8, 114);
     canvas->setFont(&FreeSans18pt7b);
     canvas->setTextWrap(false);
-    drawFancyString(currentTitle, 8, 154); canvas->setTextWrap(false); 
+    drawFancyString(currentTitle, 8, 154);
     //Get next event
     if (blockNextStart < 31) {
 		string nextTitle = reservations[blockNextStart];
@@ -1113,9 +1091,7 @@ void drawImage9(string roomName, string date, string time, string* reservations,
 		canvas->setFont(&FreeSansBold12pt7b);
 		drawFancyString(nextEventTime, 9, 199);
 		canvas->setFont(&FreeSans12pt7b);
-        canvas->setTextWrap(false);
 		drawFancyString(nextTitle, 8, 229);
-        canvas->setTextWrap(false);
     }
 
     
