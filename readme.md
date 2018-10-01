@@ -16,9 +16,9 @@ The following diagram roughly illustrates the information passed between the par
 # Installation
 1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```go```, ```make``` (tested with GNU Make), MariaDB or MySQL
 1. Clone this repo
-1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```
-1. Create the table in mariadb or mysql with ```mysql dbNameHere < setup.sql```
-1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information
+1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```  See the wiki article on [settings.cfg](https://github.com/caedm/wall-ink/wiki/settings.cfg) for a full explanation of each setting.
+1. Create the table in mariadb or mysql with ```mysql -h <your dbserver> -u <your dbuser name> -p <your db name> < setup.sql```
+1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  The .htaccess files are what protects your settings files in the website with your passwords from being world readable.
 1. (optional) If you want to use the built-in voltage monitoring tool, follow the steps below:
     1. Install the optional ```rrdtool``` dependency
     1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to have correct filepath
