@@ -21,7 +21,7 @@ The following diagram roughly illustrates the information passed between the par
 1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  The .htaccess files are what protects your settings files in the website with your passwords from being world readable.
 1. (optional) If you want to use the built-in [voltage monitoring tool](https://github.com/caedm/wall-ink-server/wiki/voltage-monitoring), follow the steps below:
     1. Install the optional ```rrdtool``` dependency
-    1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to have correct filepath
+    1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to source the correct web/config/database.sh file with your settings in them.  This should be on line 3 of collectData.sh.
     1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/voltage_monitor/collectData.sh``` script once every 30 minutes
 1. (optional) For those using Google Calendar, follow the steps below:
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
