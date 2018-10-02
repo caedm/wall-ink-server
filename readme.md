@@ -39,7 +39,7 @@ To build and deploy to the test server (hosted at ```$webdirectory/test```), go 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 
 # Integrating with other scheduling systems
-If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is take a filename in as a parameter, then append some text to that file; for example:
+If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is output text to stdout in the following format:
 
 ```
 CTB 450 Group Space 2
