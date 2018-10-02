@@ -65,7 +65,8 @@ If you integrate your own plugin, the device manager tool cannot be easily used 
  * ```web/device_manager/view_devices.php```
 
 # Device Manager
-The Device Manager website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
+The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
+
 ## Important Files
 The files for the configuration website can be found at ```wall-ink-server/web/device_manager```
 #### view_devices.php
