@@ -18,10 +18,10 @@ The following diagram roughly illustrates the information passed between the par
 1. Clone this repo
 1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```  See the wiki article on [settings.cfg](https://github.com/caedm/wall-ink-server/wiki/settings.cfg) for a full explanation of each setting.
 1. Create the table in mariadb or mysql with ```mysql -h <your db server> -u <your db username> -p <your db name> < setup.sql```
-1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  The .htaccess files are what protects your settings files in the website with your passwords from being world readable.
-1. (optional) If you want to use the built-in voltage monitoring tool, follow the steps below:
+1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web presence.
+1. (optional) If you want to use the built-in [voltage monitoring tool](https://github.com/caedm/wall-ink-server/wiki/voltage-monitoring), follow the steps below:
     1. Install the optional ```rrdtool``` dependency
-    1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to have correct filepath
+    1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to source the correct web/config/database.sh file with your settings in them.  This should be on line 3 of collectData.sh.
     1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/voltage_monitor/collectData.sh``` script once every 30 minutes
 1. (optional) For those using Google Calendar, follow the steps below:
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
@@ -39,7 +39,7 @@ To build and deploy to the test server (hosted at ```$webdirectory/test```), go 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 
 # Integrating with other scheduling systems
-If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is take a filename in as a parameter, then append some text to that file; for example:
+If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is output text to stdout in the following format:
 
 ```
 CTB 450 Group Space 2
@@ -65,7 +65,8 @@ If you integrate your own plugin, the device manager tool cannot be easily used 
  * ```web/device_manager/view_devices.php```
 
 # Device Manager
-The Device Manager website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
+The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
+
 ## Important Files
 The files for the configuration website can be found at ```wall-ink-server/web/device_manager```
 #### view_devices.php
