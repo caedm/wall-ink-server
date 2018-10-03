@@ -17,7 +17,7 @@
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }
-    $mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, "collegeresv");
+    $mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, $bookedDatabaseName);
     $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
     $booked_rooms = array();
     while($room = $resources->fetch_assoc()){

@@ -31,7 +31,7 @@ function printResult($devices, $rooms) {
 include '../config/dbconfig.php';
 $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
-$mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, "collegeresv");
+$mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, $bookedDatabaseName);
 $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
 $rooms = array();
 while($room = $resources->fetch_assoc()){
