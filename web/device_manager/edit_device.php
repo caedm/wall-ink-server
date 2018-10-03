@@ -13,7 +13,7 @@
             "scheduling_system" => 0
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
-        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, "door-display");
+        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }

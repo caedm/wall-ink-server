@@ -112,7 +112,7 @@ function printResult($devices, $rooms) {
 #error_reporting(E_ALL);
 #ini_set('display_errors', '1');
 include '../config/dbconfig.php';
-$mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, "door-display");
+$mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
 $mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, "collegeresv");
 $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");

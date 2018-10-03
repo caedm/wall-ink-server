@@ -1,6 +1,7 @@
 deviceDatabaseServer="devicedburl"
 deviceDatabaseUsername="devicedbusername"
 deviceDatabasePassword="devicedbpassword"
+deviceDatabaseName="devicedbname"
 googleCalendarDisplayUrl="theoldpurple.com"
 googleCalendarQrCodeBaseUrlBeginning="https://calendar.google.com/calendar/embed?src="
 googleCalendarQrCodeBaseUrlEnd="%40group.calendar.google.com"

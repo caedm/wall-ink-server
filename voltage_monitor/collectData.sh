@@ -1,15 +1,15 @@
  #!/bin/bash
 
-source /auto/grp3/door-display/image_gen/web/config/database.sh
+source /home/johnathan/wall-ink/image_gen/web/config/database.sh
 if [[ ! -e "$webDirectory/voltage_monitor/data" ]]; then
     mkdir $webDirectory/voltage_monitor/data
 fi
-ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword -s -N -e 'SELECT device_id FROM \`door-display\`.devices'`
+ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT device_id FROM devices`
 ESP_DEVICES_ARRAY=($ESP_DEVICES);
 for device_id in "${ESP_DEVICES_ARRAY[@]}"
 do
-    voltage=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword -s -N -e 'SELECT voltage FROM \`door-display\`.devices WHERE device_id = '$device_id`
-    mac_address=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword -s -N -e 'SELECT mac_address FROM \`door-display\`.devices WHERE device_id = '$device_id`
+    voltage=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT voltage FROM devices WHERE device_id = $device_id`
+    mac_address=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT mac_address FROM devices WHERE device_id = $device_id`
     if [[ ! -f "$rrdDirectory/$mac_address.rrd" ]]; then
         rrdtool create $rrdDirectory/$mac_address.rrd \
             --start `date +%s` \
