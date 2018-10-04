@@ -223,7 +223,7 @@
             echo "</ul>";
         echo "</fieldset>";
         echo "<div class=\"button\">";
-            echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to discard your changes?') == true) window.location.href='view_devices.php'\">Cancel</button>";
+            echo "<button type=\"button\" onclick=\"window.location.href='view_devices.php'\">Cancel</button>";
             echo "<button type=\"button\" class=\"middle\" onclick=\"deleteLists(); document.getElementById('form').submit()\">Submit</button>";
             if ($_GET["device_id"] != "new") {
                 echo "<button type=\"button\" onclick=\"if (confirm('Are you sure you want to delete this device?') == true) window.location.href='handle_delete_device.php?device_id=$device[device_id]'\">Delete</button>";
