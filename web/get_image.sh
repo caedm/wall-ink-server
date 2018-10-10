@@ -42,6 +42,7 @@ echo $voltage >> "$mac_address_info"
 echo $orientation >> "$mac_address_info"
 echo $resource_id >> "$mac_address_info"
 
+tries=0;
 if [ $scheduling_system == 0 ]
 then
     #Booked Integration
@@ -50,9 +51,10 @@ then
     echo $bookedQrCodeBaseUrlEnd >> "$mac_address_info"
     source ./booked.sh
     plugin=""
-    while [ -z "$plugin" ]
+    while [[ -z "$plugin" && $tries -le 5 ]]
     do
         plugin=`getInfo $mac_address $mac_address_info`
+        $tries =`expr $tries + 1`
     done
     printf "$plugin" >> $mac_address_info
 elif [ $scheduling_system == 1 ]
@@ -63,9 +65,10 @@ then
     echo $googleCalendarQrCodeBaseUrlEnd >> "$mac_address_info"
     cd google
     plugin=""
-    while [ -z "$plugin" ]
+    while [[ -z "$plugin" && $tries -le 5 ]]
     do
         plugin=`./gcal -cal "$resource_id@group.calendar.google.com" -sec="./client_secret.json"`
+        $tries =`expr $tries + 1`
     done
     cd ..
     printf "$plugin" >> $mac_address_info
