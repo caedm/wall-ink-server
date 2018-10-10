@@ -111,24 +111,16 @@ function printResult($devices, $rooms) {
 #echo phpversion();
 #error_reporting(E_ALL);
 #ini_set('display_errors', '1');
-include '../config/dbconfig.php';
+require_once('../config/dbconfig.php');
 $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
 $rooms = array();
-if ($bookedIntegrationActive == "true") {
-    $mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, $bookedDatabaseName);
-    $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
-    while($room = $resources->fetch_assoc()){
-       $rooms[ $room["resource_id"] ] = $room["name"];
-    }
+foreach (glob("plugins/*.php") as $filename) {
+    require_once($filename);
 }
-if ($googleIntegrationActive == "true") {
-    include '../google/quickstart.php';
-    foreach ($calendarList->getItems() as $calendarListEntry) {
-        $rooms[ strtok($calendarListEntry->getID(),"@") ] = $calendarListEntry->getSummary();
-    }
+foreach ($plugins as $plugin) {
+    $rooms = $rooms + $plugin->getResources();
 }
 echo "<script src='js/view_devices.js'></script>";
 printResult($devices, $rooms);
 ?>
-

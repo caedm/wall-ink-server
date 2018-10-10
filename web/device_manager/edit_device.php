@@ -2,6 +2,8 @@
 <?php include 'css/edit_device.css'; ?>
 </style>
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
     $device_id = $_GET["device_id"];
     include '../config/dbconfig.php';
     if ($_GET["device_id"] == "new") {
@@ -17,13 +19,12 @@
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }
-    if ($bookedIntegrationActive == "true") {
-        $mysqli = mysqli_connect($bookedDatabaseServer, $bookedDatabaseUsername, $bookedDatabasePassword, $bookedDatabaseName);
-        $resources = mysqli_query($mysqli, "SELECT resource_id,name FROM resources");
-        $booked_rooms = array();
-        while($room = $resources->fetch_assoc()){
-           $booked_rooms[ $room["resource_id"] ] = $room;
-        }
+    $roomsArray = array();
+    foreach (glob("plugins/*.php") as $filename) {
+        require_once($filename);
+    }
+    foreach ($plugins as $plugin) {
+        $roomsArray[$plugin->getName()] = $plugin->getResources();
     }
 
     echo "<div>";
@@ -36,61 +37,36 @@
         echo "<div class=\"field\">";
             echo "<label for=\"new_scheduling_system\">Scheduling System:</label>";
             echo "<select id=\"scheduling_system\" name=\"new_scheduling_system\">";
-                if ($bookedIntegrationActive == "true") {
-                    echo "<option value=\"0\"";
-                    if ($device["scheduling_system"] == 0) {
+                foreach ($plugins as $plugin) {
+                    echo "<option value=\"";
+                    echo $plugin->getIndex();
+                    echo "\"";
+                    if ($device["scheduling_system"] == $plugin->getIndex()) {
                         echo " selected";
                     }
                     echo ">";
-                    echo "Booked</option>";
-                }
-                if ($googleIntegrationActive == "true") {
-                    echo "<option value=\"1\"";
-                    if ($device["scheduling_system"] == 1) {
-                        echo " selected";
-                    }
-                    echo ">";
-                    echo "Google Calendar</option>";
+                    echo $plugin->getName();
+                    echo "</option>";
                 }
             echo "</select>";
         echo "</div>";
-        if ($bookedIntegrationActive == "true") {
+        foreach ($plugins as $plugin) {
             echo "<div class=\"field resource";
-            if ($device["scheduling_system"] != 0) {
+            if ($device["scheduling_system"] != $plugin->getIndex()) {
                 echo " hidden";
             }
             echo "\">";
-                echo "<label for=\"new_resource_id\">Booked resource:</label>";
-                echo "<select id=\"booked_resource_id\" name=\"new_resource_id\">";
-                foreach ($booked_rooms as &$room) {
+            echo "<label for=\"new_resource_id\">";
+            echo $plugin->getName();
+            echo " resource:</label>";
+                echo "<select name=\"new_resource_id\">";
+                foreach ($roomsArray[$plugin->getName()] as $key=>&$room) {
                     echo "<option value=\"$room[resource_id]\"";
-                    if ($room["resource_id"] == $device["resource_id"]) {
+                    if ($key == $device["resource_id"]) {
                         echo " selected";
                     }
                     echo ">";
-                    echo "$room[name]</option>";
-                }
-                echo "</select>";
-            echo "</div>";
-        }
-        if ($googleIntegrationActive == "true") {
-            echo "<div class=\"field resource";
-            if ($device["scheduling_system"] != 1) {
-                echo " hidden";
-            }
-            echo "\">";
-            include '../google/quickstart.php';
-                echo "<label for=\"new_resource_id\">Google calendar:</label>";
-                echo "<select id=\"google_resource_id\" name=\"new_resource_id\">";
-                foreach ($calendarList->getItems() as $calendarListEntry) {
-                    echo "<option value=\"";
-                    echo strtok($calendarListEntry->getId(), "@");
-                    echo "\"";
-                    if (strtok($calendarListEntry->getId(), "@") == $device["resource_id"]) {
-                        echo " selected";
-                    }
-                    echo ">";
-                    echo $calendarListEntry->getSummary();
+                    echo $room;
                     echo "</option>";
                 }
                 echo "</select>";
