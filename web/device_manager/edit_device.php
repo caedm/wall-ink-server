@@ -61,7 +61,9 @@ ini_set('display_errors', '1');
             echo " resource:</label>";
                 echo "<select name=\"new_resource_id\">";
                 foreach ($roomsArray[$plugin->getName()] as $key=>&$room) {
-                    echo "<option value=\"$room[resource_id]\"";
+                    echo "<option value=\"";
+                    echo $key;
+                    echo "\"";
                     if ($key == $device["resource_id"]) {
                         echo " selected";
                     }
