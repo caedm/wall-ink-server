@@ -63,14 +63,14 @@ then
     echo $googleCalendarDisplayUrl >> "$mac_address_info"
     echo $googleCalendarQrCodeBaseUrlBeginning >> "$mac_address_info"
     echo $googleCalendarQrCodeBaseUrlEnd >> "$mac_address_info"
-    cd google
+    cd plugin_dependencies/google
     plugin=""
     while [[ -z "$plugin" && $tries -le 5 ]]
     do
         plugin=`./gcal -cal "$resource_id@group.calendar.google.com" -sec="./client_secret.json"`
         $tries =`expr $tries + 1`
     done
-    cd ..
+    cd ../..
     printf "$plugin" >> $mac_address_info
 fi
 

@@ -15,16 +15,16 @@ ini_set('display_errors', '1');
             "scheduling_system" => 0
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
-        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
+        $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }
     $roomsArray = array();
-    foreach (glob("plugins/*.php") as $filename) {
+    foreach (glob("../plugins/*.php") as $filename) {
         require_once($filename);
     }
     foreach ($plugins as $plugin) {
-        $roomsArray[$plugin->getName()] = $plugin->getResources();
+        $roomsArray[$plugin->getName()] = $plugin->getResources($config);
     }
 
     echo "<div>";

@@ -5,7 +5,7 @@
     #printInfo($_GET);
 
     include '../config/dbconfig.php';
-    $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
+    $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
     $sql_query="DELETE FROM devices WHERE device_id = $_GET[device_id]";
     if ($mysqli->query($sql_query) === TRUE) {
         header( "refresh: 3; url=view_devices.php");

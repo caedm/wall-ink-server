@@ -29,10 +29,10 @@ function printResult($devices, $rooms) {
 #error_reporting(E_ALL);
 #ini_set('display_errors', '1');
 include '../config/dbconfig.php';
-$mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
+$mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
 $rooms = array();
-foreach (glob("plugins/*.php") as $filename) {
+foreach (glob("../plugins/*.php") as $filename) {
     require_once($filename);
 }
 foreach ($plugins as $plugin) {

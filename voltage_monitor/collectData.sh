@@ -1,8 +1,8 @@
  #!/bin/bash
 
 source /home/johnathan/wall-ink/image_gen/web/config/database.sh
-if [[ ! -e "$webDirectory/voltage_monitor/data" ]]; then
-    mkdir $webDirectory/voltage_monitor/data
+if [[ ! -e "$runTimeWebDirectory/voltage_monitor/data" ]]; then
+    mkdir $runTimeWebDirectory/voltage_monitor/data
 fi
 ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT device_id FROM devices`
 ESP_DEVICES_ARRAY=($ESP_DEVICES);
@@ -20,25 +20,25 @@ do
     fi
     rrdtool update $rrdDirectory/$mac_address.rrd N:$voltage
     rrdtool graph \
-        $webDirectory/voltage_monitor/data/week_$mac_address.png \
+        $runTimeWebDirectory/voltage_monitor/data/week_$mac_address.png \
         -u 3.3 -l 2.3 -r \
         --end now --start end-167h \
         DEF:voltagea=$rrdDirectory/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past week"
     rrdtool graph \
-        $webDirectory/voltage_monitor/data/month_$mac_address.png \
+        $runTimeWebDirectory/voltage_monitor/data/month_$mac_address.png \
         -u 3.3 -l 2.3 -r \
         --end now --start end-1m \
         DEF:voltagea=$rrdDirectory/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past month"
     rrdtool graph \
-        $webDirectory/voltage_monitor/data/year_$mac_address.png \
+        $runTimeWebDirectory/voltage_monitor/data/year_$mac_address.png \
         -u 3.3 -l 2.3 -r \
         --end now --start end-1y \
         DEF:voltagea=$rrdDirectory/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past year"
 
-    chmod 660 $webDirectory/voltage_monitor/data/week_$mac_address.png 
-    chmod 660 $webDirectory/voltage_monitor/data/month_$mac_address.png 
-    chmod 660 $webDirectory/voltage_monitor/data/year_$mac_address.png 
+    chmod 660 $runTimeWebDirectory/voltage_monitor/data/week_$mac_address.png 
+    chmod 660 $runTimeWebDirectory/voltage_monitor/data/month_$mac_address.png 
+    chmod 660 $runTimeWebDirectory/voltage_monitor/data/year_$mac_address.png 
 done

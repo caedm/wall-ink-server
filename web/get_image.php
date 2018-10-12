@@ -11,7 +11,7 @@
         include 'config/dbconfig.php';
 
         //get additional info
-        $mysqli = mysqli_connect($deviceDatabaseServer, $deviceDatabaseUsername, $deviceDatabasePassword, $deviceDatabaseName);
+        $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
         
