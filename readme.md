@@ -30,7 +30,7 @@ The following diagram roughly illustrates the information passed between the par
     1. Run the command ```./gcal``` and follow the onscreen instructions
     1. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
 1. Copy the ```key.h.example``` to ```key.h``` and edit the file with your image key; don't forget to also edit the key in the Arduino sketch!
-1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one
+1. (optional) ~~Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one~~ This process is about to change for the better, stay tuned!
 1. Follow the steps below to build the project
 
 # Build
@@ -39,6 +39,8 @@ To build and deploy to the test server (hosted at ```$webdirectory/test```), go 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 
 # Integrating with other scheduling systems
+This process is about to change for the better, so we recommend that you hold off on doing this. Check back near the end of October 2018.
+
 If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is output text to stdout in the following format:
 
 ```
