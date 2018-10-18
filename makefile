@@ -16,7 +16,7 @@ test:
 		for var in \$$(compgen -v); do export \$$var; done; \
 		$(MAKE) $@"
 else
-test: genimg pbmToCompressed genconfig gcal
+test: genimg pbmToCompressed genconfig 
 	source ./web/config/settings.cfg
 	rm -rf $(buildTimeWebDirectory)/test/
 	mkdir $(buildTimeWebDirectory)/test
@@ -48,7 +48,7 @@ deploy:
 		for var in \$$(compgen -v); do export \$$var; done; \
 		$(MAKE) $@"
 else
-deploy: genimg pbmToCompressed genconfig gcal
+deploy: genimg pbmToCompressed genconfig 
 	source ./web/config/settings.cfg
 	rm -rf $(buildTimeWebDirectory)/config
 	rm -rf $(buildTimeWebDirectory)/device_manager

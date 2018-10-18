@@ -109,8 +109,8 @@ function printResult($devices, $rooms) {
 
 #require_once("print_info.php");
 #echo phpversion();
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+#error_reporting(E_ALL);
+#ini_set('display_errors', '1');
 require_once("../config/dbconfig.php");
 $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");

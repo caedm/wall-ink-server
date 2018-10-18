@@ -78,3 +78,35 @@ while(true) {
   }
 }
 
+
+function google_getSchedule($your_google_calendar) {
+    
+    date_default_timezone_set('America/Denver');
+    // Get the API client and construct the service object.
+    $client = getClient();
+    $service = new Google_Service_Calendar($client);
+
+
+    $your_google_calendar = 'primary';
+    $calendar= $service->calendars->get($your_google_calendar);
+    $schedule=$calendar->getSummary();
+
+    $date_today = date('Y-m-d'); 
+    $begin_today = $date_today . 'T00:00:00-07:00'; //make sure to modify for local time zone
+    $end_today = $date_today . 'T23:59:59-07:00';  //make sure to modify for local time zone
+
+    $optParams = array('orderBy' => 'startTime','singleEvents' => 'true','timeMax' => $end_today,'timeMin' => $begin_today,'showDeleted' => 'false');
+    $events = $service->events->listEvents($your_google_calendar,$optParams);
+
+
+    foreach ($events->getItems() as $event) {
+        $schedule .= $event->getSummary(); 
+        $schedule .= "\n";
+        $schedule .= $event->getStart()->dateTime;
+        $schedule .= "\n";
+        $schedule .= $event->getEnd()->dateTime;
+        $schedule .= "\n";
+    }
+    return $schedule;
+
+}
