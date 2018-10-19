@@ -30,7 +30,7 @@ The following diagram roughly illustrates the information passed between the par
     1. Run the command ```./gcal``` and follow the onscreen instructions
     1. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
 1. Copy the ```key.h.example``` to ```key.h``` and edit the file with your image key; don't forget to also edit the key in the Arduino sketch!
-1. (optional) ~~Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one~~ This process is about to change for the better, stay tuned!
+1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one This process is about to change for the better, stay tuned!
 1. Follow the steps below to build the project
 
 # Build
@@ -39,10 +39,35 @@ To build and deploy to the test server (hosted at ```$webdirectory/test```), go 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 
 # Integrating with other scheduling systems
-This process is about to change for the better, so we recommend that you hold off on doing this. Check back near the end of October 2018.
+This guide is currently being rewritten.
 
-If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is output text to stdout in the following format:
+If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is implement the following interface in PHP:
+```
+interface iPlugin {
+    public function getIndex();
+    public function getName();
+    public function isActive($config);
+    public function getResources($config);
+    public function getSchedule($config, $resourceId);
+    public Function getImage($config, $macAddress, $voltage, $device);
+}
+```
+You then need to add an instance of your plugin to the ```plugins``` array defined in the web/plugin_dependencies/iPlugin.php file. When you've implemented all this, place your plugin in the web/plugins/ directory. Any settings relevant to your plugin (such as whether it is active) can be added to the web/config/settings.cfg file. Here are some details about the different functions you'll need to implement:
 
+#### getIndex()
+This function needs to return a non-negative integer that is not the same as the integer returned by any of the other plugins. A single or double-digit number is fine, just check first that you won't be colliding with other plugins.
+
+#### getName()
+This function returns a string containing the name of your plugin. For example, you might use ```return 'Exchange';```
+
+#### isActive($config)
+This function returns either the string "true" or the string "false". This should probably be changed later.
+
+#### getResources($config)
+This function returns an array with resource IDs (a unique ID corresponding to a scheduleable resource) as the keys and resource names as the values.
+
+#### getSchedule($config, $resourceId)
+This function returns a string formatted like the one below:
 ```
 CTB 450 Group Space 2
 Yacht Club Meeting
@@ -52,19 +77,14 @@ Test reservation
 2018-06-25 15:00:00
 2018-06-25 15:30:00
 ```
+The first line is the name of the room or resource being scheduled. This line is followed by information about any number of events, meetings, or other reservations. Each reservation is formatted in the following way:
 
-The first line is the name of the room or resource being scheduled. This line is followed by information about any number of meetings or events. Each meeting is formatted in the following way:
+* Line 1: The name of the reservation
+* Line 2: The beginning time/date of the reservation, in the format shown above
+* Line 3: The ending time/date of the reservation, in the format shown above
 
-* Line 1: The name of the meeting
-* Line 2: The beginning time/date of the meeting, in the format shown above
-* Line 3: The ending time/date of the meeting, in the format shown above
-
-After you have created this, you need to edit the ```web/get_image.sh``` file to call your plugin for screens set to use it.
-
-### Limitations:
-If you integrate your own plugin, the device manager tool cannot be easily used to set the room or resource associated with the device. Of course, you could fix this by changing the following files:
- * ```web/device_manager/edit_device.php```
- * ```web/device_manager/view_devices.php```
+#### getImage($config, $macAddress, $voltage, $device)
+This function takes in some information about a wall-ink device, and returns the file directory of the image that will be sent to the screen. The image needs to be made in a very specific format. If you're implementing a scheduling plugin, you'll probably be able to mostly copy/paste an existing plugin's getImage function. If you run into difficulties, contact us.
 
 # Device Manager
 The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
