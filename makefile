@@ -18,27 +18,12 @@ test:
 else
 test: genimg pbmToCompressed genconfig 
 	source ./web/config/settings.cfg
-	rm -rf $(buildTimeWebDirectory)/test/
-	mkdir $(buildTimeWebDirectory)/test
-	mkdir $(buildTimeWebDirectory)/test/log
-	mkdir $(buildTimeWebDirectory)/test/image_data
-	mkdir $(buildTimeWebDirectory)/test/voltage_monitor
-	mkdir $(buildTimeWebDirectory)/test/voltage_monitor/data
-	cp -r web/config $(buildTimeWebDirectory)/test/config
-	cp -r web/plugins $(buildTimeWebDirectory)/test/plugins
-	cp -r web/plugin_dependencies $(buildTimeWebDirectory)/test/plugin_dependencies
-	cp -r web/device_manager $(buildTimeWebDirectory)/test/device_manager
-	cp web/.htaccess $(buildTimeWebDirectory)/test/
-	cp web/index.html $(buildTimeWebDirectory)/test/
-	cp web/genimg $(buildTimeWebDirectory)/test/
-	cp web/pbmToCompressed $(buildTimeWebDirectory)/test/
-	cp web/get_image.php $(buildTimeWebDirectory)/test/
-	cp web/get_image.sh $(buildTimeWebDirectory)/test/
-	cp web/booked.sh $(buildTimeWebDirectory)/test/
-	cp web/get_png.php $(buildTimeWebDirectory)/test/
-	cp web/rawToPng.sh $(buildTimeWebDirectory)/test/
-	cp web/unix_time.php $(buildTimeWebDirectory)/test/
-	cp web/r.php $(buildTimeWebDirectory)/test/
+	mkdir -p $(buildTimeWebDirectory)/test
+	mkdir -p $(buildTimeWebDirectory)/test/log
+	mkdir -p $(buildTimeWebDirectory)/test/image_data
+	mkdir -p $(buildTimeWebDirectory)/test/voltage_monitor
+	mkdir -p $(buildTimeWebDirectory)/test/voltage_monitor/data
+	rsync -r web/. $(buildTimeWebDirectory)/test
 	chmod -R -f g+rw $(buildTimeWebDirectory)/test
 endif
 
@@ -50,29 +35,10 @@ deploy:
 else
 deploy: genimg pbmToCompressed genconfig 
 	source ./web/config/settings.cfg
-	rm -rf $(buildTimeWebDirectory)/config
-	rm -rf $(buildTimeWebDirectory)/device_manager
-	rm -rf $(buildTimeWebDirectory)/image_data
-	rm -rf $(buildTimeWebDirectory)/plugins
-	rm -rf $(buildTimeWebDirectory)/plugin_dependencies
 	mkdir -p $(buildTimeWebDirectory)/log
-	mkdir $(buildTimeWebDirectory)/image_data
+	mkdir -p $(buildTimeWebDirectory)/image_data
 	mkdir -p $(buildTimeWebDirectory)/voltage_monitor/data
-	cp -r web/config $(buildTimeWebDirectory)/config
-	cp -r web/plugins $(buildTimeWebDirectory)/plugins
-	cp -r web/plugin_dependencies $(buildTimeWebDirectory)/plugin_dependencies
-	cp -r web/device_manager $(buildTimeWebDirectory)/device_manager
-	cp web/.htaccess $(buildTimeWebDirectory)/
-	cp web/index.html $(buildTimeWebDirectory)/
-	cp web/genimg $(buildTimeWebDirectory)/
-	cp web/pbmToCompressed $(buildTimeWebDirectory)/
-	cp web/get_image.php $(buildTimeWebDirectory)/
-	cp web/get_image.sh $(buildTimeWebDirectory)/
-	cp web/booked.sh $(buildTimeWebDirectory)/
-	cp web/get_png.php $(buildTimeWebDirectory)/
-	cp web/rawToPng.sh $(buildTimeWebDirectory)/
-	cp web/unix_time.php $(buildTimeWebDirectory)/
-	cp web/r.php $(buildTimeWebDirectory)/
+	rsync -r web/. $(buildTimeWebDirectory)
 	chmod -R -f g+rw $(buildTimeWebDirectory)
 endif
 
