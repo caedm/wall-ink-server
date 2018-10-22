@@ -46,10 +46,14 @@ if ($config->bookedIntegrationActive == "true") {
             }
             return $schedule;
         }
-        public Function getImage($config, $device) {
+        public function getImage($config, $device) {
             require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
             $macAddressInfo .= $this->getSchedule($config, $device["resource_id"]);
             return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]));
+        }
+        public function getDeviceType($device) {
+            require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
+            return schedulingGetDeviceType($device);
         }
     }
     $booked = new bookedPlugin;

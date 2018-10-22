@@ -49,7 +49,8 @@ interface iPlugin {
     public function isActive($config);
     public function getResources($config);
     public function getSchedule($config, $resourceId);
-    public Function getImage($config, $device);
+    public function getImage($config, $device);
+    public function getDeviceType($device);
 }
 ```
 You then need to add an instance of your plugin to the ```plugins``` array defined in the web/plugin_dependencies/iPlugin.php file. When you've implemented all this, place your plugin in the web/plugins/ directory. Any settings relevant to your plugin (such as whether it is active) can be added to the web/config/settings.cfg file. Here are some details about the different functions you'll need to implement:
@@ -85,6 +86,9 @@ The first line is the name of the room or resource being scheduled. This line is
 
 #### getImage($config, $device)
 This function takes in some information about a wall-ink device, and returns the file directory of the image that will be sent to the screen. The image needs to be made in a very specific format. If you're implementing a scheduling plugin, you'll probably be able to copy/paste an existing plugin's getImage function. If you run into difficulties, please contact one of the project's developers.
+
+#### getDeviceType($device)
+This function takes in some information about a wall-ink device, and returns some HTML that will be displayed on the edit_device page to help an admin choose what type of device it is (the name of this function is a little confusing). If you're implementing a scheduling plugin, you'll probably be able to copy/paste an existing plugin's getDeviceType function. If you run into difficulties, please contact one of the project's developers.
 
 # Device Manager
 The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.

@@ -6,6 +6,7 @@ interface iPlugin {
     public function getResources($config);
     public function getSchedule($config, $resourceId);
     public function getImage($config, $device);
+    public function getDeviceType($device);
 }
 $plugins = array();
 ?>
