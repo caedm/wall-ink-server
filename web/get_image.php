@@ -36,7 +36,7 @@
             }
             foreach ($plugins as $plugin) {
                 if ($plugin->getIndex() == $device["scheduling_system"]) {
-                    $file = $plugin->getImage($config, $mac_address, $voltage, $device);
+                    $file = $plugin->getImage($config, $device);
                 }
             }
         }

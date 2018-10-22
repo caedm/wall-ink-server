@@ -5,7 +5,7 @@ interface iPlugin {
     public function isActive($config);
     public function getResources($config);
     public function getSchedule($config, $resourceId);
-    public Function getImage($config, $macAddress, $voltage, $device);
+    public Function getImage($config, $device);
 }
 $plugins = array();
 ?>

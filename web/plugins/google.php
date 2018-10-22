@@ -24,34 +24,10 @@ if ($config->googleIntegrationActive == "true") {
             require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/quickstart.php");
             return google_getSchedule($resourceId);
         }
-        public Function getImage($config, $macAddress, $voltage, $device) {
-            $date=`date -d "+4 minutes" +%Y-%m-%d`;
-            $time=`date -d "+4 minutes" +%H:%M`;
-            $macAddressInfoFilePath = "image_data/" . $macAddress . ".info";
-            $macAddressInfo = $macAddress;
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $date;
-            $macAddressInfo .= $time;
-            $macAddressInfo .= $device["device_type"];
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $voltage;
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $device["orientation"];
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $device["resource_id"];
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $config->googleCalendarDisplayUrl;
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $config->googleCalendarQrCodeBaseUrlBeginning;
-            $macAddressInfo .= "\n";
-            $macAddressInfo .= $config->googleCalendarQrCodeBaseUrlEnd;
-            $macAddressInfo .= "\n";
+        public Function getImage($config, $device) {
+            require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
             $macAddressInfo .= $this->getSchedule($config, $device["resource_id"]);
-            $macAddressInfoFile = fopen("$macAddressInfoFilePath", "w") or die("Unable to open file");
-            fwrite($macAddressInfoFile, $macAddressInfo);
-            `./genimg $macAddressInfoFilePath`;
-            $imagePath = "./image_data/" . $macAddress . ".compressed";
-            return $imagePath;
+            return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]));
         }
     }
     $google = new googlePlugin;
