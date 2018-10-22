@@ -35,7 +35,7 @@ ini_set('display_errors', '1');
             echo "<input type=\"text\" id=\"mac_address\" name=\"new_mac_address\" value=\"$device[mac_address]\">";
         echo "</div>";
         echo "<div class=\"field\">";
-            echo "<label for=\"new_scheduling_system\">Scheduling System:</label>";
+            echo "<label for=\"new_scheduling_system\">Plugin</label>";
             echo "<select id=\"scheduling_system\" name=\"new_scheduling_system\">";
                 foreach ($plugins as $plugin) {
                     echo "<option value=\"";
@@ -166,7 +166,7 @@ ini_set('display_errors', '1');
                     echo ">";
                 echo "</li>";
                 echo "<li>";
-                    echo "<label for=\"7\">7\" landscape for event spaces</label>";
+                    echo "<label for=\"7\">7\" Landscape for event spaces</label>";
                     echo "<input type=\"radio\" id=\"type_11\" name=\"new_device_type\" value=\"11\"";
                     if ($device['device_type'] == 11) {
                         echo " checked";
