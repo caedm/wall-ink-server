@@ -12,9 +12,9 @@ web/log.txt
 *.o
 QrCodeGeneratorWorker
 QrCodeGeneratorDemo
-web/google/client_secret.json
-web/google/token.json
-web/google/gcal
+web/plugin_dependencies/google/client_secret.json
+web/plugin_dependencies/google/token.json
+web/plugin_dependencies/google/gcal
 web/config/database.sh
 web/config/dbconfig.php
 web/config/settings.cfg
