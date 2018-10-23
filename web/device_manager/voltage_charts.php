@@ -24,11 +24,11 @@ function printResult($devices, $rooms) {
 
 }
 
-#require_once("print_info.php");
-#echo phpversion();
-#error_reporting(E_ALL);
-#ini_set('display_errors', '1');
 include '../config/dbconfig.php';
+if ($config->debugModeActive == "true") {
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+}
 $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
 $devices = mysqli_query($mysqli, "SELECT * FROM devices");
 $rooms = array();

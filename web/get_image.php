@@ -1,16 +1,16 @@
 <?php
+    require('config/dbconfig.php');
     #Debug stuff
-    #require_once("print_info.php");
-    #printInfo($_POST);
-    #error_reporting(E_ALL);
-    #ini_set('display_errors', '1');
+    if ($config->debugModeActive == "true") {
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+    }
 
     $mac_address = $_GET["mac_address"];
     $voltage = $_GET["voltage"];
     $firmware_version = $_GET["firmware"];
     $errorCode = $_GET["error"];
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1 && preg_match('/^[[:digit:]]*$/', $errorCode) === 1) {
-        include 'config/dbconfig.php';
 
         //get additional info
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);

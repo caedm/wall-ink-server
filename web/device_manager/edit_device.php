@@ -2,10 +2,13 @@
 <?php include 'css/edit_device.css'; ?>
 </style>
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+    require('../config/dbconfig.php');
+    #Debug stuff
+    if ($config->debugModeActive == "true") {
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+    }
     $device_id = $_GET["device_id"];
-    include '../config/dbconfig.php';
     if ($_GET["device_id"] == "new") {
         $device = array(
             "mac_address" => "",

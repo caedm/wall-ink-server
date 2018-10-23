@@ -1,11 +1,9 @@
 <?php
     #Debug stuff
-    #require_once("print_info.php");
-    #printInfo($_POST);
-
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    if ($config->debugModeActive == "true") {
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+    }
 
     $mac_address = $_GET["mac_address"];
     $png = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".png";
