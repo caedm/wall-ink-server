@@ -25,7 +25,7 @@
             foreach ($plugins as $plugin) {
                 if ($plugin->getIndex() == $device["scheduling_system"]) {
                     $device["orientation"] = 0;
-                    $compressedFile = $plugin->getImage($config, $mac_address, 3, $device);
+                    $compressedFile = $plugin->getImage($config, $device);
                 }
             }
             $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address;

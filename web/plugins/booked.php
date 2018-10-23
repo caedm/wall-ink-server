@@ -48,7 +48,6 @@ if ($config->bookedIntegrationActive == "true") {
         }
         public function getImage($config, $device) {
             require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
-            $macAddressInfo .= $this->getSchedule($config, $device["resource_id"]);
             return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]));
         }
         public function getDeviceType($device) {
