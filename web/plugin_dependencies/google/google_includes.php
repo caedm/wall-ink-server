@@ -10,11 +10,11 @@ function getClient()
     $client = new Google_Client();
     $client->setApplicationName('Google Calendar API PHP Quickstart');
     $client->setScopes(Google_Service_Calendar::CALENDAR_READONLY);
-    $client->setAuthConfig('client_secret.json');
+    $client->setAuthConfig("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/client_secret.json");
     $client->setAccessType('offline');
 
     // Load previously authorized credentials from a file.
-    $credentialsPath = expandHomeDirectory('token.json');
+    $credentialsPath = "$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/token.json";
     if (file_exists($credentialsPath)) {
         $accessToken = json_decode(file_get_contents($credentialsPath), true);
     } else {
@@ -57,32 +57,3 @@ function expandHomeDirectory($path)
     }
     return str_replace('~', realpath($homeDirectory), $path);
 }
-
-// Set Timezone manually.  Google api complains otherwise for some reason
-date_default_timezone_set('America/Denver');
-
-
-// Get the API client and construct the service object.
-$client = getClient();
-$service = new Google_Service_Calendar($client);
-
-$calendarList = $service->calendarList->listCalendarList();
-
-while(true) {
-  foreach ($calendarList->getItems() as $calendarListEntry) {
-    echo $calendarListEntry->getSummary();
-    echo "\n";
-    echo $calendarListEntry->getId();
-    echo "\n";
-  }
-  $pageToken = $calendarList->getNextPageToken();
-  if ($pageToken) {
-    $optParams = array('pageToken' => $pageToken);
-    $calendarList = $service->calendarList->listCalendarList($optParams);
-  } else {
-    break;
-  }
-}
-
-
-
