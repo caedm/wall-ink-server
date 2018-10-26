@@ -10,7 +10,7 @@ function getClient()
     $client = new Google_Client();
     $client->setApplicationName('Google Calendar API PHP Quickstart');
     $client->setScopes(Google_Service_Calendar::CALENDAR_READONLY);
-    $client->setAuthConfig("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/client_secret.json");
+    $client->setAuthConfig("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/credentials.json");
     $client->setAccessType('offline');
 
     // Load previously authorized credentials from a file.
