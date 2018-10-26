@@ -71,7 +71,7 @@ This function will gather data from your scheduling software and format it in a 
 
 <img src= "https://i.imgur.com/NNI1ogo.png"  width="300">
 
-The assumption of the engine that creates the images as seen above, is that the schedule returned by getSchedule() is just for the current date.  There is currently no implementation of schedule images that cover multiple days, or a week or a month.  Just the current day.
+The assumption of the engine that creates the images as seen above, is that the schedule returned by getSchedule() is just for the current date.  There is currently no implementation of schedule images that cover multiple days, or a week or a month, just the current day.
 
 This getSchedule() function must return a string formatted like the one below:
 ```
