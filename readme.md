@@ -67,9 +67,14 @@ This function returns either the string "true" or the string "false". This is an
 This function returns an array with resource IDs (a unique ID corresponding to a scheduleable resource) as the keys and resource names as the values.  This information is used to fill the drop down menu in the device manager when selecting which resource will be associated with a particular wall-ink device.
 
 #### getSchedule($config, $resourceId)
-This function will gather data from your scheduling software and format it in a specific manner that will be used to generate images that a wall-ink device can display.  The schedule returned from getSchedule will be passed into the scheduleGetImage() function for further processing.
+This function will gather data from your scheduling software and format it in a specific manner that will be used to generate images that a wall-ink device can display.  The schedule returned from getSchedule will be passed into the scheduleGetImage() function to create images as seen below.
 
-The assumption of the engine that creates the images as seen below, is that the schedule returned by getSchedule() is just for the current date.  
+<img src= "https://i.imgur.com/NNI1ogo.png"  width="300">
+
+The assumption of the engine that creates the images as seen above, is that the schedule returned by getSchedule() is just for the current date.  
+
+
+
 
 This getSchedule() function must return a string formatted like the one below:
 ```
