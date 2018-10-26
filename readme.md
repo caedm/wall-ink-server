@@ -55,19 +55,23 @@ interface iPlugin {
 You then need to add an instance of your plugin to the ```plugins``` array defined in the web/plugin_dependencies/iPlugin.php file. When you've implemented all this, place your plugin in the web/plugins/ directory. Any settings relevant to your plugin (such as whether it is active) can be added to the web/config/settings.cfg file. Here are some details about the different functions you'll need to implement:
 
 #### getIndex()
-This function needs to return a non-negative integer that is not the same as the integer returned by any of the other plugins. A single or double-digit number is fine, just check first that you won't be colliding with other plugins.
+This function needs to return a non-negative integer that is not the same as the integer returned by any of the other plugins. A single or double-digit number is fine, just check first that you won't be colliding with other plugins.  This non-negative integer will be used by the device manager database to keep track of which wall-ink device is associated with which plugin.
 
 #### getName()
-This function returns a string containing the name of your plugin. For example, you might use ```return 'Exchange';```
+This function returns a string containing the name of your plugin. For example, you might use ```return 'Exchange';```  This string is used in the device manager in the drop-down list of plugins to choose from.
 
 #### isActive($config)
-This function returns either the string "true" or the string "false". This should probably be changed later.
+This function returns either the string "true" or the string "false". This is an aid for debugging purposes to turn plugins on and off.  There may be unexpected results if devices exist in the device manager database for a particular plugin, and that plugin is either inactive or removed.
 
 #### getResources($config)
-This function returns an array with resource IDs (a unique ID corresponding to a scheduleable resource) as the keys and resource names as the values.
+This function returns an array with resource IDs (a unique ID corresponding to a scheduleable resource) as the keys and resource names as the values.  This information is used to fill the drop down menu in the device manager when selecting which resource will be associated with a particular wall-ink device.
 
 #### getSchedule($config, $resourceId)
-This function returns a string formatted like the one below:
+This function will gather data from your scheduling software and format it in a specific manner that will be used to generate images that a wall-ink device can display.  The schedule returned from getSchedule will be passed into the scheduleGetImage() function for further processing.
+
+The assumption of the engine that creates the images as seen below, is that the schedule returned by getSchedule() is just for the current date.  
+
+This getSchedule() function must return a string formatted like the one below:
 ```
 CTB 450 Group Space 2
 Yacht Club Meeting
@@ -82,6 +86,8 @@ The first line is the name of the room or resource being scheduled. This line is
 * Line 1: The name of the reservation
 * Line 2: The beginning time/date of the reservation, in the format shown above
 * Line 3: The ending time/date of the reservation, in the format shown above
+
+
 
 #### getImage($config, $device)
 This function takes in some information about a wall-ink device, and returns the file directory of the image that will be sent to the screen. The image needs to be made in a very specific format. If you're implementing a scheduling plugin, you'll probably be able to copy/paste an existing plugin's getImage function. If you run into difficulties, please contact one of the project's developers.
