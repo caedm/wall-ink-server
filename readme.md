@@ -14,11 +14,11 @@ The following diagram roughly illustrates the information passed between the par
 ![Door display sequence diagram](https://i.imgur.com/YZ32F0h.png)
 
 # Installation
-1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```go```, ```make``` (tested with GNU Make), MariaDB or MySQL
-1. Clone this repo
+1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```make``` (tested with GNU Make), MariaDB or MySQL
+1. Clone this repo ```git clone https://github.com/caedm/wall-ink-server```
 1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```  See the wiki article on [settings.cfg](https://github.com/caedm/wall-ink-server/wiki/settings.cfg) for a full explanation of each setting.
-1. Create the table in mariadb or mysql with ```mysql -h <your db server> -u <your db username> -p <your db name> < setup.sql```
-1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web presence.
+1. Create the table in mariadb or mysql by running the setup_sql.sh script in the wall-ink-server directory ```./setup_sql.sh```.  This script will only be successful if valid device database settings were set in the settings.cfg file above. 
+1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web site.
 1. (optional) If you want to use the built-in [voltage monitoring tool](https://github.com/caedm/wall-ink-server/wiki/voltage-monitoring), follow the steps below:
     1. Install the optional ```rrdtool``` dependency
     1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to source the correct web/config/database.sh file with your settings in them.  This should be on line 3 of collectData.sh.
