@@ -83,12 +83,12 @@ enum {
 //flag for verbose mode
 bool verbose = false;
 
-//prototype funtion for processing the data
+//prototype function for processing the data
 int process_data(const char * image_key, 
                     const uint8_t * data, 
                     int data_size);
 
-//helper function to generate hex string of hash data
+//helper function to generate a hex string of hash data
 char * get_hex_string(uint8_t * out_string, 
                         const uint8_t * data, 
                         uint16_t data_size);
@@ -102,10 +102,6 @@ char * get_raw_string(uint8_t * out_string,
                         uint16_t data_size);
 
 
-
-//initialize the main()
-//
-//
 int main(int argc, char **argv){
 
     //variable to store the program name
@@ -189,7 +185,7 @@ int main(int argc, char **argv){
                 return RET_ERROR; 
                 break;
             case '?':
-                //if invalid option
+                //if it is an invalid option
                 if(isprint(optopt)){
                     fprintf(stderr, "Invalid option '-%c' \n", optopt);
                 } else {
@@ -353,7 +349,7 @@ int process_data(const char * image_key,
     time_t next_time_t = (time_t)*((uint32_t *) next_time);
 
     //get ascii format of the time, store in strings 
-    //this keeps the values because if not stored in strings
+    //this keeps the values because if not stored in strings then
     //when you call localtime() it uses an internal pointer which
     //can be overwritten with multiple calls.
     char compressed_str[OUTPUT_STR_BUFF];
@@ -448,7 +444,7 @@ int print_hex_string(const uint8_t * data, uint16_t data_size){
     return err;
 } 
 
-//function to that returns a string of the hexadecimal format of given data
+//function to that returns a string in hexadecimal format of the  given data
 char * get_hex_string(uint8_t * out_string, 
                         const uint8_t * data, 
                         uint16_t data_size){

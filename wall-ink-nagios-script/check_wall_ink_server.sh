@@ -279,6 +279,7 @@ if [ $http_code -eq "200" ]; then
         fi
 
         #if the C code exited with an error
+        #based on the return value, give proper output and exit code
         case $c_exit_code in
             0)
                 echo "${term_green}SUCCESS - data is valid${term_reset}" >&2
