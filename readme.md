@@ -39,9 +39,9 @@ To build and deploy to the test server (hosted at ```$webdirectory/test```), go 
 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 # Plugins
-The wall-ink-server can deliver any image to a wall-ink device.  Plugins allow additional code to be added to the wall-ink-server to add integration of any API or code to generate images specific to your application.  
+The wall-ink-server can deliver any image to a wall-ink device.  [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) allow [additional code](https://github.com/caedm/wall-ink-server/wiki/Coding-a-new-plugin) to be added to the wall-ink-server to add integration of any API or code to generate images specific to your application.  
 
-A special trivial case for adding a new plugin would be to add an additional "scheduler" like Outlook, or iCal, etc.  The difficult part of writing an engine for creating images for a schedule on a wall-ink device has already been written, and is in use by several plugins that are already part of the wall-ink-server project.  All that is necesary is to make API calls to facilitate a few functions that format text. 
+A [special trivial case for adding a new plugin would be to add an additional "scheduler"](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture#what-is-a-scheduler-plugin) like Outlook, or iCal, etc.  The difficult part of writing an engine for creating images for a schedule on a wall-ink device has already been written, and is in use by several plugins that are already part of the wall-ink-server project.  All that is necesary is to make API calls to facilitate a few functions that format text. 
 
 # Device Manager
 The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
