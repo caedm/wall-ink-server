@@ -14,79 +14,34 @@ The following diagram roughly illustrates the information passed between the par
 ![Door display sequence diagram](https://i.imgur.com/YZ32F0h.png)
 
 # Installation
-1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```go```, ```make``` (tested with GNU Make), MariaDB or MySQL
-1. Clone this repo
+1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```make``` (tested with GNU Make), MariaDB or MySQL
+1. Clone this repo ```git clone https://github.com/caedm/wall-ink-server```
 1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```  See the wiki article on [settings.cfg](https://github.com/caedm/wall-ink-server/wiki/settings.cfg) for a full explanation of each setting.
-1. Create the table in mariadb or mysql with ```mysql -h <your db server> -u <your db username> -p <your db name> < setup.sql```
-1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web presence.
+1. Create the table in mariadb or mysql by running the setup_sql.sh script in the wall-ink-server directory ```./setup_sql.sh```.  This script will only be successful if valid device database settings were set in the settings.cfg file above. 
+1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web site.
 1. (optional) If you want to use the built-in [voltage monitoring tool](https://github.com/caedm/wall-ink-server/wiki/voltage-monitoring), follow the steps below:
     1. Install the optional ```rrdtool``` dependency
     1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to source the correct web/config/database.sh file with your settings in them.  This should be on line 3 of collectData.sh.
     1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/voltage_monitor/collectData.sh``` script once every 30 minutes
 1. (optional) For those using Google Calendar, follow the steps below:
-    1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/go to enable the Google Calendar API
-    1. Save the ```client_secret.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json``` 
-    1. Open terminal and navigate to ```wall-ink-server/image_gen/web/google```
-    1. Run the command ```./gcal``` and follow the onscreen instructions
-    1. Save the ```token.json``` file you got from the step above to ```wall-ink-server/image_gen/web/google/client_secret.json```
-1. Copy the ```key.h.example``` to ```key.h``` and edit the file with your image key; don't forget to also edit the key in the Arduino sketch!
-1. (optional) Follow the instructions under the **Integrating with other scheduling systems** header to create a plugin to integrate with your own calendaring system, if there isn't already one This process is about to change for the better, stay tuned!
+    1. Install the dependency ```php``` necessary run the google API key software from the command line
+    1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/php to enable the Google Calendar API
+    1. Save the ```credentials.json``` file you got from the step above to ```wall-ink-server/web/plugin_dependencies/google/credentials.json``` 
+    1. Open terminal and navigate to ```wall-ink-server/web/plugin_dependencies/google```
+    1. Run the command ```php ./quickstart.php``` from a terminal and follow the onscreen instructions.  It will have you paste a url in to a browser to activate the API key.  You will copy a line of text back from google and past it back into the quickstart.php script on the command line.  
+    1. The quickstart.php file should now create a new .json file ```wall-ink-server/web/plugin_dependencies/google/token.json``` using both the credentials.json file you downloaded, and the phrase pasted into the quickstart.php script.  If the API keys were successfully created, running quickstart.php should display a list of calendars available from the google API to the command line.  You can use the quickstart.php script from the command line at any time to verify that the google API keys are still working.
+1. Copy the ```key.h.example``` to ```key.h``` and edit the file with your image key; don't forget to also edit the key in the Arduino sketch!  See the wiki article on [image security](https://github.com/caedm/wall-ink-server/wiki/image_security) to understand the use and purpose of key.h
+1. (optional) Create a [plugin](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) to integrate with your own calendaring system, or for a whole different use case like a weather station or a bus schedule.
 1. Follow the steps below to build the project
 
 # Build
 To build and deploy to the test server (hosted at ```$webdirectory/test```), go to ```wall-ink-server/``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at your web directory as defined in settings.cfg), use the command ```make deploy``` instead.
 
 After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
+# Plugins
+The wall-ink-server can deliver any image to a wall-ink device.  [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) allow [additional code](https://github.com/caedm/wall-ink-server/wiki/Coding-a-new-plugin) to be added to the wall-ink-server to add integration of any API or code to generate images specific to your application.  
 
-# Integrating with other scheduling systems
-If you want to integrate with a scheduling system other than Booked or Google Calendar, you need to create your own plugin. This isn't too hard! All your plugin needs to do is implement the following interface in PHP:
-```
-interface iPlugin {
-    public function getIndex();
-    public function getName();
-    public function isActive($config);
-    public function getResources($config);
-    public function getSchedule($config, $resourceId);
-    public function getImage($config, $device);
-    public function getDeviceType($device);
-}
-```
-You then need to add an instance of your plugin to the ```plugins``` array defined in the web/plugin_dependencies/iPlugin.php file. When you've implemented all this, place your plugin in the web/plugins/ directory. Any settings relevant to your plugin (such as whether it is active) can be added to the web/config/settings.cfg file. Here are some details about the different functions you'll need to implement:
-
-#### getIndex()
-This function needs to return a non-negative integer that is not the same as the integer returned by any of the other plugins. A single or double-digit number is fine, just check first that you won't be colliding with other plugins.
-
-#### getName()
-This function returns a string containing the name of your plugin. For example, you might use ```return 'Exchange';```
-
-#### isActive($config)
-This function returns either the string "true" or the string "false". This should probably be changed later.
-
-#### getResources($config)
-This function returns an array with resource IDs (a unique ID corresponding to a scheduleable resource) as the keys and resource names as the values.
-
-#### getSchedule($config, $resourceId)
-This function returns a string formatted like the one below:
-```
-CTB 450 Group Space 2
-Yacht Club Meeting
-2018-06-25 09:00:00
-2018-06-25 13:30:00
-Test reservation
-2018-06-25 15:00:00
-2018-06-25 15:30:00
-```
-The first line is the name of the room or resource being scheduled. This line is followed by information about any number of events, meetings, or other reservations. Each reservation is formatted in the following way:
-
-* Line 1: The name of the reservation
-* Line 2: The beginning time/date of the reservation, in the format shown above
-* Line 3: The ending time/date of the reservation, in the format shown above
-
-#### getImage($config, $device)
-This function takes in some information about a wall-ink device, and returns the file directory of the image that will be sent to the screen. The image needs to be made in a very specific format. If you're implementing a scheduling plugin, you'll probably be able to copy/paste an existing plugin's getImage function. If you run into difficulties, please contact one of the project's developers.
-
-#### getDeviceType($device)
-This function takes in some information about a wall-ink device, and returns some HTML that will be displayed on the edit_device page to help an admin choose what type of device it is (the name of this function is a little confusing). If you're implementing a scheduling plugin, you'll probably be able to copy/paste an existing plugin's getDeviceType function. If you run into difficulties, please contact one of the project's developers.
+A [special trivial case for adding a new plugin would be to add an additional "scheduler"](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture#what-is-a-scheduler-plugin) like Outlook, or iCal, etc.  The difficult part of writing an engine for creating images for a schedule on a wall-ink device has already been written, and is in use by several plugins that are already part of the wall-ink-server project.  All that is necesary is to make API calls to facilitate a few functions that format text. 
 
 # Device Manager
 The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
