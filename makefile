@@ -1,6 +1,6 @@
 CXXFLAGS += -static -O1 -g -std=c++11
 LIBSRC = BitBuffer QrCode QrSegment compressImage sha1 layouts Adafruit_GFX
-objects = image.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
+objects = image.o rawToCompressed.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
 VPATH = qr_code_generator:web:Adafruit-GFX-Library
 CXX=g++
 CC=gcc
@@ -16,7 +16,7 @@ test:
 		for var in \$$(compgen -v); do export \$$var; done; \
 		$(MAKE) $@"
 else
-test: genimg pbmToCompressed genconfig 
+test: genimg pbmToCompressed genconfig rawToCompressed
 	source ./web/config/settings.cfg
 	mkdir -p $(buildTimeWebDirectory)/test
 	mkdir -p $(buildTimeWebDirectory)/test/log
@@ -33,7 +33,7 @@ deploy:
 		for var in \$$(compgen -v); do export \$$var; done; \
 		$(MAKE) $@"
 else
-deploy: genimg pbmToCompressed genconfig 
+deploy: genimg pbmToCompressed genconfig rawToCompressed
 	source ./web/config/settings.cfg
 	mkdir -p $(buildTimeWebDirectory)/log
 	mkdir -p $(buildTimeWebDirectory)/image_data
@@ -66,8 +66,12 @@ genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o layouts.o Adaf
 pbmToCompressed : pbmToCompressed.o compressImage.o
 	$(CXX) pbmToCompressed.o compressImage.o sha1.o $(CXXFLAGS) -o web/pbmToCompressed
 
+rawToCompressed : rawToCompressed.o compressImage.o
+	$(CXX) rawToCompressed.o compressImage.o sha1.o $(CXXFLAGS) -o web/rawToCompressed
+
 image.o : image.h
 pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h
+rawToCompressed.o : rawToCompressed.cpp compressImage.cpp compressImage.h
 compressImage.o : compressImage.h sha1.o key.h
 BitBuffer.o : BitBuffer.hpp
 QrCode.o : QrCode.hpp
@@ -79,6 +83,7 @@ Adafruit_GFX.o : Adafruit_GFX.h
 debug:
 	$(CXX) image.cpp $(LIBSRC:=.cpp) $(CXXFLAGS) -g -o web/genimg
 	$(CXX) pbmToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o web/pbmToCompressed
+	$(CXX) rawToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o web/rawToCompressed
 
 clean : 
 	rm $(objects)
