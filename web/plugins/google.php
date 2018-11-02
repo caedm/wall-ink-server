@@ -26,8 +26,7 @@ if ($config->googleIntegrationActive == "true") {
         }
         public function getImage($config, $device) {
             require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
-            $macAddressInfo .= $this->getSchedule($config, $device["resource_id"]);
-            return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]));
+            return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]), $config->googleDisplayUrl, $config->googleQrCodeBaseUrlBeginning, $config->googleQrCodeBaseUrlEnd);
         }
         public function getDeviceType($device) {
             require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");

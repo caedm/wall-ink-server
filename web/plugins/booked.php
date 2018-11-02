@@ -1,5 +1,5 @@
 <?php
-require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
+require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
 require("$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php");
 if ($config->bookedIntegrationActive == "true") {
     class bookedPlugin implements iPlugin {
