@@ -48,7 +48,7 @@ if ($config->staticImagesPluginActive == "true") {
             $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "pbm";
             $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"];
             $static = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "static";
-            `convert $sourceImage -rotate 180 -negate -resize $size $pbm`;
+            `convert $sourceImage -rotate 180 -negate -resize $size\! $pbm`;
             `$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh $pbm $raw`;
             `$_SERVER[DOCUMENT_ROOT]/rawToCompressed $raw $static $width $height 1800`;
             return $static;
