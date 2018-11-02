@@ -10,6 +10,13 @@
     $voltage = $_GET["voltage"];
     $firmware_version = $_GET["firmware"];
     $errorCode = $_GET["error"];
+
+    // Log contact from screen to a log file
+    $logfile = "log/" . $mac_address . ".log";
+    $log_entry = date('Y-m-d H:i:s') . " MAC Address: " . $mac_address . " Voltage: " . $voltage . " Error Code: " . $errorCode;
+
+    file_put_contents($logfile, $log_entry, FILE_APPEND | LOCK_EX);
+
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1 && preg_match('/^[[:digit:]]*$/', $errorCode) === 1) {
 
         //get additional info
