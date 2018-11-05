@@ -41,16 +41,21 @@ if ($config->staticImagesPluginActive == "true") {
             $imagesDir = $config->runTimeWebDirectory . "/plugin_dependencies/static_images/" . $device["resource_id"] . '/*';
             $images = glob($imagesDir);
 
-            $sourceImage = "";
-            foreach ($images as $image) {
-                $sourceImage = $image;
-            }
+            #$sourceImage = "";
+            #foreach ($images as $image) {
+                #$sourceImage = $image;
+            #}
+            $timeIncrement = 300;
+            $nextRefreshTime = $timeIncrement - ($_SERVER['REQUEST_TIME'] % $timeIncrement);
+            #$images = array_values($images);
+            #sort($images);
+            $sourceImage = $images[floor($_SERVER['REQUEST_TIME'] / $timeIncrement) % count($images)];
             $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "pbm";
             $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"];
             $static = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "static";
             `convert $sourceImage -rotate 180 -negate -resize $size\! $pbm`;
             `$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh $pbm $raw`;
-            `$_SERVER[DOCUMENT_ROOT]/rawToCompressed $raw $static $width $height 1800`;
+            `$_SERVER[DOCUMENT_ROOT]/rawToCompressed $raw $static $width $height $nextRefreshTime`;
             return $static;
         }
         public function getDeviceType($device) {

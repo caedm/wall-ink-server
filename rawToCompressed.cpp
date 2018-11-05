@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     }
 
     //generate compressed image
-    vector<unsigned char> compressed = compressImage(image, 1800, x_res, y_res);
+    vector<unsigned char> compressed = compressImage(image, sleepTime, x_res, y_res);
 
     free(image);
 
