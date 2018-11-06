@@ -35,7 +35,7 @@ class exampleSchedulerPlugin implements iPlugin {
         $rooms = array("1"=>"Conference Room 1","2"=>"Conference Room 2","3"=>"Banquet Room","4"=>"Patio","5"=>"Theater");
         return $rooms;
     }
-    public function getSchedule($config, $resourceId) {
+    private function getSchedule($config, $resourceId) {
 
         // To assist in debugging the getSchedule command, look in your web directory in the 
         // image_data folder.  Look for a file named <mac_address>.info which will contain the

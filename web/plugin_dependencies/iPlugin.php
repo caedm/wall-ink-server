@@ -4,7 +4,6 @@ interface iPlugin {
     public function getName();
     public function isActive($config);
     public function getResources($config);
-    public function getSchedule($config, $resourceId);
     public function getImage($config, $device);
     public function getDeviceType($device);
 }

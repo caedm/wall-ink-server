@@ -25,7 +25,7 @@ class bookedPlugin implements iPlugin {
         }
         return $rooms;
     }
-    public function getSchedule($config, $resourceId) {
+    private function getSchedule($config, $resourceId) {
         $mysqli = mysqli_connect(
             $config->bookedDatabaseServer,
             $config->bookedDatabaseUsername,

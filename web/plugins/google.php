@@ -26,7 +26,7 @@ class googlePlugin implements iPlugin {
         }
         return $rooms;
     }
-    public function getSchedule($config, $resourceId) {
+    private function getSchedule($config, $resourceId) {
         require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/google_includes.php");
 
         // Time zone must be set manually, google api complains if set by variable for some reason

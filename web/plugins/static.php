@@ -19,9 +19,6 @@ class staticImagesPlugin implements iPlugin {
         }
         return $configurations;
     }
-    public function getSchedule($config, $resourceId) {
-        return $resourceId;
-    }
     public function getImage($config, $device) {
         $size = "";
         if ($device["device_type"] == 1 || $device["device_type"] == 4 || $device["device_type"] == 6 || $device["device_type"] == 9) {
