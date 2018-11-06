@@ -52,7 +52,7 @@ function printResult($devices, $rooms) {
         echo $device["mac_address"];
         echo "</td>";
         echo "<td class=\"room_name\">";
-        echo $rooms[$device["resource_id"]];
+        echo $rooms[$device['scheduling_system']][$device['resource_id']];
         echo "</td>";
         echo "<td class=\"device_type\">";
         echo $device["device_type"];
@@ -119,7 +119,7 @@ foreach (glob("../plugins/*.php") as $filename) {
     require_once($filename);
 }
 foreach ($plugins as $plugin) {
-    $rooms = $rooms + $plugin->getResources($config);
+    $rooms[ $plugin->getIndex() ] = $rooms + $plugin->getResources($config);
 }
 echo "<script src='js/view_devices.js'></script>";
 printResult($devices, $rooms);
