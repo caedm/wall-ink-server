@@ -1,5 +1,6 @@
 genimg
 pbmToCompressed
+rawToCompressed
 database.sh
 dbconfig.php
 fromDB
@@ -13,6 +14,7 @@ web/log.txt
 QrCodeGeneratorWorker
 QrCodeGeneratorDemo
 web/plugin_dependencies/google/client_secret.json
+web/plugin_dependencies/google/credentials.json
 web/plugin_dependencies/google/token.json
 web/plugin_dependencies/google/gcal
 web/config/database.sh

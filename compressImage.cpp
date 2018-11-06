@@ -83,33 +83,10 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     for (int i = 0; i < 20; i++)
         compressed.push_back(finalHash[i]);
 
-    compressed.push_back(getPixel(0, 0, x_res, y_res, image));
     free(compressedTime);
     free(nextTime);
-    uint32_t pointer = 0;
-    uint8_t counter = 0;
-    uint8_t lastEntry = getPixel(0,0, x_res, y_res, image);
-    while (++pointer < x_res * y_res) {
-       ++counter;
-       if (counter == 0xff) {
-           compressed.push_back(counter);
-#if DEBUG == 1
-           cout << (int) counter << " " << (int) lastEntry << " " << pointer % x_res << "," << pointer / x_res << endl;
-#endif
-           counter = 0;
-           if (pointer < x_res * y_res && getPixel(pointer, 0, x_res, y_res, image) != lastEntry) {
-               compressed.push_back(counter);
-               lastEntry = getPixel(pointer+1, 0, x_res, y_res, image);
-           }
-       } else if (getPixel(pointer, 0, x_res, y_res, image) != lastEntry) {
-           compressed.push_back(counter);
-#if DEBUG == 1
-           cout << (int) counter << " " << (int) lastEntry << " "<< pointer % x_res << "," << pointer / x_res << endl;
-#endif
-           counter = 0;
-           lastEntry = getPixel(pointer, 0, x_res, y_res, image);
-       }
+    for (uint32_t pointer = 0; pointer < x_res* y_res/8; pointer++) {
+        compressed.push_back(image[pointer]);
     }
-    compressed.push_back(++counter);
     return compressed;
 }
