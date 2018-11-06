@@ -36,7 +36,7 @@ foreach (glob("../plugins/*.php") as $filename) {
     require_once($filename);
 }
 foreach ($plugins as $plugin) {
-    $rooms = $rooms + $plugin->getResources();
+    $rooms = $rooms + $plugin->getResources($config);
 }
 printResult($devices, $rooms);
 ?>
