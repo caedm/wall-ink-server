@@ -2,7 +2,7 @@
 <?php include 'css/view_devices.css'; ?>
 </style>
 <?php
-function printResult($devices, $rooms) {
+function printResult($devices, $rooms, $plugins) {
     //Display how many results there were
     #echo "$res->num_rows entries<br>";
 
@@ -18,25 +18,28 @@ function printResult($devices, $rooms) {
     echo "<th class=\"mac_address\" onclick=\"sortTable(0)\">";
     echo "MAC Address";
     echo "</th>";
-    echo "<th class=\"room_name\" onclick=\"sortTable(1)\">";
-    echo "Room Name";
+    echo "<th class=\"plugin_name\" onclick=\"sortTable(1)\">";
+    echo "Plugin";
     echo "</th>";
-    echo "<th class=\"device_type\" onclick=\"sortTable(2)\">";
+    echo "<th class=\"room_name\" onclick=\"sortTable(2)\">";
+    echo "Resource";
+    echo "</th>";
+    echo "<th class=\"device_type\" onclick=\"sortTable(3)\">";
     echo "Device Type";
     echo "</th>";
-    echo "<th class=\"voltage\" onclick=\"sortTable(3)\">";
+    echo "<th class=\"voltage\" onclick=\"sortTable(4)\">";
     echo "Voltage";
     echo "</th>";
-    echo "<th class=\"orientation\" onclick=\"sortTable(4)\">";
+    echo "<th class=\"orientation\" onclick=\"sortTable(5)\">";
     echo "Orientation";
     echo "</th>";
-    echo "<th class=\"firmware_version\" onclick=\"sortTable(5)\">";
+    echo "<th class=\"firmware_version\" onclick=\"sortTable(6)\">";
     echo "Firmware Version";
     echo "</th>";
-    echo "<th class=\"last_checked_in\" onclick=\"sortTable(6)\">";
+    echo "<th class=\"last_checked_in\" onclick=\"sortTable(7)\">";
     echo "Last Checked In";
     echo "</th>";
-    echo "<th class=\"batteries_replaced_date\" onclick=\"sortTable(7)\">";
+    echo "<th class=\"batteries_replaced_date\" onclick=\"sortTable(8)\">";
     echo "Batteries Replaced Date";
     echo "</th>";
 
@@ -51,8 +54,19 @@ function printResult($devices, $rooms) {
         echo "<td class=\"mac_address\">";
         echo $device["mac_address"];
         echo "</td>";
+        echo "<td class=\"plugin_name\">";
+        if (isset($plugins[$device['scheduling_system']])) {
+            echo $plugins[$device['scheduling_system']]->getName();
+        } else {
+            echo "Error: Plugin not active";
+        }
+        echo "</td>";
         echo "<td class=\"room_name\">";
-        echo $rooms[$device['scheduling_system']][$device['resource_id']];
+        if (isset($plugins[$device['scheduling_system']])) {
+            echo $rooms[$device['scheduling_system']][$device['resource_id']];
+        } else {
+            echo "Error: Plugin not active";
+        }
         echo "</td>";
         echo "<td class=\"device_type\">";
         echo $device["device_type"];
@@ -122,5 +136,5 @@ foreach ($plugins as $plugin) {
     $rooms[ $plugin->getIndex() ] = $rooms + $plugin->getResources($config);
 }
 echo "<script src='js/view_devices.js'></script>";
-printResult($devices, $rooms);
+printResult($devices, $rooms, $plugins);
 ?>
