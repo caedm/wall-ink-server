@@ -28,13 +28,20 @@ function deleteLists() {
 var schedulingSystem = document.getElementById("scheduling_system");
 schedulingSystem.addEventListener('change', function() {
     var hiddenFields = document.getElementsByClassName("hidden");
-    for (i = 0; i < hiddenFields.length; i++) {
-        hiddenFields[i].classList.remove("hidden");
+    var numHidden = hiddenFields.length;
+    for (i = 0; i < numHidden; i++) {
+        hiddenFields[0].classList.remove("hidden");
     }
     var resources = document.getElementsByClassName("resource");
     for (i = 0; i < resources.length; i++) {
-        if (i != schedulingSystem.value) {
+        if (resources[i].getAttribute('data-pluginid') != schedulingSystem.value) {
             resources[i].classList.add("hidden");
+        }
+    }
+    var getdevicetype = document.getElementsByClassName("getdevicetype");
+    for (i = 0; i < getdevicetype.length; i++) {
+        if (getdevicetype[i].getAttribute('data-pluginid') != schedulingSystem.value) {
+            getdevicetype[i].classList.add("hidden");
         }
     }
 });

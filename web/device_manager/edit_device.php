@@ -58,6 +58,8 @@
             if ($device["scheduling_system"] != $plugin->getIndex()) {
                 echo " hidden";
             }
+            echo "\" data-pluginid=\"";
+            echo $plugin->getIndex();
             echo "\">";
             echo "<label for=\"new_resource_id\">";
             echo $plugin->getName();
@@ -78,9 +80,9 @@
             echo "</div>";
         }
         foreach ($plugins as $plugin) {
-            if ($device["scheduling_system"] == $plugin->getIndex()) {
+            //if ($device["scheduling_system"] == $plugin->getIndex()) {
                 echo $plugin->getDeviceType($device);
-            }
+            //}
         }
         echo "<fieldset id=\"orientation\" class=\"field\"";
         if ($device['device_type'] == 5 || $device['device_type'] == 8) {

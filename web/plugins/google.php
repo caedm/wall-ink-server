@@ -58,12 +58,12 @@ class googlePlugin implements iPlugin {
         return $schedule;
     }
     public function getImage($config, $device) {
-        require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
+        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
         return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]), $config->googleDisplayUrl, $config->googleQrCodeBaseUrlBeginning, $config->googleQrCodeBaseUrlEnd);
     }
     public function getDeviceType($device) {
-        require("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
-        return schedulingGetDeviceType($device);
+        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
+        return schedulingGetDeviceType($device, $this->getIndex());
     }
 }
 if ($config->googleIntegrationActive == "true") {

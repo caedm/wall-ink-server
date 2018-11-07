@@ -63,7 +63,13 @@ class staticImagesPlugin implements iPlugin {
     }
     public function getDeviceType($device) {
         $getDeviceType = "";
-        $getDeviceType .= "<fieldset class=\"field\">";
+        $getDeviceType .= "<fieldset class=\"field getdevicetype";
+        if ($device['scheduling_system'] != $this->getIndex()) {
+            $getDeviceType .= " hidden";
+        }
+        $getDeviceType .= "\" data-pluginid=\"";
+        $getDeviceType .= $this->getIndex();
+        $getDeviceType .= "\">";
             $getDeviceType .= "<legend>Device Type</legend>";
             $getDeviceType .= "<ul>";
                 $getDeviceType .= "<li>";

@@ -1,7 +1,13 @@
 <?php
-function schedulingGetDeviceType($device) {
+function schedulingGetDeviceType($device, $pluginIndex) {
     $getDeviceType = "";
-    $getDeviceType .= "<fieldset class=\"field\">";
+    $getDeviceType .= "<fieldset class=\"field getdevicetype";
+    if ($device['scheduling_system'] != $pluginIndex) {
+        $getDeviceType .= " hidden";
+    }
+    $getDeviceType .= "\" data-pluginid=\"";
+    $getDeviceType .= $pluginIndex;
+    $getDeviceType .= "\">";
         $getDeviceType .= "<legend>Device Type</legend>";
         $getDeviceType .= "<ul>";
             $getDeviceType .= "<li>";
