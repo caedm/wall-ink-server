@@ -11,15 +11,10 @@
     $firmware_version = $_GET["firmware"];
     $errorCode = $_GET["error"];
 
-    // Log contact from screen to a log file
-    $logfile = "log/" . $mac_address . ".log";
-    $log_entry = date('Y-m-d H:i:s') . " MAC Address: " . $mac_address . " Voltage: " . $voltage . " Error Code: " . $errorCode;
-
-    file_put_contents($logfile, $log_entry, FILE_APPEND | LOCK_EX);
-
+    //Sanity check on incoming url 
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1 && preg_match('/^[[:digit:]]*$/', $errorCode) === 1) {
 
-        //get additional info
+     //get additional info
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
@@ -28,7 +23,6 @@
         $sql_query="UPDATE devices SET firmware_version = \"$firmware_version\" WHERE mac_address = \"$mac_address\"";
         $result = mysqli_query($mysqli, $sql_query);
 
-        $file = "image_data/" . $mac_address . ".static";
         if ($device["voltage"] + 0.35 < "$voltage"){
             $sql_query="UPDATE devices SET batteries_replaced_date = NOW() WHERE mac_address = \"$mac_address\"";
             $result = mysqli_query($mysqli, $sql_query);
@@ -47,6 +41,12 @@
                 }
             }
         }
+
+        // Log contact from a wall-ink device to a log file
+        $logfile = "log/" . $mac_address . ".log";
+        $log_entry = date('Y-m-d H:i:s') . " MAC Address: " . $mac_address . " Voltage: " . $voltage . " Error Code: " . $errorCode . " Plugin: " . $device["scheduling_system"] . " Resource: " . $device["resource_id"] . " Device Type: " . $device["device_type"] . "\n";
+        file_put_contents($logfile, $log_entry, FILE_APPEND | LOCK_EX);
+
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
