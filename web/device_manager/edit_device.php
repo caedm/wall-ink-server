@@ -64,7 +64,7 @@
             echo "<label for=\"new_resource_id\">";
             echo $plugin->getName();
             echo " resource:</label>";
-                echo "<select name=\"new_resource_id\">";
+                echo "<select class=\"new_resource_id\" name=\"new_resource_id\">";
                 foreach ($roomsArray[$plugin->getName()] as $key=>&$room) {
                     echo "<option value=\"";
                     echo $key;
@@ -132,6 +132,6 @@
     echo "</form>";
     echo "</div>";
 
-    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type] />";
+    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&scheduling_system=$device[scheduling_system]&resource_id=$device[resource_id] />"; 
     echo "<script src=\"js/edit_device.js\"></script>";
 ?>

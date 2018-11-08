@@ -1,18 +1,18 @@
 <?php
     #Debug stuff
-    if ($config->debugModeActive == "true") {
+    if ($config->debugModeActive == 'true') {
         error_reporting(E_ALL);
         ini_set('display_errors', '1');
     }
 
-    $mac_address = $_GET["mac_address"];
+    $mac_address = $_GET['mac_address'];
     $png = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".png";
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1) {
         include "$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php";
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
-        if ($_GET["layout"] == 5 || $_GET["layout"] == 8) {
+        if ($_GET['layout'] == 5 || $_GET['layout'] == 8) {
             $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".static.pbm";
             `convert $pbm $png`;
         } else {
@@ -20,9 +20,12 @@
             foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
                 require_once($filename);
             }
+            $device['scheduling_system'] = $_GET['scheduling_system'];
             foreach ($plugins as $plugin) {
-                if ($plugin->getIndex() == $device["scheduling_system"]) {
-                    $device["orientation"] = 0;
+                if ($plugin->getIndex() == $device['scheduling_system']) {
+                    $device['orientation'] = 0;
+                    $device['resource_id'] = $_GET['resource_id'];
+                    $device['device_type'] = $_GET['layout'];
                     $compressedFile = $plugin->getImage($config, $device);
                 }
             }
@@ -31,9 +34,9 @@
         }
         if (file_exists($png)) {
             header('Content-Type: image/png');
-            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-            header("Cache-Control: post-check=0, pre-check=0", false);
-            header("Pragma: no-cache");
+            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+            header('Cache-Control: post-check=0, pre-check=0', false);
+            header('Pragma: no-cache');
             header('Pragma: public');
             readfile($png);
             exit;
