@@ -83,15 +83,9 @@
             echo "</div>";
         }
         foreach ($plugins as $plugin) {
-            //if ($device["scheduling_system"] == $plugin->getIndex()) {
-                echo $plugin->getDeviceType($device);
-            //}
+            echo $plugin->getDeviceType($device);
         }
-        echo "<fieldset id=\"orientation\" class=\"field\"";
-        if ($device['device_type'] == 5 || $device['device_type'] == 8) {
-            echo " style=\"display: none\"";
-        }
-        echo ">";
+        echo "<fieldset id=\"orientation\" class=\"field\">";
             echo "<legend>Display Orientation</legend>";
             echo "<ul>";
                 echo "<li>";
@@ -121,11 +115,7 @@
         echo "</div>";
     echo "</form>";
 
-    echo "<form id=\"upload\" action=\"handle_upload.php\" method=\"post\" enctype=\"multipart/form-data\"";
-    if ($device['device_type'] != 5 && $device['device_type'] != 8) {
-        echo " style=\"display: none\"";
-    }
-    echo ">";
+    echo "<form id=\"upload\" action=\"handle_upload.php\" method=\"post\" enctype=\"multipart/form-data\">";
         echo "<input type=\"file\" name=\"staticImage\">";
         echo "<br>";
         echo "<input type=\"submit\" value=\"Upload\">";

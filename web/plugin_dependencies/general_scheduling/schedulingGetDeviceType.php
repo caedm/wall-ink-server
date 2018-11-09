@@ -43,14 +43,6 @@ function schedulingGetDeviceType($device, $pluginIndex) {
                 $getDeviceType .= ">";
             $getDeviceType .= "</li>";
             $getDeviceType .= "<li>";
-                $getDeviceType .= "<label for=\"8\">4\" Static Image, 30 minute refresh cycle</label>";
-                $getDeviceType .= "<input type=\"radio\" id=\"type_8\" name=\"new_device_type\" value=\"8\"";
-                if ($device['device_type'] == 8 && $device['scheduling_system'] == $pluginIndex) {
-                    $getDeviceType .= " checked";
-                }
-                $getDeviceType .= ">";
-            $getDeviceType .= "</li>";
-            $getDeviceType .= "<li>";
                 $getDeviceType .= "<label for=\"0\">7\" Portrait, 15 minute refresh cycle</label>";
                 $getDeviceType .= "<input type=\"radio\" id=\"type_0\" name=\"new_device_type\" value=\"0\"";
                 if ($device['device_type'] == 0 && $device['scheduling_system'] == $pluginIndex) {
@@ -86,14 +78,6 @@ function schedulingGetDeviceType($device, $pluginIndex) {
                 $getDeviceType .= "<label for=\"10\">7\" Landscape 4 (with QR code), 30 minute refresh cycle, better battery</label>";
                 $getDeviceType .= "<input type=\"radio\" id=\"type_10\" name=\"new_device_type\" value=\"10\"";
                 if ($device['device_type'] == 10 && $device['scheduling_system'] == $pluginIndex) {
-                    $getDeviceType .= " checked";
-                }
-                $getDeviceType .= ">";
-            $getDeviceType .= "</li>";
-            $getDeviceType .= "<li>";
-                $getDeviceType .= "<label for=\"7\">7\" Static Image, 30 minute refresh cycle</label>";
-                $getDeviceType .= "<input type=\"radio\" id=\"type_5\" name=\"new_device_type\" value=\"5\"";
-                if ($device['device_type'] == 5 && $device['scheduling_system'] == $pluginIndex) {
                     $getDeviceType .= " checked";
                 }
                 $getDeviceType .= ">";
