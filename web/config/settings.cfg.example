@@ -27,8 +27,8 @@ exampleSchedulerQrCodeBaseUrlEnd=""
 # ****************************************
 googleIntegrationActive="false"
 googleCalendarDisplayUrl="theoldpurple.com"
-googleCalendarQrCodeBaseUrlBeginning="https://calendar.google.com/calendar/embed?src="
-googleCalendarQrCodeBaseUrlEnd="%40group.calendar.google.com"
+googleCalendarQrCodeBaseUrlBeginning="theoldpurple.com/r.php?r="
+googleCalendarQrCodeBaseUrlEnd=""
 #
 # ****************************************
 # ******   Booked plugin settings   ******
