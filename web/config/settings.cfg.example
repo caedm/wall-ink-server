@@ -1,15 +1,38 @@
+# ****************************************
+# ******  Wall-ink-server settings  ******
+# ****************************************
+buildTimeWebDirectory="/var/www"
+runTimeWebDirectory="/var/www"
+rrdDirectory="/opt/whereveryouwanttoputitreally"
+debugModeActive="false"
+#
+# ****************************************
+# ******  Device Database settings  ******
+# ****************************************
 deviceDatabaseServer="devicedburl"
 deviceDatabaseUsername="devicedbusername"
 deviceDatabasePassword="devicedbpassword"
 deviceDatabaseName="devicedbname"
+#
+# ****************************************
+# ** Example scheduler plugin settings  **
+# ****************************************
 exampleSchedulerActive="true"
 exampleSchedulerDisplayUrl="example.com"
 exampleSchedulerQrCodeBaseUrlBeginning="https://example.com="
 exampleSchedulerQrCodeBaseUrlEnd=""
+#
+# ****************************************
+# *** Google Calendar plugin settings ****
+# ****************************************
 googleIntegrationActive="false"
 googleCalendarDisplayUrl="theoldpurple.com"
 googleCalendarQrCodeBaseUrlBeginning="https://calendar.google.com/calendar/embed?src="
 googleCalendarQrCodeBaseUrlEnd="%40group.calendar.google.com"
+#
+# ****************************************
+# ******   Booked plugin settings   ******
+# ****************************************
 bookedIntegrationActive="false"
 bookedDatabaseServer="bookeddburl"
 bookedDatabaseUsername="bookeddbusername"
@@ -18,8 +41,9 @@ bookedDatabaseName="bookeddbname"
 bookedDisplayUrl="theoldpurple.com"
 bookedQrCodeBaseUrlBeginning="theoldpurple.com/r.php?r="
 bookedQrCodeBaseUrlEnd=""
+#
+# ****************************************
+# ******   Static plugin settings   ******
+# ****************************************
 staticImagesPluginActive="true"
-buildTimeWebDirectory="/var/www"
-runTimeWebDirectory="/var/www"
-rrdDirectory="/opt/whereveryouwanttoputitreally"
-debugModeActive="false"
+#
