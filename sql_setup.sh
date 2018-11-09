@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS \`devices\` (\
   \`notes\` varchar(1000) NOT NULL DEFAULT '',\
   \`height\` int(11) UNSIGNED NOT NULL DEFAULT '384',\
   \`width\` int(11) UNSIGNED NOT NULL DEFAULT '640',\
+  \`is_production\` boolean NOT NULL DEFAULT 1,\
   PRIMARY KEY (\`device_id\`),\
   UNIQUE KEY \`mac_address_UNIQUE\` (\`mac_address\`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;\
-INSERT INTO devices VALUES ('4','58','7','AAAABBBBCCCC','4','1','2018-10-10 08:52:49','2018-10-05 15:53:09','nagios','3','This is a fake device for monitoring the server with Nagios. Change the plugin type to monitor a particular plugin.','384','640');"
+INSERT INTO devices VALUES ('4','58','7','AAAABBBBCCCC','4','1','2018-10-10 08:52:49','2018-10-05 15:53:09','nagios','3','This is a fake device for monitoring the server with Nagios. Change the plugin type to monitor a particular plugin.','384','640','1');"
