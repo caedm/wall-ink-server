@@ -18,7 +18,7 @@ function refreshPreview() {
         }
     }
 
-    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value + "&scheduling_system=" + pluginIndex + "&resource_id=" + resourceId;
+    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value + "&scheduling_system=" + pluginIndex + "&resource_id=" + resourceId + "&voltage=7&width=640&height=384"; //todo remove hardcoding of width and height
 }
 
 inputs = document.getElementsByTagName('input');

@@ -11,10 +11,13 @@
     $device_id = $_GET["device_id"];
     if ($_GET["device_id"] == "new") {
         $device = array(
-            "mac_address" => "",
-            "resource_id" => "",
-            "orientation" => 0,
-            "device_type" => 0,
+            "mac_address" => "0A1B2C3D4E5F",
+            "resource_id" => "1",
+            "orientation" => 1,
+            "device_type" => 7,
+            "voltage" => 7,
+            "width" => 640,
+            "height" => 384,
             "scheduling_system" => 0
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
@@ -132,6 +135,6 @@
     echo "</form>";
     echo "</div>";
 
-    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&scheduling_system=$device[scheduling_system]&resource_id=$device[resource_id] />"; 
+    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&scheduling_system=$device[scheduling_system]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 
     echo "<script src=\"js/edit_device.js\"></script>";
 ?>

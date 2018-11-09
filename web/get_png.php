@@ -12,26 +12,20 @@
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
         $device = $result->fetch_assoc();
-        if ($_GET['layout'] == 5 || $_GET['layout'] == 8) {
-            $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".static.pbm";
-            `convert $pbm $png`;
-        } else {
-            #`./get_image.sh $mac_address $device[voltage] 0 $_GET[layout] 2>&1`;
-            foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
-                require_once($filename);
-            }
-            $device['scheduling_system'] = $_GET['scheduling_system'];
-            foreach ($plugins as $plugin) {
-                if ($plugin->getIndex() == $device['scheduling_system']) {
-                    $device['orientation'] = 0;
-                    $device['resource_id'] = $_GET['resource_id'];
-                    $device['device_type'] = $_GET['layout'];
-                    $compressedFile = $plugin->getImage($config, $device);
-                }
-            }
-            $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address;
-            `./rawToPng.sh $raw $_GET[layout]`;
+        foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
+            require_once($filename);
         }
+        $device['scheduling_system'] = $_GET['scheduling_system'];
+        foreach ($plugins as $plugin) {
+            if ($plugin->getIndex() == $device['scheduling_system']) {
+                $device['orientation'] = 0;
+                $device['resource_id'] = $_GET['resource_id'];
+                $device['device_type'] = $_GET['layout'];
+                $compressedFile = $plugin->getImage($config, $device);
+            }
+        }
+        $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address;
+        `./rawToPng.sh $raw $_GET[layout]`;
         if (file_exists($png)) {
             header('Content-Type: image/png');
             header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -40,6 +34,8 @@
             header('Pragma: public');
             readfile($png);
             exit;
+        } else {
+            echo "error: image not found";
         }
     } else {
         echo "REGEX doesn't match";
