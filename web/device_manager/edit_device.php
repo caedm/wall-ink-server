@@ -115,14 +115,6 @@
         echo "</div>";
     echo "</form>";
 
-    echo "<form id=\"upload\" action=\"handle_upload.php\" method=\"post\" enctype=\"multipart/form-data\">";
-        echo "<input type=\"file\" name=\"staticImage\">";
-        echo "<br>";
-        echo "<input type=\"submit\" value=\"Upload\">";
-        echo "<input type=\"hidden\" id=\"hidden_mac\" name=\"mac_address\" value=\"$device[mac_address]\">";
-        echo "<input type=\"hidden\" id=\"hidden_device_id\" name=\"device_id\" value=\"$device[device_id]\">";
-        echo "<input type=\"hidden\" id=\"hidden_device_type\" name=\"layout\" value=\"$device[device_type]\">";
-    echo "</form>";
     echo "</div>";
 
     echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&scheduling_system=$device[scheduling_system]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 

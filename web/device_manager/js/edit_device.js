@@ -1,14 +1,6 @@
 function refreshPreview() {
-    if (document.querySelector('input[name="new_device_type"]:checked').value == 5 || document.querySelector('input[name="new_device_type"]:checked').value == 8) {
-        document.getElementById('orientation').style.display = "none";
-        document.getElementById('upload').style.display = "initial";
-    } else {
-        document.getElementById('orientation').style.display = "initial";
-        document.getElementById('upload').style.display = "none";
-    }
 
-    document.getElementById('hidden_mac').value = document.getElementById('mac_address').value;
-    document.getElementById('hidden_device_type').value = document.querySelector('input[name="new_device_type"]:checked').value;
+    document.getElementById('orientation').style.display = "initial";
     var pluginIndex = document.getElementById('scheduling_system').value;
     var resources = document.getElementsByClassName('new_resource_id');
     var resourceId = 1;

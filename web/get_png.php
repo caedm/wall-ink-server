@@ -11,7 +11,14 @@
         include "$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php";
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
-        $device = $result->fetch_assoc();
+        if ($result->numRows == 0) {
+            $device = array();
+            $device['mac_address'] = $mac_address;
+            $device['voltage'] = 7;
+            $device['firmware_version'] = "png";
+        } else {
+            $device = $result->fetch_assoc();
+        }
         foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
             require_once($filename);
         }
