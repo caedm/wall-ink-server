@@ -59,7 +59,7 @@ class googlePlugin implements iPlugin {
     }
     public function getImage($config, $device) {
         require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
-        return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]), $config->googleDisplayUrl, $config->googleQrCodeBaseUrlBeginning, $config->googleQrCodeBaseUrlEnd);
+        return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]), $config->googleCalendarDisplayUrl, $config->googleCalendarQrCodeBaseUrlBeginning, $config->googleCalendarQrCodeBaseUrlEnd);
     }
     public function getDeviceType($device) {
         require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
