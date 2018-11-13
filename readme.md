@@ -2,7 +2,7 @@
 This project is a server-side companion to the [Wall-Ink](https://github.com/caedm/wall-ink) project. The focus is on scheduling systems, but it could be used for other digital signage purposes also. Right now it integrates with the Booked scheduling system and with Google Calendar, but it could be integrated with any scheduling system that has a decent API.
 
 # Summary
-The door display server houses several important functions:
+The wall-ink-server houses several important functions:
 
 * It generates new images for the [Wall-Ink](https://github.com/caedm/wall-ink) displays
 * It serves images to the Wall-Ink displays
