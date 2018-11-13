@@ -3,6 +3,8 @@ function refreshPreview() {
     document.getElementById('orientation').style.display = "initial";
     var pluginIndex = document.getElementById('scheduling_system').value;
     var resources = document.getElementsByClassName('new_resource_id');
+    var width = document.getElementById('width').value;
+    var height = document.getElementById('height').value;
     var resourceId = 1;
     for (i = 0; i < resources.length; i++) {
         if (resources[i].parentElement.getAttribute('data-pluginid') == pluginIndex) {
@@ -10,7 +12,7 @@ function refreshPreview() {
         }
     }
 
-    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value + "&scheduling_system=" + pluginIndex + "&resource_id=" + resourceId + "&voltage=7&width=640&height=384"; //todo remove hardcoding of width and height
+    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value + "&scheduling_system=" + pluginIndex + "&resource_id=" + resourceId + "&voltage=7&width=" + width + "&height=" + height;
 }
 
 inputs = document.getElementsByTagName('input');
