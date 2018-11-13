@@ -22,3 +22,7 @@ td.orange {
 .devices {
     margin: auto;
 }
+
+.notproduction {
+    color: blue;
+}

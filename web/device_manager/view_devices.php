@@ -51,7 +51,11 @@ function printResult($devices, $rooms, $plugins) {
         #echo "<td class=\"device_id\">";
         #echo $row["device_id"];
         #echo "</td>";
-        echo "<td class=\"mac_address\">";
+        echo "<td class=\"mac_address";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         echo $device["mac_address"];
         echo "</td>";
         echo "<td class=\"plugin_name\">";
@@ -85,7 +89,7 @@ function printResult($devices, $rooms, $plugins) {
         echo $device["firmware_version"];
         echo "</td>";
         echo "<td class=\"last_checked_in";
-        if (substr($device["last_checked_in"], 0, 10) !== date('Y-m-d')) {
+        if (substr($device["last_checked_in"], 0, 10) !== date('Y-m-d') && $device['is_production']) {
             echo " orange";
         }
         echo "\">";
