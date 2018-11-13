@@ -41,7 +41,15 @@
             echo "<input type=\"text\" id=\"mac_address\" name=\"new_mac_address\" value=\"$device[mac_address]\">";
         echo "</div>";
         echo "<div class=\"field\">";
-            echo "<label for=\"new_scheduling_system\">Plugin</label>";
+            echo "<label for=\"new_width\">Width:</label>";
+            echo "<input type=\"text\" id=\"width\" name=\"new_width\" value=\"$device[width]\">";
+        echo "</div>";
+        echo "<div class=\"field\">";
+            echo "<label for=\"new_height\">Height:</label>";
+            echo "<input type=\"text\" id=\"height\" name=\"new_height\" value=\"$device[height]\">";
+        echo "</div>";
+        echo "<div class=\"field\">";
+            echo "<label for=\"new_scheduling_system\">Plugin:</label>";
             echo "<select id=\"scheduling_system\" name=\"new_scheduling_system\">";
                 foreach ($plugins as $plugin) {
                     echo "<option value=\"";
@@ -106,6 +114,31 @@
                 echo "</li>";
             echo "</ul>";
         echo "</fieldset>";
+        echo "<fieldset id=\"production\" class=\"field\">";
+            echo "<legend>Device is in production:</legend>";
+            echo "<ul>";
+                echo "<li>";
+                    echo "<label for=\"true\">True</label>";
+                    echo "<input type=\"radio\" id=\"isproduction\" name=\"new_production\" value=\"true\"";
+                    if ($device['is_production'] == true) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
+                echo "<li>";
+                    echo "<label for=\"false\">False</label>";
+                    echo "<input type=\"radio\" id=\"isnotproduction\" name=\"new_production\" value=\"false\"";
+                    if ($device['is_production'] == false) {
+                        echo " checked";
+                    }
+                    echo ">";
+                echo "</li>";
+            echo "</ul>";
+        echo "</fieldset>";
+        echo "<div class=\"field\">";
+            echo "<label for=\"new_notes\">Notes:</label>";
+            echo "<textarea id=\"notes\" name=\"new_notes\">$device[notes]</textarea>";
+        echo "</div>";
         echo "<div class=\"button\">";
             echo "<button type=\"button\" onclick=\"window.location.href='view_devices.php'\">Cancel</button>";
             echo "<button type=\"button\" class=\"middle\" onclick=\"deleteLists(); document.getElementById('form').submit()\">Submit</button>";

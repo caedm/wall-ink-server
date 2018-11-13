@@ -28,11 +28,13 @@
                 $device['orientation'] = 0;
                 $device['resource_id'] = $_GET['resource_id'];
                 $device['device_type'] = $_GET['layout'];
+                $device['width'] = $_GET['width'];
+                $device['height'] = $_GET['height'];
                 $compressedFile = $plugin->getImage($config, $device);
             }
         }
         $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address;
-        `./rawToPng.sh $raw $_GET[layout]`;
+        `./rawToPng.sh $raw $device[width] $device[height]`;
         if (file_exists($png)) {
             header('Content-Type: image/png');
             header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');

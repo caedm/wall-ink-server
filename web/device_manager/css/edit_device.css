@@ -33,7 +33,7 @@ label {
     padding-top: 8px;
 }
 
-input, select {
+input, select, textarea {
     flex-grow: 1;
 }
 
@@ -50,7 +50,7 @@ li label {
     flex: 0 0 400px;
 }
 
-li input {
+li input, li textarea {
     flex-grow: 0;
 }
 
