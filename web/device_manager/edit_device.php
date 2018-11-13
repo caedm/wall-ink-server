@@ -18,7 +18,9 @@
             "voltage" => 7,
             "width" => 640,
             "height" => 384,
-            "scheduling_system" => 0
+            "scheduling_system" => 0,
+            "is_production" => true,
+            "notes" => ""
         );
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
