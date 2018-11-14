@@ -1,4 +1,4 @@
-CXXFLAGS += -static -O1 -g -std=c++11
+CXXFLAGS += -static -O1 -std=c++11
 LIBSRC = BitBuffer QrCode QrSegment compressImage sha1 layouts Adafruit_GFX
 objects = image.o rawToCompressed.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
 VPATH = qr_code_generator:web:Adafruit-GFX-Library
@@ -10,22 +10,6 @@ SHELL := /bin/bash
 #This makefile has recursive test and deploy functions.
 #This is to make up for the limitations of make, which can't source bash scripts
 $(info MAKELEVEL=$(MAKELEVEL))
-ifeq ($(MAKELEVEL), 0)
-test:
-	bash -c "source ./web/config/settings.cfg; \
-		for var in \$$(compgen -v); do export \$$var; done; \
-		$(MAKE) $@"
-else
-test: genimg pbmToCompressed genconfig rawToCompressed
-	source ./web/config/settings.cfg
-	mkdir -p $(buildTimeWebDirectory)/test
-	mkdir -p $(buildTimeWebDirectory)/test/log
-	mkdir -p $(buildTimeWebDirectory)/test/image_data
-	mkdir -p $(buildTimeWebDirectory)/test/voltage_monitor
-	mkdir -p $(buildTimeWebDirectory)/test/voltage_monitor/data
-	rsync -r web/. $(buildTimeWebDirectory)/test
-	chmod -R -f g+rw $(buildTimeWebDirectory)/test
-endif
 
 ifeq ($(MAKELEVEL), 0)
 deploy:
@@ -76,11 +60,6 @@ QrSegment.o : QrSegment.hpp
 sha1.o : sha1.h
 layouts.o : layouts.h
 Adafruit_GFX.o : Adafruit_GFX.h
-
-debug:
-	$(CXX) image.cpp $(LIBSRC:=.cpp) $(CXXFLAGS) -g -o web/genimg
-	$(CXX) pbmToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o web/pbmToCompressed
-	$(CXX) rawToCompressed.cpp compressImage.cpp $(CXXFLAGS) -g -o web/rawToCompressed
 
 clean : 
 	rm $(objects)
