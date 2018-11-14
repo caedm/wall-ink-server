@@ -47,7 +47,7 @@ class staticImagesPlugin implements iPlugin {
         } else if ($device['device_type'] == 9 || $device['device_type'] == 10) {
             $timeIncrement = 86400;
         }
-        $nextRefreshTime = $timeIncrement - ($_SERVER['REQUEST_TIME'] % $timeIncrement);
+        $nextRefreshTime = $timeIncrement - ($_SERVER['REQUEST_TIME'] % $timeIncrement) + 30;
         $sourceImage = $images[floor($_SERVER['REQUEST_TIME'] / $timeIncrement) % count($images)];
         $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "pbm";
         $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"];
