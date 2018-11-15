@@ -1,7 +1,7 @@
 CXXFLAGS += -static -O1 -std=c++11 -DIMAGE_KEY=\"$(imageKey)\"
 LIBSRC = BitBuffer QrCode QrSegment compressImage sha1 layouts Adafruit_GFX
 objects = image.o rawToCompressed.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
-VPATH = qr_code_generator:web:Adafruit-GFX-Library
+VPATH = cplusplussource/qr_code_generator:cplusplussource/web:cplusplussource/Adafruit-GFX-Library:cplusplussource
 CXX=g++
 CC=gcc
 CFLAGS += -static

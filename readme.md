@@ -68,19 +68,19 @@ The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was us
 Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```
 #### web/config/settings.cfg
 Contains configuration for the database connections; must run ```make``` after each edit
-#### layouts.cpp
+#### cplusplussource/layouts.cpp
 Contains the code used to generate individual image layouts
-#### image.cpp
+#### cplusplussource/image.cpp
 Contains many of the libraries used by ```layouts.cpp``` to generate the images from reservation data.
-#### compressImage.cpp
+#### cplusplussource/compressImage.cpp
 Contains the code used to convert an array of bytes into a compressed image for the use of a display
-#### fonts.h
+#### cplusplussource/fonts.h
 Contains include statements for lots of Adafruit fonts so they don't need to be in image.cpp or image.h
-#### letters.h
+#### cplusplussource/letters.h
 Contains a font that was found on stackoverflow; might be good to get rid of this.
-#### sha1.c, sha1.h
+#### cplusplussource/sha1.c, cplusplussource/sha1.h
 Contains a library for sha1 hashing.
-#### pbmToCompressed.cpp
+#### cplusplussource/pbmToCompressed.cpp
 Source code to convert a raw, binary .pbm file to a compressed file for the use of a display. Will not work with ASCII .pbm files!
 #### qr_code_generator/
 Contains a C++ library used by image.cpp to generate QR codes from strings
@@ -90,9 +90,9 @@ Contains a library used main for fonts in image.cpp
 Takes in a MAC address and a voltage. If the MAC address corresponds to a device which needs a static image (device_type 5), it updates the ```last_checked_in``` and (if relevant) ```batteries_replaced_date``` fields on the database. It then and serves up the static image at ```../www/image_data/$mac_address.static```. Otherwise, it passes the MAC address and voltage to ```get_image.sh```.
 #### get_image.sh
 Takes in a MAC address and voltage, queries the database for information about appointments, and calls ```genimg```. It also updates the ```last_checked_in``` and (if relevant) ```batteries_replaced_date``` fields on the database.
-#### genimg
+#### web/genimg
 Binary Linux executable which takes in a file containing information about a screen & its associated room and spits out a compressed image for use on the displays. It uses statically linked libraries, so it should run on most Linux systems.
-#### pbmToCompressed
+#### web/pbmToCompressed
 Binary Linux executable which takes in a raw, binary .pbm image and outputs a compressed file for use on the displays. Usage is:
   ```./pbmToCompressed image.pbm outputImage.static```
 Must supply an image with the precisely correct resolution for the target display!
@@ -103,22 +103,8 @@ The contents of the file sent to the screen are as follows:
 1. The current Unix time (4 bytes)
 1. The Unix time when the device should next wake and contact the server (4 bytes)
 1. A sha1 hash of the sha1 hash of the raw image buffer followed by the sha1 hash of the imagekey (20 bytes)
-1. The value of the first pixel in the image (1 byte)
-1. The run-length encoded image (explained below)
+1. The image itself, represented as one bit per pixel
 
-The images are compressed with a very simple run-length encoding algorithm. Each byte contains the number of pixels before a differing pixel is encountered. If the value is greater than 255, more than one byte will be used (for example, 255 255 16 for 526 identical pixels in a row). If the value is an exact multiple of 255, a zero will be appended (for example, 255 255 0 for 510 identical pixels in a row).  For example, this 16x16 image: 
-![Picture of the number 5](https://i.imgur.com/71pE4rY.png)
-would be encoded as this:
-```
-9008 9e7f 544f 8bb6 d3c8 ba22 9790 b894
-6ee7 38b6 2c00 185b 3407 185b 9318 7c12
-5b9f c496 ba16 663c d789 e0b6 a346 4269
-0011 0e02 0406 0402 0401 0902 0401 0902
-0404 0602 0401 0302 0402 0901 0402 0901
-0402 0901 0402 0401 0401 0402 0401 0301
-0502 0503 0602 0e02 0e11 0a                      
-```
+The images used to be compressed, but we removed that algorithm because we decided it wasn't worth the complexity to take a file from 30 kb to 7 kb.
 
 All values are little endian.
-
-On a 7" screen, this reduces the image size from 30 kilobytes to about 5.5 kilobytes. Although there are other algorithms which can achieve better compression, this custom algorithm was used because it was relatively easy to implement and we weren't able to find any pre-made compression/decompression software which worked with the ESP8266.
