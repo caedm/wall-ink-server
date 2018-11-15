@@ -6,7 +6,7 @@
 
 using namespace std;
 
-extern vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
+extern vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 int main(int argc, char* argv[]) {
     //must be a raw, binary pbm file (Magic number P4)
@@ -35,11 +35,11 @@ int main(int argc, char* argv[]) {
         image[i] = image[i]^0xff;
     }
 
-    //generate compressed image
-    vector<unsigned char> compressed = compressImage(image, 1800, x_res, y_res);
+    //generate processed image
+    vector<unsigned char> processed = processImage(image, 1800, x_res, y_res);
 
     free(image);
 
-    ofstream(argv[2], ios::binary).write((const char*) compressed.data(), compressed.size());
+    ofstream(argv[2], ios::binary).write((const char*) processed.data(), processed.size());
     return 0;
 }

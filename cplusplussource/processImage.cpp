@@ -1,8 +1,12 @@
 #include <iostream>
-#include "compressImage.h"
+#include "processImage.h"
 #include "sha1.h"
 #include <bitset>
 #include <cstring>
+
+#ifndef IMAGE_KEY
+#define IMAGE_KEY "hunter2"
+#endif
 
 using namespace std;
 
@@ -10,23 +14,23 @@ uint8_t getPixel(unsigned long int x, unsigned long int y, uint16_t x_res, uint1
     return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
 }
 
-vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res) {
-    vector<uint8_t> compressed;
-    compressed.clear();
+vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res) {
+    vector<uint8_t> processed;
+    processed.clear();
     time_t currentTime = time(nullptr);
-    uint8_t* compressedTime = (uint8_t*) malloc(4);
+    uint8_t* processedTime = (uint8_t*) malloc(4);
     uint8_t* nextTime = (uint8_t*) malloc(4);
     uint8_t* time = (uint8_t*) malloc(8);
-    *((uint32_t*) compressedTime) = currentTime;
-    *((uint32_t*) nextTime) = *((uint32_t*) compressedTime) + sleepTime;
-    memcpy(time, compressedTime, 4);
+    *((uint32_t*) processedTime) = currentTime;
+    *((uint32_t*) nextTime) = *((uint32_t*) processedTime) + sleepTime;
+    memcpy(time, processedTime, 4);
     memcpy(time+4, nextTime, 4);
 #if DEBUG == 1
     cout << hex;
     cout << "time size: " << sizeof(currentTime) << endl << "current time: " << currentTime << endl;
-    cout << "compressed time: " << *((uint32_t*) compressedTime) << endl;
+    cout << "processed time: " << *((uint32_t*) processedTime) << endl;
     cout << "next time: " << *((uint32_t*) nextTime) << endl;
-    cout << "byte by byte: " << +compressedTime[0] << " " << +compressedTime[1] << " " << +compressedTime[2] << " " << +compressedTime[3] << endl;
+    cout << "byte by byte: " << +processedTime[0] << " " << +processedTime[1] << " " << +processedTime[2] << " " << +processedTime[3] << endl;
 #endif
     uint8_t timeHash[40];
     SHA1Context sha;
@@ -43,15 +47,15 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
     err = SHA1Input(&sha, (uint8_t*) timeHash, 40);
     err = SHA1Result(&sha, finalTimeHash);
     for (int i = 0; i < 20; i++)
-        compressed.push_back(finalTimeHash[i]);
-    compressed.push_back(compressedTime[0]);
-    compressed.push_back(compressedTime[1]);
-    compressed.push_back(compressedTime[2]);
-    compressed.push_back(compressedTime[3]);
-    compressed.push_back(nextTime[0]);
-    compressed.push_back(nextTime[1]);
-    compressed.push_back(nextTime[2]);
-    compressed.push_back(nextTime[3]);
+        processed.push_back(finalTimeHash[i]);
+    processed.push_back(processedTime[0]);
+    processed.push_back(processedTime[1]);
+    processed.push_back(processedTime[2]);
+    processed.push_back(processedTime[3]);
+    processed.push_back(nextTime[0]);
+    processed.push_back(nextTime[1]);
+    processed.push_back(nextTime[2]);
+    processed.push_back(nextTime[3]);
     //generate image hash
     uint8_t imageHash[40];
     err = SHA1Reset(&sha);
@@ -80,12 +84,12 @@ vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res
         printf("\n");
     }
     for (int i = 0; i < 20; i++)
-        compressed.push_back(finalHash[i]);
+        processed.push_back(finalHash[i]);
 
-    free(compressedTime);
+    free(processedTime);
     free(nextTime);
     for (uint32_t pointer = 0; pointer < x_res* y_res/8; pointer++) {
-        compressed.push_back(image[pointer]);
+        processed.push_back(image[pointer]);
     }
-    return compressed;
+    return processed;
 }

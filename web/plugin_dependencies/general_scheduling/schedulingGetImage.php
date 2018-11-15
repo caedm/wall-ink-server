@@ -25,7 +25,7 @@ function schedulingGetImage($config, $device, $schedule, $displayUrl, $qrCodeBas
     $macAddressInfoFile = fopen("$macAddressInfoFilePath", "w") or die("Unable to open file");
     fwrite($macAddressInfoFile, $macAddressInfo);
     `./genimg $macAddressInfoFilePath`;
-    $imagePath = "./image_data/" . $device["mac_address"] . ".compressed";
+    $imagePath = "./image_data/" . $device["mac_address"] . ".wink";
     return $imagePath;
 }
 ?>

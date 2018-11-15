@@ -1,6 +1,6 @@
 CXXFLAGS += -static -O1 -std=c++11 -DIMAGE_KEY=\"$(imageKey)\"
-LIBSRC = BitBuffer QrCode QrSegment compressImage sha1 layouts Adafruit_GFX
-objects = image.o rawToCompressed.o pbmToCompressed.o compressImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
+LIBSRC = BitBuffer QrCode QrSegment processImage sha1 layouts Adafruit_GFX
+objects = image.o rawToWink.o pbmToWink.o processImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
 VPATH = cplusplussource/qr_code_generator:cplusplussource/web:cplusplussource/Adafruit-GFX-Library:cplusplussource
 CXX=g++
 CC=gcc
@@ -17,7 +17,7 @@ deploy:
 		for var in \$$(compgen -v); do export \$$var; done; \
 		$(MAKE) $@"
 else
-deploy: genimg pbmToCompressed genconfig rawToCompressed
+deploy: genimg pbmToWink genconfig rawToWink
 	source ./web/config/settings.cfg
 	mkdir -p $(buildTimeWebDirectory)/log
 	mkdir -p $(buildTimeWebDirectory)/image_data
@@ -41,19 +41,19 @@ genconfig :
 	echo "?>" >> web/config/dbconfig.php
 	rm web/config/temp
 
-genimg : image.o compressImage.o BitBuffer.o QrCode.o QrSegment.o layouts.o Adafruit_GFX.o
+genimg : image.o processImage.o BitBuffer.o QrCode.o QrSegment.o layouts.o Adafruit_GFX.o
 	$(CXX) image.o $(LIBSRC:=.o) $(CXXFLAGS) -o web/genimg
 
-pbmToCompressed : pbmToCompressed.o compressImage.o
-	$(CXX) pbmToCompressed.o compressImage.o sha1.o $(CXXFLAGS) -o web/pbmToCompressed
+pbmToWink : pbmToWink.o processImage.o
+	$(CXX) pbmToWink.o processImage.o sha1.o $(CXXFLAGS) -o web/pbmToWink
 
-rawToCompressed : rawToCompressed.o compressImage.o
-	$(CXX) rawToCompressed.o compressImage.o sha1.o $(CXXFLAGS) -o web/rawToCompressed
+rawToWink : rawToWink.o processImage.o
+	$(CXX) rawToWink.o processImage.o sha1.o $(CXXFLAGS) -o web/rawToWink
 
 image.o : image.h
-pbmToCompressed.o : pbmToCompressed.cpp compressImage.cpp compressImage.h
-rawToCompressed.o : rawToCompressed.cpp compressImage.cpp compressImage.h
-compressImage.o : compressImage.h sha1.o
+pbmToWink.o : pbmToWink.cpp processImage.cpp processImage.h
+rawToWink.o : rawToWink.cpp processImage.cpp processImage.h
+processImage.o : processImage.h sha1.o
 BitBuffer.o : BitBuffer.hpp
 QrCode.o : QrCode.hpp
 QrSegment.o : QrSegment.hpp
@@ -62,4 +62,4 @@ layouts.o : layouts.h
 Adafruit_GFX.o : Adafruit_GFX.h
 
 clean : 
-	rm $(objects)
+	rm -v $(objects) web/genimg web/pbmToWink web/rawToWink

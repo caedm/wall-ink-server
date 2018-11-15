@@ -1,6 +1,6 @@
 genimg
-pbmToCompressed
-rawToCompressed
+pbmToWink
+rawToWink
 database.sh
 dbconfig.php
 fromDB

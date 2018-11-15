@@ -72,16 +72,16 @@ Contains configuration for the database connections; must run ```make``` after e
 Contains the code used to generate individual image layouts
 #### cplusplussource/image.cpp
 Contains many of the libraries used by ```layouts.cpp``` to generate the images from reservation data.
-#### cplusplussource/compressImage.cpp
-Contains the code used to convert an array of bytes into a compressed image for the use of a display
+#### cplusplussource/processImage.cpp
+Contains the code used to convert an array of bytes into a processed image for the use of a display
 #### cplusplussource/fonts.h
 Contains include statements for lots of Adafruit fonts so they don't need to be in image.cpp or image.h
 #### cplusplussource/letters.h
 Contains a font that was found on stackoverflow; might be good to get rid of this.
 #### cplusplussource/sha1.c, cplusplussource/sha1.h
 Contains a library for sha1 hashing.
-#### cplusplussource/pbmToCompressed.cpp
-Source code to convert a raw, binary .pbm file to a compressed file for the use of a display. Will not work with ASCII .pbm files!
+#### cplusplussource/pbmToWink.cpp
+Source code to convert a raw, binary .pbm file to a .wink file for the use of a display. Will not work with ASCII .pbm files!
 #### qr_code_generator/
 Contains a C++ library used by image.cpp to generate QR codes from strings
 #### Adafruit-GFX-Library/
@@ -91,10 +91,10 @@ Takes in a MAC address and a voltage. If the MAC address corresponds to a device
 #### get_image.sh
 Takes in a MAC address and voltage, queries the database for information about appointments, and calls ```genimg```. It also updates the ```last_checked_in``` and (if relevant) ```batteries_replaced_date``` fields on the database.
 #### web/genimg
-Binary Linux executable which takes in a file containing information about a screen & its associated room and spits out a compressed image for use on the displays. It uses statically linked libraries, so it should run on most Linux systems.
-#### web/pbmToCompressed
-Binary Linux executable which takes in a raw, binary .pbm image and outputs a compressed file for use on the displays. Usage is:
-  ```./pbmToCompressed image.pbm outputImage.static```
+Binary Linux executable which takes in a file containing information about a screen & its associated room and spits out a .wink image for use on the displays. It uses statically linked libraries, so it should run on most Linux systems.
+#### web/pbmToWink
+Binary Linux executable which takes in a raw, binary .pbm image and outputs a .wink file for use on the displays. Usage is:
+  ```./pbmToWink image.pbm outputImage.static```
 Must supply an image with the precisely correct resolution for the target display!
 
 # Image file format

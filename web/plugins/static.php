@@ -58,7 +58,7 @@ class staticImagesPlugin implements iPlugin {
         }
         `convert $sourceImage -rotate 180 -negate -resize $size\! $pbm`;
         `$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh $pbm $raw`;
-        `$_SERVER[DOCUMENT_ROOT]/rawToCompressed $raw $static $width $height $nextRefreshTime`;
+        `$_SERVER[DOCUMENT_ROOT]/rawToWink $raw $static $width $height $nextRefreshTime`;
         return $static;
     }
     public function getDeviceType($device) {

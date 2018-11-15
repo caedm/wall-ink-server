@@ -30,7 +30,7 @@
                 $device['device_type'] = $_GET['layout'];
                 $device['width'] = $_GET['width'];
                 $device['height'] = $_GET['height'];
-                $compressedFile = $plugin->getImage($config, $device);
+                $processedFile = $plugin->getImage($config, $device);
             }
         }
         $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address;

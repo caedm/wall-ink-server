@@ -12,7 +12,7 @@
 
 using namespace std;
 
-vector<uint8_t> compressImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
+vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 uint8_t* image;
 uint32_t sleepTime;
@@ -433,10 +433,10 @@ int main(int argc, char* argv[]) {
         mirror();
     }
 
-    vector<unsigned char> compressed = compressImage(image, sleepTime, x_res, y_res);
+    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res);
     //write to a file
     ofstream("image_data/" + mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
-    ofstream("image_data/" + mac_address + ".compressed", ios::binary).write((const char*) compressed.data(), compressed.size());
+    ofstream("image_data/" + mac_address + ".wink", ios::binary).write((const char*) processed.data(), processed.size());
 
     //free memory
     delete canvas;
