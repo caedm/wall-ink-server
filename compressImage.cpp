@@ -3,7 +3,6 @@
 #include "sha1.h"
 #include <bitset>
 #include <cstring>
-#include "key.h"
 
 using namespace std;
 

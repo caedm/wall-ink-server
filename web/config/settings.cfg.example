@@ -5,6 +5,7 @@ buildTimeWebDirectory="/var/www"
 runTimeWebDirectory="/var/www"
 rrdDirectory="/opt/whereveryouwanttoputitreally"
 debugModeActive="false"
+imageKey="hunter2"
 #
 # ****************************************
 # ******  Device Database settings  ******
