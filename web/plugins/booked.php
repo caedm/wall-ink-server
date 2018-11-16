@@ -73,7 +73,7 @@ class bookedPlugin implements iPlugin {
             $this->getSchedule($config, $device["resource_id"]),
             $config->bookedDisplayUrl,
             $config->bookedQrCodeBaseUrlBeginning,
-            $config->bookedBaseUrlEnd);
+            $config->bookedQrCodeBaseUrlEnd);
     }
     public function getDeviceType($device) {
         require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
