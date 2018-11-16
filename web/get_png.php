@@ -1,4 +1,5 @@
 <?php
+    include "$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php";
     #Debug stuff
     if ($config->debugModeActive == 'true') {
         error_reporting(E_ALL);
@@ -8,10 +9,9 @@
     $mac_address = $_GET['mac_address'];
     $png = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".png";
     if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1) {
-        include "$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php";
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
-        if ($result->numRows == 0) {
+        if ($result->num_rows == 0) {
             $device = array();
             $device['mac_address'] = $mac_address;
             $device['voltage'] = 7;
