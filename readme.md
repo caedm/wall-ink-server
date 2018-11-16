@@ -82,9 +82,11 @@ Contains a C++ library used by image.cpp to generate QR codes from strings
 #### Adafruit-GFX-Library/
 Contains a library used main for fonts in image.cpp
 #### get_image.php
-Takes in a MAC address and a voltage. If the MAC address corresponds to a device which needs a static image (device_type 5), it updates the ```last_checked_in``` and (if relevant) ```batteries_replaced_date``` fields on the database. It then and serves up the static image at ```../www/image_data/$mac_address.static```. Otherwise, it passes the MAC address and voltage to ```get_image.sh```.
-#### get_image.sh
-Takes in a MAC address and voltage, queries the database for information about appointments, and calls ```genimg```. It also updates the ```last_checked_in``` and (if relevant) ```batteries_replaced_date``` fields on the database.
+Takes in a MAC address, firmware version, error code, width, height and voltage. It updates the devices database. It then queries the devices database for additional information about the device. Finally, it serves up the image provided by the plugin associated with the device.
+#### web/plugins/
+Each file in this directory corresponds with and defines a plugin.
+#### web/plugin_dependencies/
+This directory contains extra files needed to make the various plugins function.
 #### web/genimg
 Binary Linux executable which takes in a file containing information about a screen & its associated room and spits out a .wink image for use on the displays. It uses statically linked libraries, so it should run on most Linux systems.
 #### web/rawToWink
