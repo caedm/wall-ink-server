@@ -1,9 +1,6 @@
 <FilesMatch "^genimg$">
 Require all denied
 </FilesMatch>
-<FilesMatch "^pbmToWink$">
-Require all denied
-</FilesMatch>
 <FilesMatch "^rawToWink$">
 Require all denied
 </FilesMatch>

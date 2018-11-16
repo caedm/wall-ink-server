@@ -1,6 +1,6 @@
 CXXFLAGS += -static -O1 -std=c++11 -DIMAGE_KEY=\"$(imageKey)\"
 LIBSRC = BitBuffer QrCode QrSegment processImage sha1 layouts Adafruit_GFX
-objects = image.o rawToWink.o pbmToWink.o processImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
+objects = image.o rawToWink.o processImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
 VPATH = cplusplussource/qr_code_generator:cplusplussource/web:cplusplussource/Adafruit-GFX-Library:cplusplussource
 CXX=g++
 CC=gcc
@@ -17,7 +17,7 @@ deploy:
 		for var in \$$(compgen -v); do export \$$var; done; \
 		$(MAKE) $@"
 else
-deploy: genimg pbmToWink genconfig rawToWink
+deploy: genimg genconfig rawToWink
 	source ./web/config/settings.cfg
 	mkdir -p $(buildTimeWebDirectory)/log
 	mkdir -p $(buildTimeWebDirectory)/image_data
@@ -44,14 +44,10 @@ genconfig :
 genimg : image.o processImage.o BitBuffer.o QrCode.o QrSegment.o layouts.o Adafruit_GFX.o
 	$(CXX) image.o $(LIBSRC:=.o) $(CXXFLAGS) -o web/genimg
 
-pbmToWink : pbmToWink.o processImage.o
-	$(CXX) pbmToWink.o processImage.o sha1.o $(CXXFLAGS) -o web/pbmToWink
-
 rawToWink : rawToWink.o processImage.o
 	$(CXX) rawToWink.o processImage.o sha1.o $(CXXFLAGS) -o web/rawToWink
 
 image.o : image.h
-pbmToWink.o : pbmToWink.cpp processImage.cpp processImage.h
 rawToWink.o : rawToWink.cpp processImage.cpp processImage.h
 processImage.o : processImage.h sha1.o
 BitBuffer.o : BitBuffer.hpp
@@ -62,4 +58,4 @@ layouts.o : layouts.h
 Adafruit_GFX.o : Adafruit_GFX.h
 
 clean : 
-	rm -v $(objects) web/genimg web/pbmToWink web/rawToWink
+	rm -v $(objects) web/genimg web/rawToWink

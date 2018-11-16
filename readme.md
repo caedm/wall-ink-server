@@ -9,16 +9,13 @@ The wall-ink-server houses several important functions:
 * It notifies the database when the Wall-Ink displays are updated
 * It hosts a website for the configuration of the Wall-Ink displays
 
-The following diagram roughly illustrates the information passed between the parts of the system:
-
-![Door display sequence diagram](https://i.imgur.com/YZ32F0h.png)
-
 # Installation
 1. Install the following dependencies to a Linux server: ```git```, ```gcc```, ```make``` (tested with GNU Make), MariaDB or MySQL
 1. Clone this repo ```git clone https://github.com/caedm/wall-ink-server```
 1. Edit the information in ```wall-ink-server/web/config/settings.cfg.example``` and save the file as ```wall-ink-server/web/config/settings.cfg```  See the wiki article on [settings.cfg](https://github.com/caedm/wall-ink-server/wiki/settings.cfg) for a full explanation of each setting.
-1. Create the table in mariadb or mysql by running the setup_sql.sh script in the wall-ink-server directory ```./setup_sql.sh```.  This script will only be successful if valid device database settings were set in the settings.cfg file above. 
-1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web site.
+1. Create the table in mariadb or mysql by running the ```setup_sql.sh``` script in the wall-ink-server directory.  This script will only be successful if valid device database settings were set in the settings.cfg file above. 
+1. Edit ```wall-ink-server/web/device_manager/.htaccess``` with your organization's information.  Settings in .htaccess files protect your database passwords and other configuration settings from being world readable on the wall-ink-server web site, and this particular one also restricts access to the device manager website.
+1. Edit the image key in the Arduino sketch to match the image key in the ```wall-ink-server/web/config/settings.cfg``` file. See the wiki article on [image security](https://github.com/caedm/wall-ink-server/wiki/image_security) to understand the use and purpose of the image key. Point your Wall-Ink module at the server by changing the baseURL in the firmware.
 1. (optional) If you want to use the built-in [voltage monitoring tool](https://github.com/caedm/wall-ink-server/wiki/voltage-monitoring), follow the steps below:
     1. Install the optional ```rrdtool``` dependency
     1. Edit the ```wall-ink-server/voltage_monitor/collectData.sh``` script to source the correct web/config/database.sh file with your settings in them.  This should be on line 3 of collectData.sh.
@@ -30,21 +27,19 @@ The following diagram roughly illustrates the information passed between the par
     1. Open terminal and navigate to ```wall-ink-server/web/plugin_dependencies/google```
     1. Run the command ```php ./quickstart.php``` from a terminal and follow the onscreen instructions.  It will have you paste a url in to a browser to activate the API key.  You will copy a line of text back from google and past it back into the quickstart.php script on the command line.  
     1. The quickstart.php file should now create a new .json file ```wall-ink-server/web/plugin_dependencies/google/token.json``` using both the credentials.json file you downloaded, and the phrase pasted into the quickstart.php script.  If the API keys were successfully created, running quickstart.php should display a list of calendars available from the google API to the command line.  You can use the quickstart.php script from the command line at any time to verify that the google API keys are still working.
-1. Edit the image key in the Arduino sketch to match the image key in the ```wall-ink-server/web/config/settings.cfg``` file. See the wiki article on [image security](https://github.com/caedm/wall-ink-server/wiki/image_security) to understand the use and purpose of the image key.
 1. (optional) Create a [plugin](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) to integrate with your own calendaring system, or for a whole different use case like a weather station or a bus schedule.
 1. Follow the steps below to build the project
 
 # Build
-To build and deploy to the test server (hosted at ```$webdirectory/test```), go to ```wall-ink-server/``` and use the ```make``` command. You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at your web directory as defined in settings.cfg), use the command ```make deploy``` instead.
+You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at your web directory as defined in settings.cfg), use the command ```make```.
 
-After building, you'll want to point your Wall-Ink module at the server by changing the baseURL in the firmware.
 # Plugins
 The wall-ink-server can deliver any image to a wall-ink device.  [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) allow [additional code](https://github.com/caedm/wall-ink-server/wiki/Coding-a-new-plugin) to be added to the wall-ink-server to add integration of any API or code to generate images specific to your application.  
 
 A [special trivial case for adding a new plugin would be to add an additional "scheduler"](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture#what-is-a-scheduler-plugin) like Outlook, or iCal, etc.  The difficult part of writing an engine for creating images for a schedule on a wall-ink device has already been written, and is in use by several plugins that are already part of the wall-ink-server project.  All that is necesary is to make API calls to facilitate a few functions that format text. 
 
 # Device Manager
-The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used a a configuration center for your wall-ink devices.
+The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used as a configuration center for your wall-ink devices.
 
 ## Important Files
 The files for the configuration website can be found at ```wall-ink-server/web/device_manager```
@@ -80,8 +75,8 @@ Contains include statements for lots of Adafruit fonts so they don't need to be 
 Contains a font that was found on stackoverflow; might be good to get rid of this.
 #### cplusplussource/sha1.c, cplusplussource/sha1.h
 Contains a library for sha1 hashing.
-#### cplusplussource/pbmToWink.cpp
-Source code to convert a raw, binary .pbm file to a .wink file for the use of a display. Will not work with ASCII .pbm files!
+#### cplusplussource/rawToWink.cpp
+Source code to convert a raw, binary image file to a .wink file for the use of a display.
 #### qr_code_generator/
 Contains a C++ library used by image.cpp to generate QR codes from strings
 #### Adafruit-GFX-Library/
@@ -92,9 +87,12 @@ Takes in a MAC address and a voltage. If the MAC address corresponds to a device
 Takes in a MAC address and voltage, queries the database for information about appointments, and calls ```genimg```. It also updates the ```last_checked_in``` and (if relevant) ```batteries_replaced_date``` fields on the database.
 #### web/genimg
 Binary Linux executable which takes in a file containing information about a screen & its associated room and spits out a .wink image for use on the displays. It uses statically linked libraries, so it should run on most Linux systems.
-#### web/pbmToWink
-Binary Linux executable which takes in a raw, binary .pbm image and outputs a .wink file for use on the displays. Usage is:
-  ```./pbmToWink image.pbm outputImage.static```
+#### web/rawToWink
+Binary Linux executable which takes in a raw, binary image and outputs a .wink file for use on the displays. Usage is:
+  ```./rawToWink rawImage outputImage.wink imageWidth imageHeight nextRefreshTime```
+
+nextRefreshTime is the number of seconds before the screen should check in again.
+
 Must supply an image with the precisely correct resolution for the target display!
 
 # Image file format

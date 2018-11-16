@@ -10,7 +10,6 @@ using namespace std;
 extern vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 int main(int argc, char* argv[]) {
-    //must be a raw, binary pbm file (Magic number P4)
     ifstream rawFile;
     rawFile.open(argv[1], ios::binary);
 
