@@ -1,5 +1,6 @@
 # Introduction
 This project is a server-side companion to the [Wall-Ink](https://github.com/caedm/wall-ink) project. The wall-ink devices display any image on their e-ink screens that the wall-ink-server delivers to it.  The bulk of the server [plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) created to date are for displaying scheduling systems, but the wall-ink-server can be used for any digital signage purposes. Right now the server has plugins for the Booked scheduling system and with Google Calendar, but it could be integrated with any scheduling system that has a decent API.  There are other [plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) as well, and it is not too hard to create your own.
+
 <img src="https://i.imgur.com/etozOAa.png" width="283"><img src="https://i.imgur.com/bR7Etyk.png" width="268"><img src="https://i.imgur.com/izWwPwq.png" width="268">
 
 # Summary
