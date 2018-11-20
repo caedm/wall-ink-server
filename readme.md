@@ -59,7 +59,7 @@ A handler for the "Upload" button on ```edit_device.php```
 Makes sure only those with proper credentials can access the site; needs to be edited to include accurate information about your organization
 
 # Image Generation and Hosting
-The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it.
+The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it. See the discussion on [Wall ink image formats and image handling]](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling) for more information.
 ## Important Files
 #### makefile
 Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```
