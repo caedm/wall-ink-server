@@ -41,7 +41,7 @@ The wall-ink-server can deliver any image to a wall-ink device.  [Plugins](https
 A [special trivial case for adding a new plugin would be to add an additional "scheduler"](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture#what-is-a-scheduler-plugin) like Outlook, or iCal, etc.  The difficult part of writing an engine for creating images for a schedule on a wall-ink device has already been written, and is in use by several plugins that are already part of the wall-ink-server project.  All that is necesary is to make API calls to facilitate a few functions that format text. 
 
 # Device Manager
-The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used as a configuration center for your wall-ink devices.  A explanation of the [inner workings of the device manager](https://github.com/caedm/wall-ink-server/wiki/Device-manager#important-files) is located in the Wiki.
+The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used as a configuration center for your wall-ink devices.  A list of the [important files in the device manager](https://github.com/caedm/wall-ink-server/wiki/Device-manager#important-files) and their purpose is located in the Wiki.
 
 # Image Generation and Hosting
 The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it. See the discussion on [Wall ink image formats and image handling](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling) for more information.
