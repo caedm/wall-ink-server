@@ -48,3 +48,9 @@ bookedQrCodeBaseUrlEnd=""
 # ****************************************
 staticImagesPluginActive="true"
 #
+# ****************************************
+# ****   Simple Text plugin settings   ***
+# ****************************************
+simpleTextPluginActive="true"
+#
+
