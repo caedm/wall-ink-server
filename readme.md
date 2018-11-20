@@ -43,6 +43,12 @@ A [special trivial case for adding a new plugin would be to add an additional "s
 # Device Manager
 The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used as a configuration center for your wall-ink devices.  A list of the [important files in the device manager](https://github.com/caedm/wall-ink-server/wiki/Device-manager#important-files) and their purpose is located in the Wiki.
 
+
+<img src="https://i.imgur.com/QGNbDXT.png" height="300">
+
+
 # Image Generation and Hosting
 The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it. See the discussion on [Wall ink image formats and image handling](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling) for more information.  A list of [important files in image generation](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling#important-files) and their purpose is also available in the Wiki.
+
+<img src= "https://i.imgur.com/NNI1ogo.png"  width="283">
 
