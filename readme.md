@@ -44,54 +44,5 @@ A [special trivial case for adding a new plugin would be to add an additional "s
 The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manager) website is hosted at the web root. It is used as a configuration center for your wall-ink devices.  A list of the [important files in the device manager](https://github.com/caedm/wall-ink-server/wiki/Device-manager#important-files) and their purpose is located in the Wiki.
 
 # Image Generation and Hosting
-The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it. See the discussion on [Wall ink image formats and image handling](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling) for more information.
-## Important Files
-#### makefile
-Builds the code and deploys it to the test server with ```make```; builds the code and deploys it to the live server with ```make deploy```
-#### web/config/settings.cfg
-Contains configuration for the database connections; must run ```make``` after each edit
-#### cplusplussource/layouts.cpp
-Contains the code used to generate individual image layouts
-#### cplusplussource/image.cpp
-Contains many of the libraries used by ```layouts.cpp``` to generate the images from reservation data.
-#### cplusplussource/processImage.cpp
-Contains the code used to convert an array of bytes into a processed image for the use of a display
-#### cplusplussource/fonts.h
-Contains include statements for lots of Adafruit fonts so they don't need to be in image.cpp or image.h
-#### cplusplussource/letters.h
-Contains a font that was found on stackoverflow; might be good to get rid of this.
-#### cplusplussource/sha1.c, cplusplussource/sha1.h
-Contains a library for sha1 hashing.
-#### cplusplussource/rawToWink.cpp
-Source code to convert a raw, binary image file to a .wink file for the use of a display.
-#### qr_code_generator/
-Contains a C++ library used by image.cpp to generate QR codes from strings
-#### Adafruit-GFX-Library/
-Contains a library used main for fonts in image.cpp
-#### get_image.php
-Takes in a MAC address, firmware version, error code, width, height and voltage. It updates the devices database. It then queries the devices database for additional information about the device. Finally, it serves up the image provided by the plugin associated with the device.
-#### web/plugins/
-Each file in this directory corresponds with and defines a plugin.
-#### web/plugin_dependencies/
-This directory contains extra files needed to make the various plugins function.
-#### web/genimg
-Binary Linux executable which takes in a file containing information about a screen & its associated room and spits out a .wink image for use on the displays. It uses statically linked libraries, so it should run on most Linux systems.
-#### web/rawToWink
-Binary Linux executable which takes in a raw, binary image and outputs a .wink file for use on the displays. Usage is:
-  ```./rawToWink rawImage outputImage.wink imageWidth imageHeight nextRefreshTime```
+The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it. See the discussion on [Wall ink image formats and image handling](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling) for more information.  A list of [important files in image generation](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling#important-files) and their purpose is also available in the Wiki.
 
-nextRefreshTime is the number of seconds before the screen should check in again.
-
-Must supply an image with the precisely correct resolution for the target display!
-
-# Image file format
-The contents of the file sent to the screen are as follows:
-1. A sha1 hash of the sha1 hash of the next 8 bytes (2 & 3) followed by the sha1 hash of the imagekey (20 bytes)
-1. The current Unix time (4 bytes)
-1. The Unix time when the device should next wake and contact the server (4 bytes)
-1. A sha1 hash of the sha1 hash of the raw image buffer followed by the sha1 hash of the imagekey (20 bytes)
-1. The image itself, represented as one bit per pixel
-
-The images used to be compressed, but we removed that algorithm because we decided it wasn't worth the complexity to take a file from 30 kb to 7 kb.
-
-All values are little endian.
