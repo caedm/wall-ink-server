@@ -62,7 +62,7 @@ min_bytes=1000
 url="http://your-wall-ink-server.net/get_image.php?mac_address=AAAABBBBCCCC&firmware=nagios&error=0&voltage=4.00"
 
 #the program to use to check the data
-check_data_program="./check_wall_ink_data.bin"
+check_data_program="./wall_ink_data_tool.bin"
 
 #the default image key without NULL
 #change this to your own, or pass your's in the arguments
@@ -196,7 +196,7 @@ fi
 
 #get the data from the temporary content file and dump it in a variable
 #for the script to use where needed, mainly for debugging
-content=$(cat $content_tmp_file);
+content=$(cat $content_tmp_file)
 
 #get the http code returned when attempting to connect to the url
 http_code=$(curl -s -o /dev/null -w "%{http_code}" $url )

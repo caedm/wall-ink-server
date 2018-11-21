@@ -11,8 +11,8 @@
 //
 //purpose: verify if data from a wall-ink-server host is valid
 //
-//usage: ./check_wall_ink_data.bin                     Run with default settings
-//   or: ./check_wall_ink_data.bin [options] <args>    Run with given options and arguments
+//usage: ./wall_ink_data_tool.bin                     Run with default settings
+//   or: ./wall_ink_data_tool.bin [options] <args>    Run with given options and arguments
 //
 //The program expects the data to be passed to it via Standard Input (STDIN) typically through a pipe
 //
