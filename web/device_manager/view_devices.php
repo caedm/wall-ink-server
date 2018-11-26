@@ -58,44 +58,74 @@ function printResult($devices, $rooms, $plugins) {
         echo "\">";
         echo $device["mac_address"];
         echo "</td>";
-        echo "<td class=\"plugin_name\">";
+        echo "<td class=\"plugin_name";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         if (isset($plugins[$device['scheduling_system']])) {
             echo $plugins[$device['scheduling_system']]->getName();
         } else {
             echo "Error: Plugin not active";
         }
         echo "</td>";
-        echo "<td class=\"room_name\">";
+        echo "<td class=\"room_name";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         if (isset($plugins[$device['scheduling_system']])) {
             echo $rooms[$device['scheduling_system']][$device['resource_id']];
         } else {
             echo "Error: Plugin not active";
         }
         echo "</td>";
-        echo "<td class=\"device_type\">";
+        echo "<td class=\"device_type";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         echo $device["device_type"];
         echo "</td>";
         echo "<td class=\"voltage";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
         if ($device["voltage"] < 2.5) {
             echo " orange";
         }
         echo "\">";
         echo $device["voltage"];
         echo "</td>";
-        echo "<td class=\"orientation\">";
+        echo "<td class=\"orientation";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         echo $device["orientation"];
         echo "</td>";
-        echo "<td class=\"firmware_version\">";
+        echo "<td class=\"firmware_version";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         echo $device["firmware_version"];
         echo "</td>";
         echo "<td class=\"last_checked_in";
         if (substr($device["last_checked_in"], 0, 10) !== date('Y-m-d') && $device['is_production']) {
             echo " orange";
         }
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
         echo "\">";
         echo $device["last_checked_in"];
         echo "</td>";
-        echo "<td class=\"batteries_replaced_date\">";
+        echo "<td class=\"batteries_replaced_date";
+        if (!$device['is_production']) {
+            echo " notproduction";
+        }
+        echo "\">";
         echo $device["batteries_replaced_date"];
         echo "</td>";
 
