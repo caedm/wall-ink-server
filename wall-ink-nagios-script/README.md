@@ -82,5 +82,8 @@ options:
     -b: <bytes>     Set the input buffer/data size to # <bytes>
     -i: <key>       Set the image key to that given in <key>
     -v:             Run in Verbose mode
+		-C: 						Print out the time compressed UNIX timestamp
+		-W: 						Print out the time to wake UNIX timestamp
+		-j: 						If used with `-W` or `-C` options, will print the time data in JSON format
 ```
 
