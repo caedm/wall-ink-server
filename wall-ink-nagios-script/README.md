@@ -6,7 +6,7 @@ This script mimics the functionality of a `wall-ink` device for use in a monitor
 # Setup and Usage:
 
 ### Build the Executable 
-Before running `check_wall_ink_server.sh` you first need to build the `check_wall_ink_data.bin` executable. To do this you must have a C compiler. The included Makefile is setup to compile using GCC, which is standard in most Linux distributions, but you may change it to use a different compiler if you wish.
+Before running `check_wall_ink_server.sh` you first need to build the `wall_ink_data_tool.bin` executable. To do this you must have a C compiler. The included Makefile is setup to compile using GCC, which is standard in most Linux distributions, but you may change it to use a different compiler if you wish.
 
 To build the executable run the command 
 ```
@@ -14,9 +14,9 @@ make
 ``` 
 in this code directory.
 
-After this you should see a `check_wall_ink_data.bin` in the directory.
+After this you should see a `wall_ink_data_tool.bin` in the directory.
 
-Make sure you set the permissions on `check_wall_ink_data.bin` to executable for whichever user needs to run it, as well as the user who will run the `check_wall_ink_server.sh` script.
+Make sure you set the permissions on `wall_ink_data_tool.bin` to executable for whichever user needs to run it, as well as the user who will run the `check_wall_ink_server.sh` script.
 
 ### Basic Usage:
 
@@ -70,8 +70,8 @@ wall-ink-server data checking program
 
 purpose: verify if data from a wall-ink-server host is valid
 
-usage: ./check_wall_ink_data.bin                     Run with default settings
-   or: ./check_wall_ink_data.bin [options] <args>    Run with given options and arguments
+usage: ./wall_ink_data_tool.bin                     Run with default settings
+   or: ./wall_ink_data_tool.bin [options] <args>    Run with given options and arguments
 
 The program expects the data to be passed to it via Standard Input (STDIN) 
 typically through a shell pipe

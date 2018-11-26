@@ -6,13 +6,15 @@
 //generate pbm file for image
 //or display with ascii
 //
+//TODO:
+//make option to just return time values
 
 //wall-ink-server data checking program
 //
 //purpose: verify if data from a wall-ink-server host is valid
 //
-//usage: ./check_wall_ink_data.bin                     Run with default settings
-//   or: ./check_wall_ink_data.bin [options] <args>    Run with given options and arguments
+//usage: ./wall_ink_data_tool.bin                     Run with default settings
+//   or: ./wall_ink_data_tool.bin [options] <args>    Run with given options and arguments
 //
 //The program expects the data to be passed to it via Standard Input (STDIN) typically through a pipe
 //
@@ -100,6 +102,13 @@ int print_hex_string(const uint8_t * data, uint16_t data_size);
 char * get_raw_string(uint8_t * out_string, 
                         const uint8_t * data, 
                         uint16_t data_size);
+
+//function to get the time data and time_t for 
+//time compressed and time to next wake
+uint8_t * get_time_data(uint8_t * out_data,
+                        time_t * out_comp_time,
+                        time_t * out_wake_time,
+                        const uint8_t * data);
 
 
 int main(int argc, char **argv){
@@ -313,9 +322,13 @@ int process_data(const char * image_key,
         printf("\n");
     }
 
-    //get the time data
+    //variable for the the time data
     uint8_t time_data[TIME_DATA_SIZE];
-    memcpy(time_data, data + HASH_SIZE, TIME_DATA_SIZE);
+    //time_t variables to store the times
+    time_t compressed_time_t;
+    time_t next_time_t;
+    //get the data 
+    get_time_data(time_data, &compressed_time_t, &next_time_t, data);
 
     if(debug_mode){  
         //set raw_str to NULL 
@@ -335,18 +348,6 @@ int process_data(const char * image_key,
     err = SHA1Input(&sha, (uint8_t *) time_data, TIME_DATA_SIZE);
     err = SHA1Result(&sha, time_data_hash);
 
-    //get the time when data was compressed
-    uint8_t compressed_time[TIME_DATA_PART_SIZE];
-    memcpy(compressed_time, time_data, TIME_DATA_PART_SIZE);
-
-    //get the time to next wake up
-    uint8_t next_time[TIME_DATA_PART_SIZE];
-    memcpy(next_time, time_data + TIME_DATA_PART_SIZE, TIME_DATA_PART_SIZE);
-
-    //get time_t variables of the time
-    //casting to uint32_t*  seems to work fine for this
-    time_t compressed_time_t = (time_t)*((uint32_t *) compressed_time);
-    time_t next_time_t = (time_t)*((uint32_t *) next_time);
 
     //get ascii format of the time, store in strings 
     //this keeps the values because if not stored in strings then
@@ -487,3 +488,39 @@ char * get_raw_string(uint8_t * out_string,
     //return the string
     return (char *)out_string; 
 }
+
+//function to get the time data and time_t for 
+//time compressed and time to next wake
+uint8_t * get_time_data(uint8_t * out_data,
+                        time_t * out_comp_time,
+                        time_t * out_wake_time,
+                        const uint8_t * data){
+
+    //get the time data
+    uint8_t time_data[TIME_DATA_SIZE];
+    memcpy(time_data, data + HASH_SIZE, TIME_DATA_SIZE);
+
+    //copy data to the output variable
+    memcpy(out_data, time_data, TIME_DATA_SIZE);
+
+    //get the time when data was compressed
+    uint8_t compressed_time[TIME_DATA_PART_SIZE];
+    memcpy(compressed_time, time_data, TIME_DATA_PART_SIZE);
+    
+    //get the time to next wake up
+    uint8_t next_time[TIME_DATA_PART_SIZE];
+    memcpy(next_time, time_data + TIME_DATA_PART_SIZE, TIME_DATA_PART_SIZE);
+
+    //get time_t variables of the time
+    //casting to uint32_t*  seems to work fine for this
+    time_t compressed_time_t = (time_t)*((uint32_t *) compressed_time);
+    time_t next_time_t = (time_t)*((uint32_t *) next_time);
+    
+    //copy time values to output 
+    *out_comp_time = compressed_time_t;
+    *out_wake_time = next_time_t;
+
+    return out_data;
+
+}
+

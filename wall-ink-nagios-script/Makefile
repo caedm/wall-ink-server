@@ -1,6 +1,6 @@
-# Makefile for check_wall_ink_data
+# Makefile for wall_ink_data_tool
 
-TARGET=check_wall_ink_data
+TARGET=wall_ink_data_tool
 CPPSRC=$(TARGET).cpp
 SRC=$(TARGET).c
 CPPC= g++
