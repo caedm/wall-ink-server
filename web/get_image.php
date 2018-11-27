@@ -14,7 +14,7 @@ $width = $_GET["width"];
 $height = $_GET["height"];
 
 //Sanity check on incoming url 
-if (preg_match('/^[[:xdigit:]]+$/', $mac_address) === 1 && preg_match('/^[[:digit:].]+$/', $voltage) === 1 && preg_match('/^[0-9a-z._]*$/', $firmware_version) === 1 && preg_match('/^[[:digit:]]+$/', $errorCode) === 1 && preg_match('/^[[:digit:]]+$/', $width) === 1 && preg_match('/^[[:digit:]]+$/', $height) === 1) {
+if (preg_match('/^[[:xdigit:]]{1,50}$/', $mac_address) === 1 && preg_match('/^[[:digit:].]{1,50}$/', $voltage) === 1 && preg_match('/^[[:alphanum:]._]{1,50}$/', $firmware_version) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $errorCode) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $width) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $height) === 1) {
 
     //get additional info
     $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);

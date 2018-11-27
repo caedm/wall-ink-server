@@ -10,7 +10,7 @@
     $resource_id = $_GET["resource_id"];
 
     //Sanity check on incoming url 
-    if (preg_match('/^[[:xdigit:]]+$/', $plugin_id) === 1) {
+    if (preg_match('/^[[:xdigit:]]{1,50}$/', $plugin_id) === 1 && preg_match('/^[[:alphanum:]]{1,100}$/', $resourceId) === 1) {
         $resource_name = "";
         foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
             require_once($filename);
