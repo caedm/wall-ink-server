@@ -6,8 +6,6 @@
 //generate pbm file for image
 //or display with ascii
 //
-//TODO:
-//make option to just return time values
 
 //wall-ink-server data checking program
 //
@@ -24,7 +22,9 @@
 //    -b: <bytes>     Set the input buffer/data size to # <bytes>
 //    -i: <key>   Set the image key to that given in <key>
 //    -v:         Run in Verbose mode
-//
+//    -C:         Print out the time compressed UNIX timestamp
+//    -W:         Print out the time to wake UNIX timestamp
+//    -j:         If used with `-W` or `-C` options, will print the time data in JSON format
 
 #include <stdio.h>
 #include <stdint.h>
@@ -85,6 +85,13 @@ enum {
 //flag for verbose mode
 bool verbose = false;
 
+//flag for printing compressed time
+bool print_comp_time = false;
+//flag for printing the next wake time
+bool print_wake_time = false;
+//print output in json
+bool print_json = false;
+
 //prototype function for processing the data
 int process_data(const char * image_key, 
                     const uint8_t * data, 
@@ -127,7 +134,7 @@ int main(int argc, char **argv){
     opterr = 0;
 
     //operator parsing code
-    while((c = getopt(argc, argv, ":i:hb:dv")) != -1){
+    while((c = getopt(argc, argv, ":i:hb:dvCWj")) != -1){
         
         //variable to store value from input
         int temp_value = 0;
@@ -180,13 +187,32 @@ int main(int argc, char **argv){
                         "\t-d: \t\tRun in Debug mode\n"
                         "\t-b: <bytes> \tSet the input buffer/data size to # <bytes>\n"
                         "\t-i: <key> \tSet the image key to that given in <key>\n"
-                        "\t-v: \t\tRun in Verbose mode\n",
+                        "\t-v: \t\tRun in Verbose mode\n"
+                        "\t-C: \t\tPrint out the time compressed UNIX timestamp\n"
+                        "\t-W: \t\tPrint out the time to wake UNIX timestamp\n"
+                        "\t-j: \t\tIf used with `-W` or `-C` options, will print the time data in JSON format\n"
+                        "",
                         prog_name, prog_name);
                 return 0;
                 break;
             case 'v':
                 //set verbose to true
                 verbose = true;
+                break;
+            case 'C':
+                //set to print the UNIX time when compressed
+                //set the flag
+                print_comp_time = true;
+                break;
+            case 'W':
+                //set to print the UNIX time for next wake/check-in
+                //set the flag
+                print_wake_time = true;
+                break;
+            case 'j':
+                //set to print in json if outputting times
+                //set the flag
+                print_json = true;
                 break;
             case ':':
                 //if it is missing an argument
@@ -255,8 +281,60 @@ int main(int argc, char **argv){
     //check the data
     //and store any error codes
     int ret_code = process_data(image_key, buff, buff_size);
-    //return the error code which then gets passed to the shell or script
-    return ret_code;
+    //if there was an error, just exit here
+    if(ret_code != RET_OK){
+        //return the error code which then gets passed to the shell or script
+        return ret_code;
+    }
+
+    //the time printing stuff
+    if(print_comp_time || print_wake_time){
+        //make variables to store values
+        time_t comp_time_t, wake_time_t;
+        //timedata array
+        uint8_t time_data[TIME_DATA_SIZE];
+        //get the time values
+        get_time_data(time_data, &comp_time_t, &wake_time_t, buff);
+
+        //if to print in json
+        if(print_json){
+            //starting bracket
+            printf("{ ");
+            //values
+            if(print_comp_time){
+                printf("\"comp_time\": %ld", comp_time_t); 
+            }
+            if(print_wake_time){
+                //add comma if after comp time
+                if(print_comp_time)
+                    printf(", ");
+                //print data
+                printf("\"wake_time\": %ld", wake_time_t);
+            }
+            //closing bracket
+            printf(" }\n");
+        } 
+        else {
+            //print line by line
+            //printing message
+            printf("Printing the UNIX timestamps from the data\n");
+
+            if(print_comp_time){
+                //print compressed time first
+                printf("comp_time:\n%ld\n", comp_time_t);
+            }
+            if(print_wake_time){
+                //print the wake time
+                printf("wake_time:\n%ld\n", wake_time_t);
+            }
+
+        }
+
+    }
+
+    //if nothing else
+    //return OK
+    return RET_OK; 
 }
 
 
