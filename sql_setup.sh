@@ -3,7 +3,7 @@
 # Include settings from settings.cfg
 . web/config/settings.cfg
 
-# Create database table with one example entry for Nagios monitoring script
+# Create device database table with one example entry for Nagios monitoring script
 mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername -p$deviceDatabasePassword -D $deviceDatabaseName -e "\
 CREATE TABLE IF NOT EXISTS \`devices\` (\
   \`device_id\` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,\
@@ -24,3 +24,11 @@ CREATE TABLE IF NOT EXISTS \`devices\` (\
   UNIQUE KEY \`mac_address_UNIQUE\` (\`mac_address\`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;\
 INSERT INTO devices VALUES ('4','58','7','AAAABBBBCCCC','4','1','2018-10-10 08:52:49','2018-10-05 15:53:09','nagios','3','This is a fake device for monitoring the server with Nagios. Change the plugin type to monitor a particular plugin.','384','640','1');"
+
+# Create empty monitoring table for Nagios monitoring script
+mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername -p$deviceDatabasePassword -D $deviceDatabaseName -e "\
+CREATE TABLE IF NOT EXISTS \`monitoring\` (\
+	\`mac_address\` char(12) NOT NULL,\
+	\`next_check_in\` datetime NOT NULL,\
+	PRIMARY KEY (\`mac_address\`)\
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;"
