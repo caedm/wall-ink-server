@@ -1,5 +1,5 @@
 <?php
-if (preg_match('/^[[:alphanum:]]{1,100}$/', $_GET["r"]) === 1) {
+if (preg_match('/^[[:digit:]a-zA-Z_.@]{1,100}$/', $_GET["r"]) === 1) {
     echo "<html>";
     echo "<meta http-equiv='refresh' content='1;url=https://reserve.et.byu.edu/reservations/Web/reservation.php?rid=";
     echo "$_GET[r]'>";
