@@ -36,7 +36,7 @@ The wall-ink-server houses several important functions:
 You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at your web directory as defined in settings.cfg), use the command ```make```.
 
 # Wiki
-This project has a fairly extensive [Wiki](https://github.com/caedm/wall-ink-server/wiki), including articles on [Troubleshooting](https://github.com/caedm/wall-ink-server/wiki/Troubleshooting), [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture, [Nagios monitoring](https://github.com/caedm/wall-ink-server/wiki/Nagios-monitoring), and many more.  The companion wall-ink device project also has a great deal of documentatiion in it's [Wiki](https://github.com/caedm/wall-ink/wiki) as well.
+This project has a fairly extensive [Wiki](https://github.com/caedm/wall-ink-server/wiki), including articles on [Troubleshooting](https://github.com/caedm/wall-ink-server/wiki/Troubleshooting), [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture), [Nagios monitoring](https://github.com/caedm/wall-ink-server/wiki/Nagios-monitoring), and many more.  The companion wall-ink device project also has a great deal of documentatiion in it's [Wiki](https://github.com/caedm/wall-ink/wiki) as well.
 
 # Plugins
 The wall-ink-server can deliver any image to a wall-ink device.  [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) allow [additional code](https://github.com/caedm/wall-ink-server/wiki/Coding-a-new-plugin) to be added to the wall-ink-server to add integration of any API or code to generate images specific to your application.  
