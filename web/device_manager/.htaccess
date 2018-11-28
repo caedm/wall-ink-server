@@ -1,5 +1,5 @@
-#SSLOptions +StrictRequire
-#SSLRequireSSL
+SSLOptions +StrictRequire
+SSLRequireSSL
 
 AuthType Basic
 AuthName "Enter your CAEDM username and password"
