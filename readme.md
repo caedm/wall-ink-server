@@ -52,3 +52,6 @@ The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was us
 
 <img src= "https://i.imgur.com/NNI1ogo.png"  width="283">
 
+# Wiki
+This project has a fairly extensive [Wiki](https://github.com/caedm/wall-ink-server/wiki), including articles on [Troubleshooting](https://github.com/caedm/wall-ink-server/wiki/Troubleshooting), [Plugins]https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture, [Nagios monitoring](https://github.com/caedm/wall-ink-server/wiki/Nagios-monitoring), and many more.  The companion wall-ink device project also has a great deal of documentatiion in it's [Wiki](https://github.com/caedm/wall-ink/wiki) as well.
+
