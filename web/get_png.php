@@ -13,7 +13,7 @@
     $resourceId = $_GET["resource_id"];
     $schedulingSystem = $_GET["scheduling_system"];
 
-    if (preg_match('/^[[:xdigit:]]{1,50}$/', $mac_address) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $width) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $height) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $layout) === 1 && preg_match('/^[[:alphanum:]]{1,100}$/', $resourceId) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $schedulingSystem) === 1) {
+    if (preg_match('/^[[:xdigit:]]{1,50}$/', $mac_address) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $width) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $height) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $layout) === 1 && preg_match('/^[0-9a-zA-Z.@]{1,100}$/', $resourceId) === 1 && preg_match('/^[[:digit:]]{1,50}$/', $schedulingSystem) === 1) {
         $png = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".png";
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
