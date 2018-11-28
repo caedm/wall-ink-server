@@ -35,6 +35,9 @@ The wall-ink-server houses several important functions:
 # Build
 You will need ```gcc``` and GNU ```make```. To build and deploy to the live server (hosted at your web directory as defined in settings.cfg), use the command ```make```.
 
+# Wiki
+This project has a fairly extensive [Wiki](https://github.com/caedm/wall-ink-server/wiki), including articles on [Troubleshooting](https://github.com/caedm/wall-ink-server/wiki/Troubleshooting), the [database](https://github.com/caedm/wall-ink-server/wiki/Database), [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture), [Nagios monitoring](https://github.com/caedm/wall-ink-server/wiki/Nagios-monitoring), and many more.  The companion [wall-ink device project](https://github.com/caedm/wall-ink) also has a great deal of documentatiion in it's [Wiki](https://github.com/caedm/wall-ink/wiki) as well.
+
 # Plugins
 The wall-ink-server can deliver any image to a wall-ink device.  [Plugins](https://github.com/caedm/wall-ink-server/wiki/Plugin-architecture) allow [additional code](https://github.com/caedm/wall-ink-server/wiki/Coding-a-new-plugin) to be added to the wall-ink-server to add integration of any API or code to generate images specific to your application.  
 
@@ -51,4 +54,6 @@ The [Device Manager](https://github.com/caedm/wall-ink-server/wiki/device-manage
 The image generation code is located at ```wall-ink-server/```. GCC 8.1.0 was used to build it. See the discussion on [Wall ink image formats and image handling](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling) for more information.  A list of [important files in image generation](https://github.com/caedm/wall-ink-server/wiki/Wall-ink-image-formats-and-image-handling#important-files) and their purpose is also available in the Wiki.
 
 <img src= "https://i.imgur.com/NNI1ogo.png"  width="283">
+
+
 
