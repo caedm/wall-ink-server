@@ -6,10 +6,9 @@ if ($config->debugModeActive == "true") {
     ini_set('display_errors', '1');
 }
 
-#$plugin_id = $mysqli->real_escape_string($_GET["plugin_id"]);
-#$resource_id = $mysqli->real_escape_string($_GET["resource_id"]);
-$plugin_id = $_GET["plugin_id"];
-$resource_id = $_GET["resource_id"];
+$mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
+$plugin_id = $mysqli->real_escape_string($_GET["plugin_id"]);
+$resource_id = $mysqli->real_escape_string($_GET["resource_id"]);
 
 $resource_name = "";
 foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
