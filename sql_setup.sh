@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS \`devices\` (\
   PRIMARY KEY (\`device_id\`),\
   UNIQUE KEY \`mac_address_UNIQUE\` (\`mac_address\`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;\
-INSERT INTO devices VALUES ('4','58','7','AAAABBBBCCCC','4','1','2018-10-10 08:52:49','2018-10-05 15:53:09','nagios','3','This is a fake device for monitoring the server with Nagios. Change the plugin type to monitor a particular plugin.','384','640','1');"
+INSERT IGNORE INTO devices VALUES ('4','1','7','AAAABBBBCCCC','4','1','2018-10-10 08:52:49','2018-10-05 15:53:09','nagios','3','This is a fake device for monitoring the server with Nagios. Change the plugin type to monitor a particular plugin.','384','640','1');"
 
 # Create empty monitoring table for Nagios monitoring script
 mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername -p$deviceDatabasePassword -D $deviceDatabaseName -e "\
