@@ -30,5 +30,6 @@ mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername -p$deviceDatabasePassw
 CREATE TABLE IF NOT EXISTS \`monitoring\` (\
 	\`mac_address\` char(12) NOT NULL,\
 	\`next_check_in\` datetime NOT NULL,\
+	\`missed_count\` int(11) UNSIGNED NOT NULL DEFAULT '0',\
 	PRIMARY KEY (\`mac_address\`)\
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;"
