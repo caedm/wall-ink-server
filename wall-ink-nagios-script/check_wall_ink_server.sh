@@ -13,6 +13,7 @@
 #    -u <url>    Sets the url to check to the url given in it's argument
 #    -d          Set to debug mode
 #    -i <key>    Sets the image key value to that given in it's argument
+#    -m: <mac>   Set the MAC Address to that given in <mac>
 #    -h          Prints out help
 #
 #EXIT CODES:
@@ -24,53 +25,45 @@
 #other => CRITICAL: unknown return code
 #
 
-#       DETAILED PROGRAM DESCRIPTION
-
-#this contains a script `check_wall_ink_server.sh` which grabs data from a 
-#`wall-ink-server` url and verifies if it is valid data by passing the data 
-#to the `check_wall_ink_data.bin` executable. `check_wall_ink_data.bin` 
-#recieves the data via standard input (stdin), it then takes the first 20 bytes 
-#and compares it to a hash of the combined data of two hashes, the hash of 
-#the image key together with the hash of the time data (the next 8 bytes). 
-#If the data is valid, and the image key is correct, this final hash should 
-#match the first 20 bytes of the data. `check_wall_ink_data.bin` returns a code 
-#back to the `check_wall_ink_server.sh` script which calls it reporting on 
-#success or failure of the data check. `check_wall_ink_server.sh` then uses 
-#this response to give a proper exit code or error when it exits, this code 
-#is sent back to the nagios server which calls it. 
-#
-#If when `check_wall_ink_server.sh` is run and there is an error in connecting 
-#to the server, or it get's an http status code other than `200` (ok), then it 
-#will exit with a critical exit code before calling the 
-#`check_wall_ink_data.bin`. It also does this if the data size is too small to 
-#be valid.
-#
-
 
 #temporary filesystem directory, ideally using tmpfs on ramdisk
 #since the file is for merely passing data to the C program
 #and gets deleted after use
 # /dev/shm is the usual place for this on a Linux System
 temp_dir="/dev/shm"
-content_tmp_file="$temp_dir/check_server_content.tmp"
+content_tmp_file="${temp_dir}/check_server_content.tmp"
 
 #the minimum number of bytes that the returned data must have in order to qualify
 min_bytes=1000
 
-#default url to check
+#default base url to check
 #make sure to change to your server's url or pass your own in the arguments
-url="http://your-wall-ink-server.net/get_image.php?mac_address=AAAABBBBCCCC&firmware=nagios&error=0&voltage=4.00&width=640&height=384"
+url="http://your-wall-ink-server.net/get_image.php"
+
+#the default mac address for nagios testing
+mac_address="AAAABBBBCCCC"
+
+#values for the url query
+test_firmware="nagios"
+test_error=0
+test_voltage=4.00
+test_width=640
+test_height=384
+
+#function to generate the query string to append to the url
+function generate_query() {
+    #print the string back
+    printf "?mac_address=%s&firmware=%s&error=%d&voltage=%3.2f&width=%d&height=%d" \
+        $mac_address $test_firmware $test_error $test_voltage $test_width $test_height 
+}
+
 
 #the program to use to check the data
 check_data_program="./wall_ink_data_tool.bin"
 
-#the default image key without NULL
+#the default image key
 #change this to your own, or pass your's in the arguments
-default_image_key="hunter2"
-
-#storing the image key with ending NULL for use in getting it's hash 
-#to match those done in current wall-ink-server code
-image_key_w_NULL=$default_image_key"\0"
+image_key="hunter2"
 
 #how many times wget should try to connect to the server
 num_tries=1
@@ -86,6 +79,7 @@ options_str="options:
     -u <url>    Sets the url to check to the url given in it's argument
     -d          Set to debug mode
     -i <key>    Sets the image key value to that given in it's argument
+    -m: <mac>   Set the MAC Address to that given in <mac>
     -h          Prints out help"
 
 #string with the help dialog
@@ -116,7 +110,7 @@ verbose=false
 debug_mode=0
 
 #using getopts to parse the arguments
-while getopts ":vu:di:h" opt; do
+while getopts ":vu:di:hm:" opt; do
     case $opt in
         v)
             #if it gets the -v option for verbose mode
@@ -141,9 +135,13 @@ while getopts ":vu:di:h" opt; do
             #for -i <key> option, setting image key
             echo "-i: setting image key to: $OPTARG" >&2
             #set new value
-            default_image_key=$OPTARG
-            #add NULL to end 
-            image_key_w_NULL=$default_image_key"\0"
+            image_key=$OPTARG
+            ;;
+        m)
+            #for the -m <mac> option, setting mac address
+            echo "-m: setting Mac Address to: $OPTARG" >&2
+            #set the new value
+            mac_address=$OPTARG
             ;;
         h)
             #if -h help option
@@ -175,13 +173,12 @@ function get_bin_hash() {
 }
 
 #get the sha1 hash of the image key
-#get the hash, using -e option to include NULL '\0' in string
-#this is so it matches what wall-ink-server is currently doing in it's code
-image_key_hash=$( echo -n -e ${image_key_w_NULL} | sha1sum -b | awk '{print $1}' )
+image_key_hash=$( echo -n -e ${image_key} | sha1sum -b | awk '{print $1}' )
 
-
+#generate the full url
+url_query=$url$(generate_query)
 #grab the data from the url and put it in the temporary content file
-wget --timeout $timeout_sec --tries $num_tries -q $url -O $content_tmp_file
+wget --timeout $timeout_sec --tries $num_tries -q $url_query -O $content_tmp_file
 #get the exit code of wget
 wget_ret=$?
 
@@ -199,7 +196,7 @@ fi
 content=$(cat $content_tmp_file)
 
 #get the http code returned when attempting to connect to the url
-http_code=$(curl -s -o /dev/null -w "%{http_code}" $url )
+http_code=$(curl -s -o /dev/null -w "%{http_code}" $url_query )
 
 #get the number of bytes in the data
 #using the flag '-n' echo prevents it adding trailing newline in data
@@ -208,55 +205,18 @@ bytes=$(echo -n $content| wc -c )
 
 #verbose output
 if [ $verbose = true ]; then
+    #print the query
+    echo "URL Query: ${url_query}"
     #to get slightly more verbose http info for debugging
-    http_info=$(wget --server-response -nv $url -O /dev/null 2>&1 | grep -F HTTP  )
+    http_info=$(wget --server-response -nv $url_query -O /dev/null 2>&1 | grep -F HTTP  )
+    #echo the http info
     echo "http_info = $http_info"
+    #echo out the http_code for debugging
+    echo "http_code = $http_code"
     #echo out the bytes for debugging
     echo "bytes = $bytes"
 fi
 
-
-#debug output
-if [ $debug_mode -eq 1 ]; then
-    
-    #echo out the content data for debugging
-    echo "content = "
-    echo $content
-    
-    #output with printf to see any difference (tabs/newline vs. spaces)
-    echo "printf on content"
-    printf "%s\n" $content
-    
-    #echo out the http_code for debugging
-    echo "http_code = $http_code"
-
-    #print the image key hash for debug
-    echo "image_key_hash = $image_key_hash"
-    #hash stuff
-    
-    #get first 20 bytes of data
-    head_data=$(echo -n $content | head -c 20)
-    echo "head_data = "
-    echo $head_data
-    
-    #head_data_hex=$(echo -n $head_data | xxd -p)
-    head_data_hex=$(echo -n $head_data | xxd -p)
-    echo "head_data_hex = $head_data_hex"
-    
-    #get next 8 bytes of data, the time data
-    time_data=$( echo -n $content | tail -c+21 | head -c 8 )
-    echo "time_data = "
-    echo $time_data
-   
-    #get hex of the time data for debug 
-    time_data_hex=$(echo -n $time_data | xxd -p)
-    echo "time_data_hex = $time_data_hex"
-    
-    #generate hash of time_data
-    time_hash=$( get_bin_hash $time_data );
-    echo "time_hash = $time_hash"
-    
-fi
 
 #check if the url call worked and got HTTP code 200 for OK
 if [ $http_code -eq "200" ]; then
@@ -266,7 +226,8 @@ if [ $http_code -eq "200" ]; then
 
         #call the c program
         cat $content_tmp_file | $check_data_program \
-                                -b $bytes $c_opts -i $default_image_key 
+                                -b $bytes $c_opts -i $image_key \
+                                -m $mac_address
         #store the exit code of the program 
         #(system variable $? stores the last return value)
         c_exit_code=$?

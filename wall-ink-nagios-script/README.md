@@ -24,11 +24,17 @@ While designed for use as a service on a Nagios Server, this script can also be 
 
 To point to your server either use the `-u` option followed by your URL in parentheses like so:
 ```
-./check_wall_ink_server.sh -u "http://your-wall-ink-server.net/get_image.php?mac_address=AAAABBBBCCCC&firmware=nagios&error=0&voltage=4.00"
+./check_wall_ink_server.sh -u "http://your-wall-ink-server.net/get_image.php"
 ```
 or you can change the `url` variable inside the `check_wall_ink_server.sh` file. 
 
-Make sure to to change the mac_address value in the URL to the one in the database that you have set up for testing!
+In addition to set the MAC Address you want your Nagios script to test at you can use the `-m` option followed by the MAC Address like so:
+```
+./check_wall_ink_server.sh -m "AAAABBBBCCCC"
+```
+or you can change the `mac_address` variable in the script.
+
+Make sure to to change this MAC Address value to the one in the database that you have set up for testing!
 
 For the image key do likewise with the `-i` option followed by your image key:
 ```
@@ -37,6 +43,11 @@ For the image key do likewise with the `-i` option followed by your image key:
 or you can change the `default_image_key` variable inside the `check_wall_ink_server.sh` file.
 
 This should be the same image key that is used in your wall-ink-server code.
+
+A complete usage example using these options:
+```
+./check_wall_ink_server.sh -u "http://your-wall-ink-server.net/get_image.php" -m "AAAABBBBCCCC" -i "yourImageKey" 
+```
 
 ### Script Usage Details:
 ```
@@ -53,6 +64,7 @@ options:
     -u <url>    Sets the url to check to the url given in it's argument
     -d          Set to debug mode
     -i <key>    Sets the image key value to that given in it's argument
+    -m: <mac>   Set the MAC Address to that given in <mac>
     -h          Prints out help
 
 EXIT CODES:
@@ -64,11 +76,12 @@ this program gives an exit code according to Nagios service codes
 other => CRITICAL: unknown return code
 ```
 
-### Data Verification Program Usage Details:
+### Data Tool Program Usage Details:
 ```
 wall-ink-server data checking program
 
-purpose: verify if data from a wall-ink-server host is valid
+purpose: tool to verify if data from a wall-ink-server host is valid
+         and extract information from the data.
 
 usage: ./wall_ink_data_tool.bin                     Run with default settings
    or: ./wall_ink_data_tool.bin [options] <args>    Run with given options and arguments
@@ -81,6 +94,7 @@ options:
     -d:             Run in Debug mode
     -b: <bytes>     Set the input buffer/data size to # <bytes>
     -i: <key>       Set the image key to that given in <key>
+    -m: <mac>       Set the MAC Address to that given in <mac>
     -v:             Run in Verbose mode
     -C:             Print out the time compressed UNIX timestamp
     -W:             Print out the time to wake UNIX timestamp
