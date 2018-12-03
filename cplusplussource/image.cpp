@@ -8,11 +8,10 @@
 #include "fonts.h"
 #include "image.h"
 #include "qr_code_generator/QrCode.hpp"
+#include "processImage.h"
 #define DEBUG 0
 
 using namespace std;
-
-vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 uint8_t* image;
 uint32_t sleepTime;
@@ -433,7 +432,7 @@ int main(int argc, char* argv[]) {
         mirror();
     }
 
-    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res);
+    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
     //write to a file
     ofstream("image_data/" + mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
     ofstream("image_data/" + mac_address + ".wink", ios::binary).write((const char*) processed.data(), processed.size());

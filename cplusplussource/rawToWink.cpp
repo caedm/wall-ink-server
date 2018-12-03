@@ -4,10 +4,9 @@
 #include <string.h>
 #include <iostream>
 #include <cstdlib>
+#include "processImage.h"
 
 using namespace std;
-
-extern vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res);
 
 int main(int argc, char* argv[]) {
     ifstream rawFile;
@@ -19,6 +18,9 @@ int main(int argc, char* argv[]) {
 
     //get sleep time
     uint16_t sleepTime = atoi(argv[5]);
+
+    //get mac address
+    std::string mac_address = argv[6];
 
     //allocate memory for image buffer
     uint8_t* image = (uint8_t*) malloc(x_res*y_res/8);
@@ -33,7 +35,7 @@ int main(int argc, char* argv[]) {
     }
 
     //generate processed image
-    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res);
+    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
 
     free(image);
 
