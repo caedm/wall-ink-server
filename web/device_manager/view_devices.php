@@ -146,7 +146,7 @@ foreach (glob("../plugins/*.php") as $filename) {
     require_once($filename);
 }
 foreach ($plugins as $plugin) {
-    $rooms[ $plugin->getIndex() ] = $rooms + $plugin->getResources($config);
+    $rooms[ $plugin->getIndex() ] = $plugin->getResources($config);
 }
 echo "<script src='js/view_devices.js'></script>";
 printResult($devices, $rooms, $plugins);
