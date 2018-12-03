@@ -59,7 +59,7 @@ min_bytes=1000
 
 #default url to check
 #make sure to change to your server's url or pass your own in the arguments
-url="http://your-wall-ink-server.net/get_image.php?mac_address=AAAABBBBCCCC&firmware=nagios&error=0&voltage=4.00"
+url="http://your-wall-ink-server.net/get_image.php?mac_address=AAAABBBBCCCC&firmware=nagios&error=0&voltage=4.00&width=640&height=384"
 
 #the program to use to check the data
 check_data_program="./wall_ink_data_tool.bin"
