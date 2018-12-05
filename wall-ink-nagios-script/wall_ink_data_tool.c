@@ -9,7 +9,8 @@
 
 //wall-ink-server data checking program
 //
-//purpose: verify if data from a wall-ink-server host is valid
+//purpose: tool to verify if data from a wall-ink-server host is valid
+//         and extract information from the data.
 //
 //usage: ./wall_ink_data_tool.bin                     Run with default settings
 //   or: ./wall_ink_data_tool.bin [options] <args>    Run with given options and arguments
@@ -21,6 +22,7 @@
 //    -d:         Run in Debug mode
 //    -b: <bytes>     Set the input buffer/data size to # <bytes>
 //    -i: <key>   Set the image key to that given in <key>
+//    -m: <mac>   Set the MAC Address to that given in <mac>
 //    -v:         Run in Verbose mode
 //    -C:         Print out the time compressed UNIX timestamp
 //    -W:         Print out the time to wake UNIX timestamp
@@ -50,14 +52,22 @@
 #define DEFAULT_IMAGE_KEY "hunter2"
 #endif
 
-//size in bytes of the head data (hash)
-#define HEAD_DATA_SIZE 20
+//the default mac address if we aren't provided one
+#define DEFAULT_MAC_ADDRESS "ABCDABCDABCD"
+//the char length of a mac address
+#define MAC_ADDRESS_LENGTH  12
+
 //size of a hash in bytes
 #define HASH_SIZE 20
+//size in bytes of the head data (hash)
+#define HEAD_DATA_SIZE      HASH_SIZE
 //size in bytes of the combined time data
 #define TIME_DATA_SIZE 8
 //size in bytes of one part of the combined time data
 #define TIME_DATA_PART_SIZE 4
+
+//the amount of hashes combined to hash the chunk1 data
+#define CHUNK1_HASH_COUNT 3
 
 //return values
 #define RET_OK          0
@@ -94,6 +104,7 @@ bool print_json = false;
 
 //prototype function for processing the data
 int process_data(const char * image_key, 
+                    const char * mac_address,
                     const uint8_t * data, 
                     int data_size);
 
@@ -125,8 +136,16 @@ int main(int argc, char **argv){
 
     //variable to store the image key
     char * image_key = NULL;
+    //pointer to store the mac_address string
+    char * mac_addr = NULL;
     //variable to store the default value 
     char default_image_key[] = DEFAULT_IMAGE_KEY;
+    //variable to store the default mac address string
+    char default_mac_address[] = DEFAULT_MAC_ADDRESS;
+    
+    //init the mac_addr to the default, 
+    //this will be changed if one is given in args
+    mac_addr = default_mac_address;
 
     //variable to store argument characters
     int c;
@@ -134,7 +153,7 @@ int main(int argc, char **argv){
     opterr = 0;
 
     //operator parsing code
-    while((c = getopt(argc, argv, ":i:hb:dvCWj")) != -1){
+    while((c = getopt(argc, argv, ":i:hb:dvCWjm:")) != -1){
         
         //variable to store value from input
         int temp_value = 0;
@@ -144,6 +163,10 @@ int main(int argc, char **argv){
             case 'i':
                 //if given -i arg, take in the value after as the image key
                 image_key = optarg;
+                break;
+            case 'm':
+                //if given the -m arg take int the value after as mac address
+                mac_addr = optarg;
                 break;
             case 'b':
                 //if given -b arg, take in the value after as the buffer size
@@ -174,7 +197,8 @@ int main(int argc, char **argv){
                 printf("HELP:\n"
                         "wall-ink-server data checking program\n"
                         "\n"
-                        "purpose: verify if data from a wall-ink-server host is valid\n"
+                        "purpose: tool to verify if data from a wall-ink-server host is valid\n"
+                        "         and extract information from the data.\n"
                         "\n"
                         "usage: %s \t\t\tRun with default settings\n"
                         "   or: %s [options] <args> \tRun with given options and arguments\n"
@@ -187,6 +211,7 @@ int main(int argc, char **argv){
                         "\t-d: \t\tRun in Debug mode\n"
                         "\t-b: <bytes> \tSet the input buffer/data size to # <bytes>\n"
                         "\t-i: <key> \tSet the image key to that given in <key>\n"
+                        "\t-m: <mac> \tSet the MAC Address to that given in <mac>\n"
                         "\t-v: \t\tRun in Verbose mode\n"
                         "\t-C: \t\tPrint out the time compressed UNIX timestamp\n"
                         "\t-W: \t\tPrint out the time to wake UNIX timestamp\n"
@@ -280,7 +305,7 @@ int main(int argc, char **argv){
 
     //check the data
     //and store any error codes
-    int ret_code = process_data(image_key, buff, buff_size);
+    int ret_code = process_data(image_key, mac_addr, buff, buff_size);
     //if there was an error, just exit here
     if(ret_code != RET_OK){
         //return the error code which then gets passed to the shell or script
@@ -341,6 +366,7 @@ int main(int argc, char **argv){
 
 //function to process the data
 int process_data(const char * image_key, 
+                    const char * mac_address,
                     const uint8_t * data, 
                     int data_size){
 
@@ -378,19 +404,38 @@ int process_data(const char * image_key,
 
     //***
     //this ignores this NULL at the end of the image_key string, 
-    //but as the wall-ink-server code is now, it hashes with the ending NULL
-    //so this code is not needed. But will keep it here just in case.
-    //This may change later.
     //***
-    //err = SHA1Input(&sha, (uint8_t *) image_key, strlen(image_key));
+    err = SHA1Input(&sha, (uint8_t *) image_key, strlen(image_key));
     
-    //since the current wall-ink-server code hashes the string with the NULL
-    //then use this code that does the same
-    err = SHA1Input(&sha, (uint8_t *) image_key, strlen(image_key) + 1);
-
     //put the hash into image_key_hash
     err = SHA1Result(&sha, image_key_hash);
 
+    //to store the mac address hash
+    uint8_t mac_address_hash[HASH_SIZE];
+    //generate the hash
+    err = SHA1Reset(&sha);
+    //has the mac address
+    err = SHA1Input(&sha, (uint8_t *) mac_address, MAC_ADDRESS_LENGTH); 
+    //put hash in the array mac_address_hash
+    err = SHA1Result(&sha, mac_address_hash);
+    
+    //debug output
+    if(debug_mode || verbose){
+        //print out input mac address 
+        printf("Input MAC Address: %s\n", mac_address); 
+    }
+    if(debug_mode){
+        //print out hash of mac address
+        printf("mac address hash (hex): ");
+        //print hex
+        print_hex_string(mac_address_hash, HASH_SIZE);
+        //newline
+        printf("\n");
+    }
+    if(debug_mode || verbose){
+        //print out input image key
+        printf("Input image key: %s\n", image_key);
+    }
     if(debug_mode){
         //print out the hash of the image key
         printf("image key hash (hex): \t" SPACE_20 SPACE_20);
@@ -451,22 +496,25 @@ int process_data(const char * image_key,
     }
 
     //
-    //next put the two hashes together, then hash that to get the final hash
+    //next put the  hashes together, then hash that to get the final hash
     //
     
-    //combine the two hashes
-    uint8_t combined_hashes[HASH_SIZE * 2];
+    //combine the three hashes
+    uint8_t combined_hashes[HASH_SIZE * CHUNK1_HASH_COUNT];
     //copy the time data hash into the lower bytes
     memcpy(combined_hashes, time_data_hash, HASH_SIZE);
-    //copy the image key hash into the upper bytes
-    memcpy(combined_hashes + HASH_SIZE, image_key_hash, HASH_SIZE);
+    //copy the mac address hash into the middle bytes
+    memcpy(combined_hashes + HASH_SIZE, mac_address_hash, HASH_SIZE);
+    //copy the image key hash into the upper bytes, after first two hashes
+    memcpy(combined_hashes + (HASH_SIZE * 2), image_key_hash, HASH_SIZE);
 
     //variable to store the final hash of the time hash and image key hash
     uint8_t final_time_hash[HASH_SIZE]; 
 
     //hash the combined hashes
     err = SHA1Reset(&sha);
-    err = SHA1Input(&sha, (uint8_t *) combined_hashes, HASH_SIZE * 2);
+    err = SHA1Input(&sha, (uint8_t *) combined_hashes, 
+                            HASH_SIZE * CHUNK1_HASH_COUNT);
     if(err){
         fprintf(stderr, "%s ERROR %d: error in SHA1Input function on"
                         " combined_hashes\n", prog_name, err);
@@ -480,7 +528,7 @@ int process_data(const char * image_key,
     if(debug_mode){
         //print the combined hashes
         printf("combined hashes: \t");
-        print_hex_string(combined_hashes, HASH_SIZE * 2);
+        print_hex_string(combined_hashes, HASH_SIZE * CHUNK1_HASH_COUNT);
         printf("\n");
 
         //print the final hash
