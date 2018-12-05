@@ -277,7 +277,12 @@ void setSleepTime(uint32_t increment) { //increment is the target number of seco
         sleepTime = increment - (currentTime % increment);
     }
     //wake 2 minutes early so that it is showing the schedule for the next block ahead of time
-    sleepTime -= 120;
+    if (sleepTime > 180 ) {
+        sleepTime -= 120;
+    } else if (increment > 120) {
+        sleepTime += increment;
+        sleepTime -= 120;
+    }
 
     #if DEBUG == 2
         cout << "Current Time: " << currentTime % 86400 << endl;
