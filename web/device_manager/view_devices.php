@@ -60,16 +60,16 @@ function printResult($devices, $rooms, $plugins) {
         echo "</td>";
         echo "<td class=\"plugin_name";
         echo "\">";
-        if (isset($plugins[$device['scheduling_system']])) {
-            echo $plugins[$device['scheduling_system']]->getName();
+        if (isset($plugins[$device['plugin']])) {
+            echo $plugins[$device['plugin']]->getName();
         } else {
             echo "Error: Plugin not active";
         }
         echo "</td>";
         echo "<td class=\"room_name";
         echo "\">";
-        if (isset($plugins[$device['scheduling_system']])) {
-            echo $rooms[$device['scheduling_system']][$device['resource_id']];
+        if (isset($plugins[$device['plugin']])) {
+            echo $rooms[$device['plugin']][$device['resource_id']];
         } else {
             echo "Error: Plugin not active";
         }

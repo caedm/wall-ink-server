@@ -18,7 +18,7 @@
             "voltage" => 7,
             "width" => 640,
             "height" => 384,
-            "scheduling_system" => 0,
+            "plugin" => 0,
             "is_production" => true,
             "notes" => ""
         );
@@ -51,13 +51,13 @@
             echo "<input type=\"text\" id=\"height\" name=\"new_height\" value=\"$device[height]\">";
         echo "</div>";
         echo "<div class=\"field\">";
-            echo "<label for=\"new_scheduling_system\">Plugin:</label>";
-            echo "<select id=\"scheduling_system\" name=\"new_scheduling_system\">";
+            echo "<label for=\"new_plugin\">Plugin:</label>";
+            echo "<select id=\"plugin\" name=\"new_plugin\">";
                 foreach ($plugins as $plugin) {
                     echo "<option value=\"";
                     echo $plugin->getIndex();
                     echo "\"";
-                    if ($device["scheduling_system"] == $plugin->getIndex()) {
+                    if ($device["plugin"] == $plugin->getIndex()) {
                         echo " selected";
                     }
                     echo ">";
@@ -68,7 +68,7 @@
         echo "</div>";
         foreach ($plugins as $plugin) {
             echo "<div class=\"field resource";
-            if ($device["scheduling_system"] != $plugin->getIndex()) {
+            if ($device["plugin"] != $plugin->getIndex()) {
                 echo " hidden";
             }
             echo "\" data-pluginid=\"";
@@ -152,6 +152,6 @@
 
     echo "</div>";
 
-    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&scheduling_system=$device[scheduling_system]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 
+    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&plugin=$device[plugin]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 
     echo "<script src=\"js/edit_device.js\"></script>";
 ?>

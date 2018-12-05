@@ -27,7 +27,7 @@ function returnError($plugins,$config,$mac_address, $voltage, $firmware_version,
     $device["voltage"] = $voltage;
     $device["orientation"] = "1";
     $device["firmware_version"] = $firmware_version;
-    $device["scheduling_system"] = "4";
+    $device["plugin"] = "4";
     $device["height"] = $height;
     $device["width"] = $width;
     $device["error_message"] = $error;	
@@ -37,7 +37,7 @@ function returnError($plugins,$config,$mac_address, $voltage, $firmware_version,
     //It is not possible to load the simple_text plugin inside this function
 
     foreach ($plugins as $plugin) {
-        if ($plugin->getIndex() == $device["scheduling_system"]) {
+        if ($plugin->getIndex() == $device["plugin"]) {
             $file = $plugin->getImage($config, $device);
         }
     }
@@ -82,7 +82,7 @@ if ($result->num_rows != 0) {
 
         // Log contact from a wall-ink device to a log file
         $logfile = "log/" . $mac_address . ".log";
-        $log_entry = date('Y-m-d H:i:s') . " MAC Address: " . $mac_address . " Firmware: " . $firmware_version . " Width: " . $width . " Height: " . $height . " Voltage: " . $voltage . " Error Code: " . $errorCode . " Plugin: " . $device["scheduling_system"] . " Resource: " . $device["resource_id"] . " Device Type: " . $device["device_type"] . "\n";
+        $log_entry = date('Y-m-d H:i:s') . " MAC Address: " . $mac_address . " Firmware: " . $firmware_version . " Width: " . $width . " Height: " . $height . " Voltage: " . $voltage . " Error Code: " . $errorCode . " Plugin: " . $device["plugin"] . " Resource: " . $device["resource_id"] . " Device Type: " . $device["device_type"] . "\n";
         file_put_contents($logfile, $log_entry, FILE_APPEND | LOCK_EX);
     } // end of "no_update" if statement
 
@@ -92,7 +92,7 @@ if ($result->num_rows != 0) {
     }
     //use selected plugin to build wink file
     foreach ($plugins as $plugin) {
-        if ($plugin->getIndex() == $device["scheduling_system"]) {
+        if ($plugin->getIndex() == $device["plugin"]) {
             $file = $plugin->getImage($config, $device);
         }
     }
@@ -115,7 +115,7 @@ if ($result->num_rows != 0) {
         //run this code if the plugin could not successfully return a filename from the selected plugin
     } else {
         //Plugins were already loaded above, so no need to load simple_text plugin at this point.
-        returnError($plugins,$config,$mac_address, $voltage, $firmware_version, $width, $height, "Plugin with index " . $device["scheduling_system"] . " failed to run.\nSee web server logs.");
+        returnError($plugins,$config,$mac_address, $voltage, $firmware_version, $width, $height, "Plugin with index " . $device["plugin"] . " failed to run.\nSee web server logs.");
     }
 } else {
     // this code block gets executed if the mac address doesn't match an existing device in the device database

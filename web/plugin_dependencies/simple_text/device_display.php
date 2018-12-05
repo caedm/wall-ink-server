@@ -29,7 +29,7 @@ function getResourceConfig($config,$device) {
 	$display_text .="Firmware Version: " . $device['firmware_version'];
 	$display_text .= "\n";
 
-	$display_text .="Plugin: " . $device['scheduling_system'];
+	$display_text .="Plugin: " . $device['plugin'];
 	$display_text .= "\n";
 
 	$display_text .= "\n";

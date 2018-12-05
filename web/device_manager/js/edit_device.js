@@ -1,7 +1,7 @@
 function refreshPreview() {
 
     document.getElementById('orientation').style.display = "initial";
-    var pluginIndex = document.getElementById('scheduling_system').value;
+    var pluginIndex = document.getElementById('plugin').value;
     var resources = document.getElementsByClassName('new_resource_id');
     var width = document.getElementById('width').value;
     var height = document.getElementById('height').value;
@@ -12,7 +12,7 @@ function refreshPreview() {
         }
     }
 
-    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value + "&scheduling_system=" + pluginIndex + "&resource_id=" + resourceId + "&voltage=7&width=" + width + "&height=" + height;
+    document.getElementById('preview').src="../get_png.php?mac_address=" + document.getElementById('mac_address').value + "&layout=" + document.querySelector('input[name="new_device_type"]:checked').value + "&plugin=" + pluginIndex + "&resource_id=" + resourceId + "&voltage=7&width=" + width + "&height=" + height;
 }
 
 inputs = document.getElementsByTagName('input');
@@ -31,8 +31,8 @@ function deleteLists() {
     }
 }
 
-var schedulingSystem = document.getElementById("scheduling_system");
-schedulingSystem.addEventListener('change', function() {
+var plugin = document.getElementById("plugin");
+plugin.addEventListener('change', function() {
     var hiddenFields = document.getElementsByClassName("hidden");
     var numHidden = hiddenFields.length;
     for (i = 0; i < numHidden; i++) {
@@ -40,13 +40,13 @@ schedulingSystem.addEventListener('change', function() {
     }
     var resources = document.getElementsByClassName("resource");
     for (i = 0; i < resources.length; i++) {
-        if (resources[i].getAttribute('data-pluginid') != schedulingSystem.value) {
+        if (resources[i].getAttribute('data-pluginid') != plugin.value) {
             resources[i].classList.add("hidden");
         }
     }
     var getdevicetype = document.getElementsByClassName("getdevicetype");
     for (i = 0; i < getdevicetype.length; i++) {
-        if (getdevicetype[i].getAttribute('data-pluginid') != schedulingSystem.value) {
+        if (getdevicetype[i].getAttribute('data-pluginid') != plugin.value) {
             getdevicetype[i].classList.add("hidden");
         }
     }

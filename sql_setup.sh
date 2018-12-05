@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS \`devices\` (\
   \`last_checked_in\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\
   \`batteries_replaced_date\` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,\
   \`firmware_version\` varchar(45) DEFAULT NULL,\
-  \`scheduling_system\` int(11) UNSIGNED NOT NULL DEFAULT '0',\
+  \`plugin\` int(11) UNSIGNED NOT NULL DEFAULT '0',\
   \`notes\` varchar(1000) NOT NULL DEFAULT '',\
   \`height\` int(11) UNSIGNED NOT NULL DEFAULT '384',\
   \`width\` int(11) UNSIGNED NOT NULL DEFAULT '640',\

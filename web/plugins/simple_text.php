@@ -92,7 +92,7 @@ class simpleTextPlugin implements iPlugin {
 	//There are no device type options for this plugin, it handles it automagickly
   $getDeviceType = "";
         $getDeviceType .= "<fieldset class=\"field getdevicetype";
-        if ($device['scheduling_system'] != $this->getIndex()) {
+        if ($device['plugin'] != $this->getIndex()) {
             $getDeviceType .= " hidden";
         }
         $getDeviceType .= "\" data-pluginid=\"";
@@ -103,7 +103,7 @@ class simpleTextPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"30\">30 minute refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_30\" name=\"new_device_type\" value=\"30\"";
-                    if ($device['device_type'] == 30 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 30 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -111,7 +111,7 @@ class simpleTextPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"60\">1 hour refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_60\" name=\"new_device_type\" value=\"60\"";
-		    if ($device['device_type'] == 60 && $device['scheduling_system'] == $this->getIndex()) {
+		    if ($device['device_type'] == 60 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";

@@ -64,7 +64,7 @@ class staticImagesPlugin implements iPlugin {
     public function getDeviceType($device) {
         $getDeviceType = "";
         $getDeviceType .= "<fieldset class=\"field getdevicetype";
-        if ($device['scheduling_system'] != $this->getIndex()) {
+        if ($device['plugin'] != $this->getIndex()) {
             $getDeviceType .= " hidden";
         }
         $getDeviceType .= "\" data-pluginid=\"";
@@ -75,7 +75,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"1\">4\" static, 30 minute refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_1\" name=\"new_device_type\" value=\"1\"";
-                    if ($device['device_type'] == 1 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 1 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -83,7 +83,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"4\">4\" static, 1 hour refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_4\" name=\"new_device_type\" value=\"4\"";
-                    if ($device['device_type'] == 4 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 4 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -91,7 +91,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"6\">4\" static, 3 hour refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_6\" name=\"new_device_type\" value=\"6\"";
-                    if ($device['device_type'] == 6 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 6 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -99,7 +99,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"9\">4\" static, 1 day refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_9\" name=\"new_device_type\" value=\"9\"";
-                    if ($device['device_type'] == 9 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 9 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -107,7 +107,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"2\">7\" static, 30 minute refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_2\" name=\"new_device_type\" value=\"2\"";
-                    if ($device['device_type'] == 2 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 2 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -115,7 +115,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"3\">7\" static, 1 hour refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_3\" name=\"new_device_type\" value=\"3\"";
-                    if ($device['device_type'] == 3 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 3 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -123,7 +123,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"7\">7\" static, 3 hour refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_7\" name=\"new_device_type\" value=\"7\"";
-                    if ($device['device_type'] == 7 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 7 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
@@ -131,7 +131,7 @@ class staticImagesPlugin implements iPlugin {
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"10\">7\" static, 1 day refresh cycle</label>";
                     $getDeviceType .= "<input type=\"radio\" id=\"type_10\" name=\"new_device_type\" value=\"10\"";
-                    if ($device['device_type'] == 10 && $device['scheduling_system'] == $this->getIndex()) {
+                    if ($device['device_type'] == 10 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";
