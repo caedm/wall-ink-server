@@ -29,11 +29,6 @@ int main(int argc, char* argv[]) {
     rawFile.read((char*) image, x_res*y_res/8);
     rawFile.close();
 
-    //invert image so it looks right on the screen
-    for (int i = 0; i < x_res*y_res/8; i++) {
-        image[i] = image[i]^0xff;
-    }
-
     //generate processed image
     vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
 

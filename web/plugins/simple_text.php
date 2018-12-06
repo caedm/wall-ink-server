@@ -81,7 +81,7 @@ class simpleTextPlugin implements iPlugin {
         $textImage = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "wink";
 
 	
-	`convert -background white -fill black -font $font -border $margin_size -bordercolor white -size $size -pointsize $pointsize -rotate $angle -negate caption:"$caption" $pbm`;
+	`convert -background white -fill black -font $font -border $margin_size -bordercolor white -size $size -pointsize $pointsize -rotate $angle caption:"$caption" $pbm`;
 	`$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh $pbm $raw`;
 	`$_SERVER[DOCUMENT_ROOT]/rawToWink $raw $textImage $width $height $nextRefreshTime $device[mac_address]`;
 

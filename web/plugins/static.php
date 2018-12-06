@@ -56,7 +56,7 @@ class staticImagesPlugin implements iPlugin {
         if ($device['orientation'] == 1) {
             $angle = 180;
         }
-        `convert $sourceImage -rotate 180 -negate -resize $size\! $pbm`;
+        `convert $sourceImage -rotate $angle -resize $size\! $pbm`;
         `$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh $pbm $raw`;
         `$_SERVER[DOCUMENT_ROOT]/rawToWink $raw $static $width $height $nextRefreshTime $device[mac_address]`;
         return $static;
