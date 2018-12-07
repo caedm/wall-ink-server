@@ -291,6 +291,24 @@ void setSleepTime(uint32_t increment) { //increment is the target number of seco
     #endif
 }
 
+//found at https://stackoverflow.com/questions/5878775/how-to-find-and-replace-string
+string replaceString(string subject, const string& search, const string& replace) {
+    size_t pos = 0;
+    while ((pos = subject.find(search, pos)) != std::string::npos) {
+         subject.replace(pos, search.length(), replace);
+         pos += replace.length();
+    }
+    return subject;
+}
+
+string fixPunctuation(string input) {
+    string output = replaceString(input, "&quot;", "\"");
+    output = replaceString(output, "&amp;", "&");
+    output = replaceString(output, "&lt;", "<");
+    output = replaceString(output, "&gt;", ">");
+    return output;
+}
+
 int main(int argc, char* argv[]) {
     //read from the database info
     ifstream fromDB;
@@ -365,6 +383,8 @@ int main(int argc, char* argv[]) {
 
     //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
     while (getline(fromDB, title)) {
+        //fix problems like the & symbol being shown as &amp;
+        title = fixPunctuation(title);
 
         //Make the titles not collide, ever
         ++eventNum;
