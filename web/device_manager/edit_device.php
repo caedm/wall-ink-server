@@ -3,6 +3,9 @@
 </style>
 <?php
     require('../config/dbconfig.php');
+    foreach (glob("../plugins/*.php") as $filename) {
+        require_once($filename);
+    }
     #Debug stuff
     if ($config->debugModeActive == "true") {
         error_reporting(E_ALL);
@@ -12,7 +15,7 @@
     if ($_GET["device_id"] == "new") {
         $device = array(
             "mac_address" => "0A1B2C3D4E5F",
-            "resource_id" => "1",
+            "resource_id" => "",
             "orientation" => 1,
             "device_type" => 7,
             "voltage" => 7,
@@ -22,15 +25,16 @@
             "is_production" => true,
             "notes" => ""
         );
+        $plugin = reset($plugins);
+        $device["plugin"] = $plugin->getIndex();
+        $resources = $plugin->getResources($config);
+        $device["resource_id"] = key($resources);
     } else if (preg_match('/^[[:digit:]]+$/', $device_id) === 1) {
         $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
         $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE device_id = $device_id");
         $device = mysqli_fetch_assoc($result);
     }
     $roomsArray = array();
-    foreach (glob("../plugins/*.php") as $filename) {
-        require_once($filename);
-    }
     foreach ($plugins as $plugin) {
         $roomsArray[$plugin->getName()] = $plugin->getResources($config);
     }
