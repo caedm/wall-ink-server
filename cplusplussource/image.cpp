@@ -361,9 +361,16 @@ int main(int argc, char* argv[]) {
         reservations[i] = "Available";
     }
     string title;
+    int eventNum = 0;
 
     //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
     while (getline(fromDB, title)) {
+
+        //Make the titles not collide, ever
+        ++eventNum;
+        for (int i = 0; i < eventNum; i++) {
+            title += "\r";
+        }
         
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
         string dateTimeStart;
