@@ -89,8 +89,17 @@ class simpleTextPlugin implements iPlugin {
     }
 
     public function getDeviceType($device) {
+    //if necessary, set default
+    $validDeviceTypes = array(30,60);
+    if (!in_array($device["device_type"], $validDeviceTypes)) {
+        $device["device_type"] = 60;
+    }
+    $getDeviceType = "";
+    $getDeviceType .= "<script language='javascript'>";
+    $getDeviceType .= "defaults[" . $this->getIndex() . "]=" . $device["device_type"] . ";";
+    $getDeviceType .= "</script>";
+
 	//There are no device type options for this plugin, it handles it automagickly
-  $getDeviceType = "";
         $getDeviceType .= "<fieldset class=\"field getdevicetype";
         if ($device['plugin'] != $this->getIndex()) {
             $getDeviceType .= " hidden";
@@ -102,7 +111,7 @@ class simpleTextPlugin implements iPlugin {
             $getDeviceType .= "<ul>";
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"30\">30 minute refresh cycle</label>";
-                    $getDeviceType .= "<input type=\"radio\" id=\"type_30\" name=\"new_device_type\" value=\"30\"";
+                    $getDeviceType .= "<input type=\"radio\" id=\"type_30_" . $this->getIndex() . "\" name=\"new_device_type\" value=\"30\"";
                     if ($device['device_type'] == 30 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
@@ -110,8 +119,8 @@ class simpleTextPlugin implements iPlugin {
                 $getDeviceType .= "</li>";
                 $getDeviceType .= "<li>";
                     $getDeviceType .= "<label for=\"60\">1 hour refresh cycle</label>";
-                    $getDeviceType .= "<input type=\"radio\" id=\"type_60\" name=\"new_device_type\" value=\"60\"";
-		    if ($device['device_type'] == 60 && $device['plugin'] == $this->getIndex()) {
+                    $getDeviceType .= "<input type=\"radio\" id=\"type_60_" . $this->getIndex() . "\" name=\"new_device_type\" value=\"60\"";
+                    if ($device['device_type'] == 60 && $device['plugin'] == $this->getIndex()) {
                         $getDeviceType .= " checked";
                     }
                     $getDeviceType .= ">";

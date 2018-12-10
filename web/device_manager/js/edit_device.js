@@ -50,4 +50,5 @@ plugin.addEventListener('change', function() {
             getdevicetype[i].classList.add("hidden");
         }
     }
+    document.getElementById("type_"+defaults[plugin.value]+"_"+plugin.value).checked = true;
 });

@@ -39,6 +39,10 @@
         $roomsArray[$plugin->getName()] = $plugin->getResources($config);
     }
 
+    echo "<script language='javascript'>";
+    echo "defaults = []";
+    echo "</script>";
+
     echo "<div>";
     echo "<form id=\"form\" action=\"handle_edit_device.php\" method=\"post\">";
         echo "<input type=\"hidden\" name=\"new_device_id\" value=\"$device_id\"/>";
