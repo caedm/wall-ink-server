@@ -161,5 +161,9 @@
     echo "</div>";
 
     echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&plugin=$device[plugin]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 
-    echo "<script src=\"js/edit_device.js\"></script>";
+    echo "<script src=\"js/edit_device.js\">";
+    echo "</script>";
+    echo "<script language=javascript>";
+    echo 'document.getElementById("type_"+defaults[plugin.value]+"_"+plugin.value).checked = true;';
+    echo "</script>";
 ?>
