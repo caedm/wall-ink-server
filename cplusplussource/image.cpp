@@ -11,8 +11,6 @@
 #include "processImage.h"
 #define DEBUG 0
 
-using namespace std;
-
 uint8_t* image;
 uint32_t sleepTime;
 GFXcanvas1* canvas;
@@ -53,32 +51,32 @@ void initializeImage() {
     }
 }
 
-void drawFancyString(string str, int16_t x, int16_t y) {
+void drawFancyString(std::string str, int16_t x, int16_t y) {
     canvas->setCursor(x, y);
     for (int i = 0; i < str.length(); i++)
         canvas->write(str[i]);
 }
 
-uint16_t getTextWidth(string str) {
+uint16_t getTextWidth(std::string str) {
     int16_t x1, y1;
     uint16_t w, h;
     canvas->getTextBounds(str.c_str(), 0, 50, &x1, &y1, &w, &h); //50 was arbitrarily chosen
     return w;
 }
 
-bool drawCenteredString(string str, int16_t y){
+bool drawCenteredString(std::string str, int16_t y){
     uint16_t w = getTextWidth(str);
     if (w <= x_res)
     	drawFancyString(str, (x_res-w)/2, y);
     return w <= x_res;
 }
 
-int getQrCodeSize(string str) {
+int getQrCodeSize(std::string str) {
     qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
     return qr.getSize();
 }
 
-int putQrCode(int x, int y, string str, int scale) {
+int putQrCode(int x, int y, std::string str, int scale) {
     qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
     for (int y_offset = 0; y_offset < qr.getSize(); y_offset++) {
         for (int x_offset = 0; x_offset < qr.getSize(); x_offset++) {
@@ -178,41 +176,41 @@ void flip() {
     }
 }
 
-string reservationBlockToTime(int block) {
-    stringstream hourStream;
+std::string reservationBlockToTime(int block) {
+    std::stringstream hourStream;
     hourStream << block/2 + 6;
-    string hour = hourStream.str();
+    std::string hour = hourStream.str();
     if (hour.length() < 2) {
         hour = "0" + hour;
     }
-    stringstream minuteStream;
+    std::stringstream minuteStream;
     minuteStream << (block % 2) * 30;
-    string minute = minuteStream.str();
+    std::string minute = minuteStream.str();
     if (minute.length() < 2) {
         minute += "0";
     }
     return hour + ":" + minute;
 }
 
-string militaryTimeToNormalPersonTime(string military) {
+std::string militaryTimeToNormalPersonTime(std::string military) {
     int hour = atoi(military.substr(0,2).c_str());
-    string ampm = "am";
+    std::string ampm = "am";
     if (hour > 11)
         ampm = "pm";
     if (hour > 12)
         hour -= 12;
     if (hour == 0)
         hour = 12;
-    stringstream hourStream;
+    std::stringstream hourStream;
     hourStream << hour;
     return hourStream.str() + ":" + military.substr(3,2) + ampm;
 }
 
-string fancyDateFromYYYY_MM_DD(string YYYY_MM_DD) {
+std::string fancyDateFromYYYY_MM_DD(std::string YYYY_MM_DD) {
     int year = atoi(YYYY_MM_DD.substr(0,4).c_str());
     int month = atoi(YYYY_MM_DD.substr(5,2).c_str());
     int day = atoi(YYYY_MM_DD.substr(8,2).c_str());
-    string months[12] = {"January",
+    std::string months[12] = {"January",
                          "February",
                          "March",
                          "April",
@@ -224,17 +222,17 @@ string fancyDateFromYYYY_MM_DD(string YYYY_MM_DD) {
                          "October",
                          "November",
                          "December"};
-    string monthName = months[month-1];
-    stringstream fancyDate;
+    std::string monthName = months[month-1];
+    std::stringstream fancyDate;
     fancyDate << monthName << " " << day << ", " << year;
     return fancyDate.str();
 }
 
-vector<reservation> parseReservations(string* reservations) {
-    vector<reservation> reservs;
+std::vector<reservation> parseReservations(std::string* reservations) {
+    std::vector<reservation> reservs;
     reservs.clear();
     int startBlock = 0;
-    string title = reservations[0];
+    std::string title = reservations[0];
     for (int block = 1; block < 32; block++) {
         if (title.compare(reservations[block]) != 0) {
             reservation r;
@@ -292,7 +290,7 @@ void setSleepTime(uint32_t increment) { //increment is the target number of seco
 }
 
 //found at https://stackoverflow.com/questions/5878775/how-to-find-and-replace-string
-string replaceString(string subject, const string& search, const string& replace) {
+std::string replaceString(std::string subject, const std::string& search, const std::string& replace) {
     size_t pos = 0;
     while ((pos = subject.find(search, pos)) != std::string::npos) {
          subject.replace(pos, search.length(), replace);
@@ -301,8 +299,8 @@ string replaceString(string subject, const string& search, const string& replace
     return subject;
 }
 
-string fixPunctuation(string input) {
-    string output = replaceString(input, "&quot;", "\"");
+std::string fixPunctuation(std::string input) {
+    std::string output = replaceString(input, "&quot;", "\"");
     output = replaceString(output, "&amp;", "&");
     output = replaceString(output, "&lt;", "<");
     output = replaceString(output, "&gt;", ">");
@@ -311,32 +309,32 @@ string fixPunctuation(string input) {
 
 int main(int argc, char* argv[]) {
     //read from the database info
-    ifstream fromDB;
+    std::ifstream fromDB;
     if (argc == 1)
         fromDB.open("fromDB");
     else
         fromDB.open(argv[1]);
-    string mac_address;
+    std::string mac_address;
     getline(fromDB, mac_address);
-    string dateNow;
+    std::string dateNow;
     getline(fromDB, dateNow);
-    string timeNow;
+    std::string timeNow;
     getline(fromDB, timeNow);
-    string deviceType;
+    std::string deviceType;
     getline(fromDB, deviceType);
-    string voltage;
+    std::string voltage;
     getline(fromDB, voltage);
-    string orientation;
+    std::string orientation;
     getline(fromDB, orientation);
-    string resourceID;
+    std::string resourceID;
     getline(fromDB, resourceID);
-    string displayUrl;
+    std::string displayUrl;
     getline(fromDB, displayUrl);
-    string qrCodeBaseUrlBeginning;
+    std::string qrCodeBaseUrlBeginning;
     getline(fromDB, qrCodeBaseUrlBeginning);
-    string qrCodeBaseUrlEnd;
+    std::string qrCodeBaseUrlEnd;
     getline(fromDB, qrCodeBaseUrlEnd);
-    string name;
+    std::string name;
     getline(fromDB, name);
 
     if (deviceType.compare("0") == 0) {
@@ -374,11 +372,11 @@ int main(int argc, char* argv[]) {
     canvas->fillScreen(0);
     image = canvas->getBuffer();
 
-    string reservations[32];
+    std::string reservations[32];
     for (int i = 0; i < 32; i++) {
         reservations[i] = "Available";
     }
-    string title;
+    std::string title;
     int eventNum = 0;
 
     //Open the fromDB file and parse that info into the reservations array. Will probably need to be changed later to add more functionality.
@@ -393,7 +391,7 @@ int main(int argc, char* argv[]) {
         }
         
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
-        string dateTimeStart;
+        std::string dateTimeStart;
         getline(fromDB, dateTimeStart);
         int startIndex;
         if (dateNow.compare(dateTimeStart.substr(0,10)) == 0) {
@@ -412,7 +410,7 @@ int main(int argc, char* argv[]) {
         }
         
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
-        string dateTimeEnd;
+        std::string dateTimeEnd;
         getline(fromDB, dateTimeEnd);
         int endIndex;
         if (dateNow.compare(dateTimeEnd.substr(0,10)) == 0) {
@@ -464,10 +462,10 @@ int main(int argc, char* argv[]) {
         mirror();
     }
 
-    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
+    std::vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
     //write to a file
-    ofstream("image_data/" + mac_address, ios::binary).write((const char*) image, x_res/8 * y_res);
-    ofstream("image_data/" + mac_address + ".wink", ios::binary).write((const char*) processed.data(), processed.size());
+    std::ofstream("image_data/" + mac_address, std::ios::binary).write((const char*) image, x_res/8 * y_res);
+    std::ofstream("image_data/" + mac_address + ".wink", std::ios::binary).write((const char*) processed.data(), processed.size());
 
     //free memory
     delete canvas;

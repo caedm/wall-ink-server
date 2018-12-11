@@ -6,11 +6,9 @@
 #include <cstdlib>
 #include "processImage.h"
 
-using namespace std;
-
 int main(int argc, char* argv[]) {
-    ifstream rawFile;
-    rawFile.open(argv[1], ios::binary);
+    std::ifstream rawFile;
+    rawFile.open(argv[1], std::ios::binary);
 
     //get image dimensions
     uint16_t x_res = atoi(argv[3]);
@@ -30,10 +28,10 @@ int main(int argc, char* argv[]) {
     rawFile.close();
 
     //generate processed image
-    vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
+    std::vector<unsigned char> processed = processImage(image, sleepTime, x_res, y_res, mac_address);
 
     free(image);
 
-    ofstream(argv[2], ios::binary).write((const char*) processed.data(), processed.size());
+    std::ofstream(argv[2], std::ios::binary).write((const char*) processed.data(), processed.size());
     return 0;
 }

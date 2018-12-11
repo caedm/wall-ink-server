@@ -9,14 +9,12 @@
 #define IMAGE_KEY "hunter2"
 #endif
 
-using namespace std;
-
 uint8_t getPixel(unsigned long int x, unsigned long int y, uint16_t x_res, uint16_t y_res, uint8_t* image) {
     return (image[x/8 + x_res*y/8] >> (7 - x%8)) & 0x01;
 }
 
-vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res, std::string mac_address) {
-    vector<uint8_t> processed;
+std::vector<uint8_t> processImage(uint8_t* image, uint32_t sleepTime, uint16_t x_res, uint16_t y_res, std::string mac_address) {
+    std::vector<uint8_t> processed;
     processed.clear();
     time_t currentTime = time(nullptr);
     uint8_t* processedTime = (uint8_t*) malloc(4);
