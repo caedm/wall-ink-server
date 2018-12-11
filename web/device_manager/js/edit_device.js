@@ -51,4 +51,5 @@ plugin.addEventListener('change', function() {
         }
     }
     document.getElementById("type_"+defaults[plugin.value]+"_"+plugin.value).checked = true;
+    refreshPreview();
 });
