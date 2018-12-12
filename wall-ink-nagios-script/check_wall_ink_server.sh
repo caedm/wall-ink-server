@@ -95,12 +95,6 @@ usage: $prog_name                       Run with default settings
 $options_str
 "
 
-#terminal color codes
-term_red=$(tput setaf 1)
-term_green=$(tput setaf 2)
-term_reset=$(tput sgr0)
-term_yellow=$(tput setaf 3)
-
 #string to hold opts to pass to the C program
 c_opts=" "
 
@@ -162,6 +156,24 @@ while getopts ":vu:di:hm:" opt; do
             ;;
     esac
 done
+
+#only will use colors if set to be verbose
+if [ $verbose = true ]; then
+    #terminal color codes
+    term_red=$(tput setaf 1)
+    term_green=$(tput setaf 2)
+    term_reset=$(tput sgr0)
+    term_yellow=$(tput setaf 3)
+else
+    #terminal color codes
+    #set to blank for not verbose
+    term_red=""
+    term_green=""
+    term_reset=""
+    term_yellow=""
+fi
+
+
 
 
 #helper function for getting the SHA1 hash of an input variable
