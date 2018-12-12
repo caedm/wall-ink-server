@@ -108,50 +108,50 @@ while getopts ":vu:di:hm:" opt; do
     case $opt in
         v)
             #if it gets the -v option for verbose mode
-            echo "-v: setting to verbose" >&2
+            echo "-v: setting to verbose" >&1
             verbose=true
             #add verbose flag to pass to C code
             c_opts=$c_opts" -v "
             ;;
         u)
             #if it gets the -u <url> option, load the url value from arguments
-            echo "-u: setting url to: $OPTARG" >&2
+            echo "-u: setting url to: $OPTARG" >&1
             url=$OPTARG
             ;;
         d)
             #if -d option to turn on debug mode
-            echo "-d: debug mode active" >&2
+            echo "-d: debug mode active" >&1
             debug_mode=1
             #add debug flag to pass to C code
             c_opts=$c_opts" -d " 
             ;;
         i)
             #for -i <key> option, setting image key
-            echo "-i: setting image key to: $OPTARG" >&2
+            echo "-i: setting image key to: $OPTARG" >&1
             #set new value
             image_key=$OPTARG
             ;;
         m)
             #for the -m <mac> option, setting mac address
-            echo "-m: setting Mac Address to: $OPTARG" >&2
+            echo "-m: setting Mac Address to: $OPTARG" >&1
             #set the new value
             mac_address=$OPTARG
             ;;
         h)
             #if -h help option
-            printf " -h: HELP: %s\n" "$help_str" >&2
+            printf " -h: HELP: %s\n" "$help_str" >&1
             exit 0
             ;;
         \?)
             #for invalid/unknown options
             echo "Invalid option: -$OPTARG" >&2
-            echo "use option '-h' for help" >&2
+            echo "use option '-h' for help" >&1
             exit 1
             ;;
         :)
             #for options that lack an input value/argument
             echo "Option -$OPTARG requires an argument." >&2
-            echo "use option '-h' for help" >&2
+            echo "use option '-h' for help" >&1
             exit 1
             ;;
     esac
@@ -255,15 +255,15 @@ if [ $http_code -eq "200" ]; then
         #based on the return value, give proper output and exit code
         case $c_exit_code in
             0)
-                echo "${term_green}SUCCESS - data is valid${term_reset}" >&2
+                echo "${term_green}SUCCESS - data is valid${term_reset}" >&1
                 exit 0
                 ;;
             1)
-                echo "${term_yellow}WARNING - error occured in data checking program${term_reset}" >&2
+                echo "${term_yellow}WARNING - error occured in data checking program${term_reset}" >&1
                 exit 1
                 ;;
             2)
-                echo "${term_red}CRITICAL - data is not valid!${term_reset}" >&2
+                echo "${term_red}CRITICAL - data is not valid!${term_reset}" >&1
                 exit 2
                 ;;
         esac
