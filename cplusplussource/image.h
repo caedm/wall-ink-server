@@ -35,7 +35,6 @@ uint16_t getQrCodeSize(std::string str);
 uint16_t putQrCode(uint16_t x, uint16_t y, std::string str, uint16_t scale);
 unsigned char reverseByte(unsigned char x);
 void invert();
-void rotate();
 void mirror();
 void flip();
 std::string reservationBlockToTime(int block);

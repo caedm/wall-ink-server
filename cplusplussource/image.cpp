@@ -130,23 +130,6 @@ void invert(){
     }
 }
 
-//not sure that this will work
-/*
-void rotate() {
-    GFXcanvas1* c = new GFXcanvas1(y_res, x_res);
-    for (int x = 0; x < x_res; x++) {
-        for (int y = 0; y < y_res; y++) {
-            c->drawPixel(y, x, getPixel(x, y));
-        }
-    }
-    delete canvas;
-    canvas = c;
-    int16_t temp = x_res;
-    x_res = y_res;
-    y_res = temp;
-}
-*/
-
 void mirror() {
     char temp;
     for (int y = 0; y < y_res; y++) {
