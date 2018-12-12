@@ -18,7 +18,7 @@ uint16_t x_res;
 uint16_t y_res;
 
 
-void setPixel(int x, int y, unsigned char color) {
+void setPixel(uint32_t x, uint32_t y, unsigned char color) {
     if (color == 0) {
         image[x/8 + x_res/8*y] = image[x/8 + x_res/8*y] & ((0x01 << (7-x%8)) ^ 0xff); //white
     }
@@ -71,23 +71,23 @@ bool drawCenteredString(std::string str, int16_t y){
     return w <= x_res;
 }
 
-int getQrCodeSize(std::string str) {
+uint16_t getQrCodeSize(std::string str) {
     qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
     return qr.getSize();
 }
 
-int putQrCode(int x, int y, std::string str, int scale) {
+uint16_t putQrCode(uint16_t x, uint16_t y, std::string str, uint16_t scale) {
     qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
-    for (int y_offset = 0; y_offset < qr.getSize(); y_offset++) {
-        for (int x_offset = 0; x_offset < qr.getSize(); x_offset++) {
+    for (uint16_t y_offset = 0; y_offset < qr.getSize(); y_offset++) {
+        for (uint16_t x_offset = 0; x_offset < qr.getSize(); x_offset++) {
             drawRect(x+x_offset*scale,y+y_offset*scale,scale,scale,qr.getModule(x_offset, y_offset));
         }
     }
     return qr.getSize();
 }
 
-unsigned char reverseByte(unsigned char x) {
-    static const unsigned char table[] = {
+unsigned char reverseByte(uint8_t x) {
+    static const uint8_t table[] = {
         0x00, 0x80, 0x40, 0xc0, 0x20, 0xa0, 0x60, 0xe0,
         0x10, 0x90, 0x50, 0xd0, 0x30, 0xb0, 0x70, 0xf0,
         0x08, 0x88, 0x48, 0xc8, 0x28, 0xa8, 0x68, 0xe8,
