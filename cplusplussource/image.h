@@ -42,6 +42,6 @@ std::string militaryTimeToNormalPersonTime(std::string military);
 std::string fancyDateFromYYYY_MM_DD(std::string YYYY_MM_DD);
 std::vector<reservation> parseReservations(std::string* reservations);
 void checkBattery(int xOffset, int yOffset, float voltage);
-void setSleepTime(uint32_t increment); //increment is the target number of seconds between refreshes
+uint32_t setSleepTime(uint32_t increment); //increment is the target number of seconds between refreshes
 
 #endif

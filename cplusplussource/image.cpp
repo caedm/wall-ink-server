@@ -248,7 +248,7 @@ void checkBattery(int xOffset, int yOffset, float voltage) {
     }
 }
 
-void setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
+uint32_t setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
     time_t currentTimeTemp = time(nullptr);
     uint32_t currentTime = currentTimeTemp;
     if (((currentTime-7*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
@@ -270,6 +270,7 @@ void setSleepTime(uint32_t increment) { //increment is the target number of seco
         cout << "Current Time with 7 hour offset: " << (currentTime-7*60*60) % 86400 << endl;
         cout << "Sleep Time: " << sleepTime << endl;
     #endif
+    return sleepTime;
 }
 
 //found at https://stackoverflow.com/questions/5878775/how-to-find-and-replace-string
