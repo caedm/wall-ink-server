@@ -19,6 +19,9 @@ uint16_t y_res;
 
 
 void setPixel(uint32_t x, uint32_t y, unsigned char color) {
+    if (x/8 + x_res/8*y >= y_res * x_res/8) {
+        return;
+    }
     if (color == 0) {
         image[x/8 + x_res/8*y] = image[x/8 + x_res/8*y] & ((0x01 << (7-x%8)) ^ 0xff); //white
     }
