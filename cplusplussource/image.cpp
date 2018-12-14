@@ -254,7 +254,7 @@ void checkBattery(int xOffset, int yOffset, float voltage) {
 uint32_t setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
     time_t currentTimeTemp = time(nullptr);
     uint32_t currentTime = currentTimeTemp;
-    if (((currentTime-7*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
+    if (((currentTime+TIME_ZONE*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
         sleepTime = 86400 + 23400 - ((currentTime-7*60*60) % 86400);
     } else {
         //Add a few seconds to make sure we sleep for long enough

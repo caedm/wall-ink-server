@@ -6,6 +6,7 @@ runTimeWebDirectory="/var/www"
 rrdDirectory="/opt/whereveryouwanttoputitreally"
 debugModeActive="false"
 imageKey="hunter2"
+timeZone="-7"
 #
 # ****************************************
 # ******  Device Database settings  ******

@@ -1,4 +1,4 @@
-CXXFLAGS += -static -O1 -std=c++11 -DIMAGE_KEY=\"$(imageKey)\"
+CXXFLAGS += -static -O1 -std=c++11 -DIMAGE_KEY=\"$(imageKey)\" -DTIME_ZONE=$(timeZone)
 LIBSRC = BitBuffer QrCode QrSegment processImage sha1 layouts Adafruit_GFX
 objects = image.o rawToWink.o processImage.o BitBuffer.o QrCode.o QrSegment.o sha1.o layouts.o Adafruit_GFX.o
 VPATH = cplusplussource/qr_code_generator:cplusplussource/web:cplusplussource/Adafruit-GFX-Library:cplusplussource
