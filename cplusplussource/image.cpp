@@ -80,13 +80,17 @@ uint16_t getQrCodeSize(std::string str) {
 }
 
 uint16_t putQrCode(uint16_t x, uint16_t y, std::string str, uint16_t scale) {
-    qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
-    for (uint16_t y_offset = 0; y_offset < qr.getSize(); y_offset++) {
-        for (uint16_t x_offset = 0; x_offset < qr.getSize(); x_offset++) {
-            drawRect(x+x_offset*scale,y+y_offset*scale,scale,scale,qr.getModule(x_offset, y_offset));
+    if (str.length() != 0) {
+        qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText(str.data(), qrcodegen::QrCode::Ecc::MEDIUM);
+        for (uint16_t y_offset = 0; y_offset < qr.getSize(); y_offset++) {
+            for (uint16_t x_offset = 0; x_offset < qr.getSize(); x_offset++) {
+                drawRect(x+x_offset*scale,y+y_offset*scale,scale,scale,qr.getModule(x_offset, y_offset));
+            }
         }
+        return qr.getSize();
+    } else {
+        return 0;
     }
-    return qr.getSize();
 }
 
 unsigned char reverseByte(uint8_t x) {
@@ -197,17 +201,17 @@ std::string fancyDateFromYYYY_MM_DD(std::string YYYY_MM_DD) {
     int month = atoi(YYYY_MM_DD.substr(5,2).c_str());
     int day = atoi(YYYY_MM_DD.substr(8,2).c_str());
     std::string months[12] = {"January",
-                         "February",
-                         "March",
-                         "April",
-                         "May",
-                         "June",
-                         "July",
-                         "August",
-                         "September",
-                         "October",
-                         "November",
-                         "December"};
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"};
     std::string monthName = months[month-1];
     std::stringstream fancyDate;
     fancyDate << monthName << " " << day << ", " << year;
@@ -268,11 +272,11 @@ uint32_t setSleepTime(uint32_t increment) { //increment is the target number of 
         sleepTime -= 120;
     }
 
-    #if DEBUG == 2
-        cout << "Current Time: " << currentTime % 86400 << endl;
-        cout << "Current Time with 7 hour offset: " << (currentTime-7*60*60) % 86400 << endl;
-        cout << "Sleep Time: " << sleepTime << endl;
-    #endif
+#if DEBUG == 2
+    cout << "Current Time: " << currentTime % 86400 << endl;
+    cout << "Current Time with 7 hour offset: " << (currentTime-7*60*60) % 86400 << endl;
+    cout << "Sleep Time: " << sleepTime << endl;
+#endif
     return sleepTime;
 }
 
@@ -280,8 +284,8 @@ uint32_t setSleepTime(uint32_t increment) { //increment is the target number of 
 std::string replaceString(std::string subject, const std::string& search, const std::string& replace) {
     size_t pos = 0;
     while ((pos = subject.find(search, pos)) != std::string::npos) {
-         subject.replace(pos, search.length(), replace);
-         pos += replace.length();
+        subject.replace(pos, search.length(), replace);
+        pos += replace.length();
     }
     return subject;
 }
@@ -376,7 +380,7 @@ int main(int argc, char* argv[]) {
         for (int i = 0; i < eventNum; i++) {
             title += "\r";
         }
-        
+
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
         std::string dateTimeStart;
         getline(fromDB, dateTimeStart);
@@ -395,7 +399,7 @@ int main(int argc, char* argv[]) {
         } else {
             startIndex = 0;
         }
-        
+
         //Take in a date formatted string and decide which reservations[] time block it corresponds to
         std::string dateTimeEnd;
         getline(fromDB, dateTimeEnd);
