@@ -259,9 +259,10 @@ uint32_t setSleepTime(uint32_t increment) { //increment is the target number of 
     time_t currentTimeTemp = time(nullptr);
     uint32_t currentTime = currentTimeTemp;
     if (((currentTime+TIME_ZONE*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
-        sleepTime = 86400 + 23400 - ((currentTime-7*60*60) % 86400);
+        sleepTime = 86400 + 23400 - ((currentTime+TIME_ZONE*60*60) % 86400);
+    } else if (((currentTime+TIME_ZONE*60*60) % 86400) < 23000) { //if time is before 6:30am, wake at 6:30am
+        sleepTime = 23400 - ((currentTime+TIME_ZONE*60*60) % 86400);
     } else {
-        //Add a few seconds to make sure we sleep for long enough
         sleepTime = increment - (currentTime % increment);
     }
     //wake 2 minutes early so that it is showing the schedule for the next block ahead of time
