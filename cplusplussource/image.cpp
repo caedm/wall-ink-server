@@ -258,25 +258,26 @@ void checkBattery(int xOffset, int yOffset, float voltage) {
 uint32_t setSleepTime(uint32_t increment) { //increment is the target number of seconds between refreshes
     time_t currentTimeTemp = time(nullptr);
     uint32_t currentTime = currentTimeTemp;
-    if (((currentTime+TIME_ZONE*60*60) % 86400) > 77400) { //if time is past 9:30pm, wake at 6:30am
-        sleepTime = 86400 + 23400 - ((currentTime+TIME_ZONE*60*60) % 86400);
-    } else if (((currentTime+TIME_ZONE*60*60) % 86400) < 23000) { //if time is before 6:30am, wake at 6:30am
-        sleepTime = 23400 - ((currentTime+TIME_ZONE*60*60) % 86400);
+    uint32_t currentTimeOfDay = (currentTime+TIME_ZONE*60*60) % 86400;
+    if (currentTimeOfDay > 77400) { //if time is past 9:30pm, wake at 6:30am
+        sleepTime = 86400 + 23400 - currentTimeOfDay;
+    } else if (currentTimeOfDay < 23000) { //if time is before 6:30am, wake at 6:30am
+        sleepTime = 23400 - currentTimeOfDay;
     } else {
-        sleepTime = increment - (currentTime % increment);
+        sleepTime = increment - (currentTime % increment) + 30;
     }
     //wake 2 minutes early so that it is showing the schedule for the next block ahead of time
     if (sleepTime > 180 ) {
         sleepTime -= 120;
-    } else if (increment > 120) {
+    } else if (increment < 120) {
         sleepTime += increment;
         sleepTime -= 120;
     }
 
 #if DEBUG == 2
-    cout << "Current Time: " << currentTime % 86400 << endl;
-    cout << "Current Time with 7 hour offset: " << (currentTime-7*60*60) % 86400 << endl;
-    cout << "Sleep Time: " << sleepTime << endl;
+    std::cout << "Current time of day: " << currentTimeOfDay << std::endl;
+    std::cout << "Current Time of day with no timezone offset: " << currentTime % 86400 << std::endl;
+    std::cout << "Sleep Time: " << sleepTime << std::endl;
 #endif
     return sleepTime;
 }
