@@ -42,7 +42,7 @@ fi
 if [ -z ${bookedIntegrationActive+x} ]; then 
 	echo "** Config Error ** bookedIntegrationActive not set in settings.cfg" 
 elif [ $bookedIntegrationActive == "true" ]; then
-	echo "Google Calendar Plugin Active"
+	echo "Booked Plugin Active"
 	if [ -z ${bookedDatabaseServer+x} ]; then echo "** Config Error ** bookedDatabaseServer not set in settings.cfg"; fi
 	if [ -z ${bookedDatabaseUsername+x} ]; then echo "** Config Error ** bookedDatabaseUsername not set in settings.cfg"; fi
 	if [ -z ${bookedDatabasePassword+x} ]; then echo "** Config Error ** bookedDatabasePassword not set in settings.cfg"; fi
@@ -50,7 +50,7 @@ elif [ $bookedIntegrationActive == "true" ]; then
 	if [ -z ${bookedDisplayUrl+x} ]; then echo "** Config Error ** bookedDisplayUrl not set in settings.cfg"; fi
 	if [ -z ${bookedQrCodeBaseUrlBeginning+x} ]; then echo "** Config Error ** bookedQrCodeBaseUrlBeginning not set in settings.cfg"; fi
 	if [ -z ${bookedQrCodeBaseUrlEnd+x} ]; then echo "** Config Error ** bookedQrCodeBaseUrlEnd not set in settings.cfg"; fi
-else	echo "Google Calendar Plugin Not Active"
+else	echo "Booked Plugin Not Active"
 fi
 
 # Check if Static Images plugin settings are set
@@ -58,7 +58,7 @@ if [ -z ${staticImagesPluginActive+x} ]; then
 	echo "** Config Error ** staticImagesPluginActive not set in settings.cfg" 
 elif [ $staticImagesPluginActive == "true" ]; then
 	echo "Static Images Plugin Active"
-else	echo "Example Scheduler Plugin Not Active"
+else	echo "Static Images Plugin Not Active"
 fi
 
 # Check if SimpleText plugin settings are set
