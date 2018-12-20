@@ -54,3 +54,9 @@ staticImagesPluginActive="true"
 # ****************************************
 simpleTextPluginActive="true"
 #
+# ****************************************
+# ****    icalWeb plugin settings     ****
+# ****************************************
+icalWebPluginActive="false"
+icalWebQrCodeBaseUrlBeginning=""
+icalWebQrCodeBaseUrlEnd=""
