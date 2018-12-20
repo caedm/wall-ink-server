@@ -25,13 +25,13 @@ $icalweb_calendars = array();
 $icalweb_calendars[0] = array();
 $icalweb_calendars[0]['id'] = 0;
 $icalweb_calendars[0]['resource'] = 'Outlook Test Calendar';
-$icalweb_calendars[0]['URL'] = '';
+$icalweb_calendars[0]['URL'] = 'https://raw.githubusercontent.com/caedm/wall-ink-server/master/web/plugin_dependencies/icalweb/outlook_test_calendar.ics';
 $icalweb_calendars[0]['DisplayURL'] = 'Call 555-1234 for reservations';
 
 $icalweb_calendars[1] = array();
 $icalweb_calendars[1]['id'] = 1;
 $icalweb_calendars[1]['resource'] = 'Google Test Calendar';
-$icalweb_calendars[1]['URL'] = '';
+$icalweb_calendars[1]['URL'] = 'https://raw.githubusercontent.com/caedm/wall-ink-server/master/web/plugin_dependencies/icalweb/google_test_calendar.ics';
 $icalweb_calendars[1]['DisplayURL'] = 'www.example.com';
 
 $icalweb_calendars[2] = array();

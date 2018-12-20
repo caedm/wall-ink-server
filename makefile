@@ -18,6 +18,8 @@ deploy:
 		$(MAKE) $@"
 else
 deploy: genimg genconfig rawToWink
+	git submodule init
+	git submodule update
 	source ./web/config/settings.cfg
 	mkdir -p $(buildTimeWebDirectory)/log
 	mkdir -p $(buildTimeWebDirectory)/image_data
