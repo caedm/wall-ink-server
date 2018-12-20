@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Checkking settings file..."
+echo "Checking settings file..."
 
 # Check if wall-ink-server settings are set
 if [ -z ${buildTimeWebDirectory+x} ]; then echo "** Config Error ** buildTimeWebDirectory not set in settings.cfg"; fi
