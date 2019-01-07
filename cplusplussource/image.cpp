@@ -264,7 +264,7 @@ uint32_t setSleepTime(uint32_t increment) { //increment is the target number of 
     } else if (currentTimeOfDay < 23000) { //if time is before 6:30am, wake at 6:30am
         sleepTime = 23400 - currentTimeOfDay;
     } else {
-        sleepTime = increment - (currentTime % increment) + 30;
+        sleepTime = increment - (currentTime % increment) + 40;
     }
     //wake 2 minutes early so that it is showing the schedule for the next block ahead of time
     if (sleepTime > 180 ) {
