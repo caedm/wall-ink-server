@@ -1,5 +1,5 @@
 <?php
-function schedulingGetImage($config, $device, $schedule, $displayUrl, $qrCodeBaseUrlBeginning, $qrCodeBaseUrlEnd) {
+function schedulingGetImage($config, $device, $schedule, $displayUrl, $qrCodeString) {
     $date=`date -d "+4 minutes" +%Y-%m-%d`;
     $time=`date -d "+4 minutes" +%H:%M`;
     $macAddressInfoFilePath = "image_data/" . $device["mac_address"] . ".info";
@@ -17,9 +17,7 @@ function schedulingGetImage($config, $device, $schedule, $displayUrl, $qrCodeBas
     $macAddressInfo .= "\n";
     $macAddressInfo .= $displayUrl;
     $macAddressInfo .= "\n";
-    $macAddressInfo .= $qrCodeBaseUrlBeginning;
-    $macAddressInfo .= "\n";
-    $macAddressInfo .= $qrCodeBaseUrlEnd;
+    $macAddressInfo .= $qrCodeString;
     $macAddressInfo .= "\n";
     $macAddressInfo .= $schedule;
     $macAddressInfoFile = fopen("$macAddressInfoFilePath", "w") or die("Unable to open file");
