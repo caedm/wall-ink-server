@@ -74,14 +74,18 @@ class icalWebPlugin implements iPlugin {
     }
     public function getImage($config, $device) {
         require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
-	require("$_SERVER[DOCUMENT_ROOT]/config/icalweb_calendars.php");
-	return schedulingGetImage(
-		$config, 
-		$device, 
-		$this->getSchedule($config, $device["resource_id"]),
-		$icalweb_calendars[$device["resource_id"]]['DisplayURL'], 
-		$config->icalWebQrCodeBaseUrlBeginning,
-	 	$config->icalWebQrCodeBaseUrlEnd);
+        require("$_SERVER[DOCUMENT_ROOT]/config/icalweb_calendars.php");
+        if ($config->icalWebQrCodeBaseUrlBeginning !== "") {
+            $qrCodeString = $config->icalWebQrCodeBaseUrlBeginning . $device["resource_id"] . $config->icalWebQrCodeBaseUrlEnd;
+        } else {
+            $qrCodeString = "";
+        }
+        return schedulingGetImage(
+            $config, 
+            $device, 
+            $this->getSchedule($config, $device["resource_id"]),
+            $icalweb_calendars[$device["resource_id"]]['DisplayURL'], 
+            $qrCodeString);
     }
     public function getDeviceType($device) {
         require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
