@@ -1,0 +1,3 @@
+[submodule "web/plugin_dependencies/icalweb/icalparser"]
+	path = web/plugin_dependencies/icalweb/icalparser
+	url = https://github.com/caedm/icalparser

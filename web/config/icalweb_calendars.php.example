@@ -1,0 +1,56 @@
+<?php
+$icalweb_calendars = array();
+
+// Each calendar requires it's own section
+// To add an addiitonal calendar, create a section with an 'id' of 3,
+// with an array index of [3] as shown in the comments below 
+// The fields 'id' , 'resource', 'URL', and 'DisplayURL' are required
+
+// 'id' is the wall-ink-server resource_id stored in the device manager database 
+// The 'id' needs to match the array index as seen in the examples below
+
+// 'resource' is the name of the calendar as it appears in the device manager 
+
+// 'URL' is the location of the ics file to use for the calendar
+
+// 'DisplayURL' is the text displayed below the room name and date on the right
+
+// 'title' is optional and is used to override other methods of naming a calendar.
+//  If 'title' is not used, then the plugin will attempt to get the title
+//  from the X-WR-CALNAME field in the ics file.  (Used by Outlook, Google, etc.)
+//  If 'title' is not specified, and X-WR-CALNAME is not found, the plugin will
+//  use 'resource' to title the calendar.
+
+
+$icalweb_calendars[0] = array();
+$icalweb_calendars[0]['id'] = 0;
+$icalweb_calendars[0]['resource'] = 'Outlook Test Calendar';
+$icalweb_calendars[0]['URL'] = 'https://raw.githubusercontent.com/caedm/wall-ink-server/master/web/plugin_dependencies/icalweb/outlook_test_calendar.ics';
+$icalweb_calendars[0]['DisplayURL'] = 'Call 555-1234 for reservations';
+
+$icalweb_calendars[1] = array();
+$icalweb_calendars[1]['id'] = 1;
+$icalweb_calendars[1]['resource'] = 'Google Test Calendar';
+$icalweb_calendars[1]['URL'] = 'https://raw.githubusercontent.com/caedm/wall-ink-server/master/web/plugin_dependencies/icalweb/google_test_calendar.ics';
+$icalweb_calendars[1]['DisplayURL'] = 'www.example.com';
+
+$icalweb_calendars[2] = array();
+$icalweb_calendars[2]['id'] = 2;
+$icalweb_calendars[2]['resource'] = 'BYU Athletics Calendar';
+$icalweb_calendars[2]['title'] = 'BYU Athletics';
+$icalweb_calendars[2]['URL'] = 'https://calendar.byu.edu/iCal/export/10';
+$icalweb_calendars[2]['DisplayURL'] = 'https://byucougars.com';
+
+// Use the following to add an additional calendar.
+// Make sure each new calendar has a unique 'id' that matches the array index
+
+//$icalweb_calendars[3] = array();
+//$icalweb_calendars[3]['id'] = 3;
+//$icalweb_calendars[3]['resource'] = 'New Calendar';
+//$icalweb_calendars[3]['title'] = 'Only include a title here if you don't want the title extracted from the ics file';
+//$icalweb_calendars[3]['URL'] = 'URL to ics file'
+//$icalweb_calendars[3]['DisplayURL'] = 'URL to example file';
+
+
+return $icalweb_calendars;
+?>
