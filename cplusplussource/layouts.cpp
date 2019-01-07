@@ -8,7 +8,7 @@ extern uint16_t x_res;
 extern uint16_t y_res;
 
 //portrait 7"
-void drawImage0(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage0(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(900);
 
@@ -127,7 +127,7 @@ void drawImage0(std::string roomName, std::string date, std::string time, std::s
 }
 
 //landscape 4", shows 2 appointments
-void drawImage1(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage1(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(1800);
 
@@ -184,7 +184,7 @@ void drawImage1(std::string roomName, std::string date, std::string time, std::s
 }
 
 //7" landscape, shows 2 appointments plus blocks
-void drawImage2(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage2(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(900);
 
@@ -354,7 +354,7 @@ void drawImage2(std::string roomName, std::string date, std::string time, std::s
 }
 
 //7" landscape, shows 3 appointments plus blocks
-void drawImage3(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage3(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(1800);
 
@@ -535,7 +535,7 @@ void drawImage3(std::string roomName, std::string date, std::string time, std::s
 }
 
 //landscape 4", shows 2 appointments
-void drawImage4(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage4(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(1800);
 
@@ -689,7 +689,7 @@ void drawImage4(std::string roomName, std::string date, std::string time, std::s
 //layout 5 was for static 7" images, though it is no longer used this way
 
 //landscape 4", shows 2 appointments and has QR code
-void drawImage6(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage6(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(1800);
 
@@ -842,13 +842,13 @@ void drawImage6(std::string roomName, std::string date, std::string time, std::s
     drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
-    putQrCode(333,10,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    putQrCode(333,10,qrCodeString, 2);
 
     checkBattery(x_res-64, y_res-44, voltage);
 }
 
 //7" landscape, shows 2 appointments plus blocks & a QR code
-void drawImage7(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) { 
+void drawImage7(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) { 
     //set sleepTime
     setSleepTime(1800);
 
@@ -877,8 +877,8 @@ void drawImage7(std::string roomName, std::string date, std::string time, std::s
     //draw base scheduling url
     drawFancyString(displayUrl,617 - getTextWidth(displayUrl),100);
 
-    int s = getQrCodeSize(qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd);
-    putQrCode(597-s,44-s,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    int s = getQrCodeSize(qrCodeString);
+    putQrCode(597-s,44-s,qrCodeString, 2);
 
     //Get current block
     int currentBlock;
@@ -1025,7 +1025,7 @@ void drawImage7(std::string roomName, std::string date, std::string time, std::s
 //layout 8 was for static 4" images, though it is no longer used this way
 
 //landscape 4", shows 2 appointments and has QR code. More battery efficient than layout 6.
-void drawImage9(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage9(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(1800);
 
@@ -1188,13 +1188,13 @@ void drawImage9(std::string roomName, std::string date, std::string time, std::s
     //drawRect((currentBlock-currentBlock%2)*12 + 6, 255, 6, 1, 1);
     //drawRect((currentBlock-currentBlock%2)*12 + 5, 253, 8, 2, 1);
 
-    putQrCode(333,10,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    putQrCode(333,10,qrCodeString, 2);
 
     checkBattery(x_res-64, y_res-44, voltage);
 }
 
 //7" landscape, shows 2 appointments plus blocks & a QR code
-void drawImage10(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) {
+void drawImage10(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
     //set sleepTime
     setSleepTime(1800);
 
@@ -1223,8 +1223,8 @@ void drawImage10(std::string roomName, std::string date, std::string time, std::
     //draw base scheduling url
     drawFancyString(displayUrl,617 - getTextWidth(displayUrl),100);
 
-    int s = getQrCodeSize(qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd);
-    putQrCode(597-s,44-s,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    int s = getQrCodeSize(qrCodeString);
+    putQrCode(597-s,44-s,qrCodeString, 2);
 
     //Get current block
     int currentBlock;
@@ -1363,7 +1363,7 @@ void drawImage10(std::string roomName, std::string date, std::string time, std::
 }
 
 //7" landscape, shows 2 appointments plus blocks & a QR code. For events.
-void drawImage11(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string resourceID, std::string displayUrl, std::string qrCodeBaseUrlBeginning, std::string qrCodeBaseUrlEnd) { 
+void drawImage11(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) { 
     //set sleepTime
     setSleepTime(1800);
 
@@ -1392,8 +1392,8 @@ void drawImage11(std::string roomName, std::string date, std::string time, std::
     //draw base scheduling url
     drawFancyString(displayUrl,617 - getTextWidth(displayUrl),100);
 
-    int s = getQrCodeSize(qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd);
-    putQrCode(597-s,44-s,qrCodeBaseUrlBeginning + resourceID + qrCodeBaseUrlEnd, 2);
+    int s = getQrCodeSize(qrCodeString);
+    putQrCode(597-s,44-s,qrCodeString, 2);
 
     //Get current block
     int currentBlock;
