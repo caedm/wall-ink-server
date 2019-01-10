@@ -1,6 +1,6 @@
  #!/bin/bash
 
-source /home/johnathan/wall-ink/image_gen/web/config/database.sh
+source $1
 if [[ ! -e "$runTimeWebDirectory/voltage_monitor/data" ]]; then
     mkdir $runTimeWebDirectory/voltage_monitor/data
 fi
