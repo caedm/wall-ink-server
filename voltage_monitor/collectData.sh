@@ -4,12 +4,12 @@ source $1
 if [[ ! -e "$runTimeWebDirectory/voltage_monitor/data" ]]; then
     mkdir $runTimeWebDirectory/voltage_monitor/data
 fi
-ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT device_id FROM devices`
+ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e "SELECT device_id FROM devices"`
 ESP_DEVICES_ARRAY=($ESP_DEVICES);
 for device_id in "${ESP_DEVICES_ARRAY[@]}"
 do
-    voltage=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT voltage FROM devices WHERE device_id = $device_id`
-    mac_address=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e SELECT mac_address FROM devices WHERE device_id = $device_id`
+    voltage=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e "SELECT voltage FROM devices WHERE device_id = $device_id"`
+    mac_address=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e "SELECT mac_address FROM devices WHERE device_id = $device_id"`
     if [[ ! -f "$rrdDirectory/$mac_address.rrd" ]]; then
         rrdtool create $rrdDirectory/$mac_address.rrd \
             --start `date +%s` \
