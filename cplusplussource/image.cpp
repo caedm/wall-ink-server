@@ -269,7 +269,7 @@ uint32_t setSleepTime(uint32_t increment) { //increment is the target number of 
     //wake 2 minutes early so that it is showing the schedule for the next block ahead of time
     if (sleepTime > 180 ) {
         sleepTime -= 120;
-    } else if (increment < 120) {
+    } else if (sleepTime <= 180) {
         sleepTime += increment;
         sleepTime -= 120;
     }
