@@ -52,7 +52,7 @@ rawToWink : rawToWink.o processImage.o
 
 image.o : image.h
 rawToWink.o : rawToWink.cpp processImage.cpp processImage.h
-processImage.o : processImage.h sha1.o
+processImage.o : processImage.h sha1.o web/config/settings.cfg
 BitBuffer.o : BitBuffer.hpp
 QrCode.o : QrCode.hpp
 QrSegment.o : QrSegment.hpp
