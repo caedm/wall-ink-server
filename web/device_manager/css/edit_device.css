@@ -62,7 +62,14 @@ body {
 }
 
 img {
-    border: 1px solid;
+    padding: 8px;
+    align-self: center;
+}
+
+.images {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .hidden {
