@@ -20,3 +20,4 @@ web/config/database.sh
 web/config/dbconfig.php
 web/config/settings.cfg
 key.h
+web/config/icalweb_calendars.php
