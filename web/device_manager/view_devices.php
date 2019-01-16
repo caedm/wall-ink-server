@@ -24,22 +24,16 @@ function printResult($devices, $rooms, $plugins) {
     echo "<th class=\"room_name\" onclick=\"sortTable(2)\">";
     echo "Resource";
     echo "</th>";
-    echo "<th class=\"device_type\" onclick=\"sortTable(3)\">";
-    echo "Device Type";
-    echo "</th>";
-    echo "<th class=\"voltage\" onclick=\"sortTable(4)\">";
+    echo "<th class=\"voltage\" onclick=\"sortTable(3)\">";
     echo "Voltage";
     echo "</th>";
-    echo "<th class=\"orientation\" onclick=\"sortTable(5)\">";
-    echo "Orientation";
-    echo "</th>";
-    echo "<th class=\"firmware_version\" onclick=\"sortTable(6)\">";
+    echo "<th class=\"firmware_version\" onclick=\"sortTable(4)\">";
     echo "Firmware Version";
     echo "</th>";
-    echo "<th class=\"last_checked_in\" onclick=\"sortTable(7)\">";
+    echo "<th class=\"last_checked_in\" onclick=\"sortTable(5)\">";
     echo "Last Checked In";
     echo "</th>";
-    echo "<th class=\"batteries_replaced_date\" onclick=\"sortTable(8)\">";
+    echo "<th class=\"batteries_replaced_date\" onclick=\"sortTable(6)\">";
     echo "Batteries Replaced Date";
     echo "</th>";
 
@@ -74,20 +68,12 @@ function printResult($devices, $rooms, $plugins) {
             echo "Error: Plugin not active";
         }
         echo "</td>";
-        echo "<td class=\"device_type";
-        echo "\">";
-        echo $device["device_type"];
-        echo "</td>";
         echo "<td class=\"voltage";
         if ($device["voltage"] < 2.5) {
             echo " orange";
         }
         echo "\">";
         echo $device["voltage"];
-        echo "</td>";
-        echo "<td class=\"orientation";
-        echo "\">";
-        echo $device["orientation"];
         echo "</td>";
         echo "<td class=\"firmware_version";
         echo "\">";
