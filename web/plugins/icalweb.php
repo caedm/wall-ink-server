@@ -37,9 +37,22 @@ class icalWebPlugin implements iPlugin {
 
         require("$_SERVER[DOCUMENT_ROOT]/config/icalweb_calendars.php");
 
-        $cal = new \om\IcalParser();
-        $parse_url = $icalweb_calendars[$resourceId]['URL'];
-        $results = $cal->parseFile($parse_url);
+        $results = false;
+        $curl_return_string = false;
+        $attempts = 0;
+        while ($curl_return_string === false && $attempts < 2) {
+            $cal = new \om\IcalParser();
+            $parse_url = $icalweb_calendars[$resourceId]['URL'];
+            $curl_session = curl_init($parse_url);
+            curl_setopt($curl_session, CURLOPT_TIMEOUT, 2);
+            curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, true);
+            $curl_return_string = curl_exec($curl_session);
+            if ($curl_return_string === false) {
+            } else {
+                $results = $cal->parseString($curl_return_string);
+            }
+            $attempts++;
+        }
 
         // Get calendar name in this order of priority:  
         // 1. Manual entry "title" in config file
