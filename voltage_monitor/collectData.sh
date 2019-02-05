@@ -4,7 +4,7 @@ source $1
 if [[ ! -e "$runTimeWebDirectory/voltage_monitor/data" ]]; then
     mkdir $runTimeWebDirectory/voltage_monitor/data
 fi
-ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e "SELECT device_id FROM devices"`
+ESP_DEVICES=`mysql -h $deviceDatabaseServer -u $deviceDatabaseUsername --password=$deviceDatabasePassword --database=$deviceDatabaseName -s -N -e "SELECT device_id FROM devices where last_checked_in > CURRENT_DATE - INTERVAL 1 DAY"`
 ESP_DEVICES_ARRAY=($ESP_DEVICES);
 for device_id in "${ESP_DEVICES_ARRAY[@]}"
 do
@@ -21,19 +21,19 @@ do
     rrdtool update $rrdDirectory/$mac_address.rrd N:$voltage
     rrdtool graph \
         $runTimeWebDirectory/voltage_monitor/data/week_$mac_address.png \
-        -u 3.3 -l 2.3 -r \
+        -u 3.5 -l 2.3 -r \
         --end now --start end-167h \
         DEF:voltagea=$rrdDirectory/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past week"
     rrdtool graph \
         $runTimeWebDirectory/voltage_monitor/data/month_$mac_address.png \
-        -u 3.3 -l 2.3 -r \
+        -u 3.5 -l 2.3 -r \
         --end now --start end-1m \
         DEF:voltagea=$rrdDirectory/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past month"
     rrdtool graph \
         $runTimeWebDirectory/voltage_monitor/data/year_$mac_address.png \
-        -u 3.3 -l 2.3 -r \
+        -u 3.5 -l 2.3 -r \
         --end now --start end-1y \
         DEF:voltagea=$rrdDirectory/$mac_address.rrd:voltage:AVERAGE \
         LINE1:voltagea#0000FF:"Voltage over past year"
