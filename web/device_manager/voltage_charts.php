@@ -2,7 +2,7 @@
 <?php include 'css/voltage_charts.css'; ?>
 </style>
 <?php
-function printResult($devices, $rooms) {
+function printResult($devices, $rooms, $plugins) {
     //Display how many results there were
     #echo "$res->num_rows entries<br>";
 
@@ -13,7 +13,11 @@ function printResult($devices, $rooms) {
 
     while ($device = $devices->fetch_assoc()) {
         echo "<h4>$device[mac_address] - ";
-        echo $rooms[$device["resource_id"]];
+        if (isset($plugins[$device['plugin']])) {
+            echo $rooms[$device['plugin']][$device['resource_id']];
+        } else {
+            echo "Error: Plugin not active";
+        }
         echo "</h4>";
         echo "<div>";
         echo "<img src=\"/voltage_monitor/data/week_$device[mac_address].png\">";
@@ -36,8 +40,8 @@ foreach (glob("../plugins/*.php") as $filename) {
     require_once($filename);
 }
 foreach ($plugins as $plugin) {
-    $rooms = $rooms + $plugin->getResources($config);
+    $rooms[ $plugin->getIndex() ] = $plugin->getResources($config);
 }
-printResult($devices, $rooms);
+printResult($devices, $rooms, $plugins);
 ?>
 
