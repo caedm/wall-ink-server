@@ -174,6 +174,7 @@
     if (file_exists($batteryYearImage)) {
         echo "<img id=\"preview\" src=../voltage_monitor/data/year_$device[mac_address].png>"; 
     }
+    echo "<a href=\"view_logs.php?mac_address=$device[mac_address]&device_id=$device[device_id]\">View Logs</a>";
     echo "</div>";
     echo "<script src=\"js/edit_device.js\">";
     echo "</script>";
