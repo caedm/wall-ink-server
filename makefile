@@ -7,7 +7,7 @@ CC=gcc
 CFLAGS += -static
 SHELL := /bin/bash
 
-#This makefile has recursive test and deploy functions.
+#This makefile has a recursive deploy function.
 #This is to make up for the limitations of make, which can't source bash scripts
 $(info MAKELEVEL=$(MAKELEVEL))
 
