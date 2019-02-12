@@ -36,9 +36,27 @@ function printResult($devices, $rooms, $plugins) {
     echo "<th class=\"batteries_replaced_date\" onclick=\"sortTable(6)\">";
     echo "Batteries Replaced Date";
     echo "</th>";
+    if (file_exists("../log/errors.log")) {
+        echo "<th class=\"recent_errors\" onclick=\"sortTable(7)\">";
+        echo "# of Recent Errors";
+        echo "</th>";
+    }
 
     echo "</tr>";
-    
+
+    //open error logs
+    if (file_exists("../log/errors.log")) {
+        $errorLogFile = file("../log/errors.log"); 
+        $errorLogs = array();
+        foreach ($errorLogFile as $entry) {
+            if ($entry !== "") {
+                $macAddress = substr($entry,0,12);
+                $numErrors = substr($entry,13);
+                $errorLogs[$macAddress] = $numErrors;
+            }
+        }
+    }
+
     while ($device = $devices->fetch_assoc()) {
         echo "<tr class=\"device\" onclick=\"document.location = 'edit_device.php?device_id=$device[device_id]'\">";
 
@@ -93,6 +111,19 @@ function printResult($devices, $rooms, $plugins) {
         echo "\">";
         echo $device["batteries_replaced_date"];
         echo "</td>";
+        if (file_exists("../log/errors.log")) {
+            echo "<td class=\"recent_errors";
+            $recentErrors = $errorLogs[$device['mac_address']];
+            if ($recentErrors > 5 && $device['is_production']) {
+                echo " orange";
+            }
+            if (!$device['is_production']) {
+                echo " notproduction";
+            }
+            echo "\">";
+            echo $recentErrors;
+            echo "</td>";
+        }
 
         echo "</tr>";
     }
