@@ -118,9 +118,21 @@ if ($result->num_rows != 0) {
         returnError($plugins,$config,$mac_address, $voltage, $firmware_version, $width, $height, "Plugin with index " . $device["plugin"] . " failed to run.\nSee web server logs.");
     }
 } else {
-    // this code block gets executed if the mac address doesn't match an existing device in the device database
-    //Load the simple_text plugin and display error to wall-ink device
-    require_once("./plugins/simple_text.php");
-    returnError($plugins,$config, $mac_address, $voltage, $firmware_version, $width, $height, "Unknown MAC address");
+    //this code block gets executed if the mac address doesn't match an existing device in the device database
+    if ($config->autoRegister == "true") {
+        $mysqli = mysqli_connect($config->deviceDatabaseServer, $config->deviceDatabaseUsername, $config->deviceDatabasePassword, $config->deviceDatabaseName);
+        $sql_query="INSERT INTO devices(mac_address,resource_id,orientation,device_type,plugin,is_production,width,height,notes) VALUES (\"$mac_address\",\"device_display\",\"1\",60,4,\"false\",$width,$height,\"Added by autoregister function\")";
+        if ($mysqli->query($sql_query) === TRUE) {
+            require_once("./plugins/simple_text.php");
+            returnError($plugins,$config, $mac_address, $voltage, $firmware_version, $width, $height, "Successfully registered unknown MAC address");
+        } else {
+            require_once("./plugins/simple_text.php");
+            returnError($plugins,$config, $mac_address, $voltage, $firmware_version, $width, $height, "Failed to register unknown MAC address");
+        }
+    } else {
+        //Load the simple_text plugin and display error to wall-ink device
+        require_once("./plugins/simple_text.php");
+        returnError($plugins,$config, $mac_address, $voltage, $firmware_version, $width, $height, "Unknown MAC address");
+    }
 }
 ?>

@@ -9,6 +9,7 @@ if [ -z ${rrdDirectory+x} ]; then echo "** Config Error ** rrdDirectory not set 
 if [ -z ${debugModeActive+x} ]; then echo "** Config Error ** debugModeActive not set in settings.cfg"; fi
 if [ -z ${imageKey+x} ]; then echo "** Config Error ** imageKey not set in settings.cfg"; fi
 if [ -z ${timeZone+x} ]; then echo "** Config Error ** timeZone not set in settings.cfg"; fi
+if [ -z ${autoRegister+x} ]; then echo "** Config Error ** autoRegister not set in settings.cfg"; fi
 
 # Check if wall-ink device database settings are set
 if [ -z ${deviceDatabaseServer+x} ]; then echo "** Config Error ** deviceDatabaseServer not set in settings.cfg"; fi
