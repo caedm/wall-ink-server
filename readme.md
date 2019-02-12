@@ -20,7 +20,9 @@ The wall-ink-server houses several important functions:
 1. Edit the image key in the Arduino sketch to match the image key in the ```wall-ink-server/web/config/settings.cfg``` file. See the wiki article on [image security](https://github.com/caedm/wall-ink-server/wiki/image_security) to understand the use and purpose of the image key. Point your Wall-Ink module at the server by changing the baseURL in the firmware.
 1. (optional) If you want to use the built-in [voltage monitoring tool](https://github.com/caedm/wall-ink-server/wiki/voltage-monitoring), follow the steps below:
     1. Install the optional ```rrdtool``` dependency
-    1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/voltage_monitor/collectData.sh``` script once every 30 minutes. The ```collectData``` script takes only 1 command-line parameter: the absolute filepath of the ```database.sh``` file created by ```make```. This can be found in ```web/config/database.sh```.
+    1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/monitoring_scripts/collectVoltageData.sh``` script once every 30 minutes. The ```collectVoltageData.sh``` script takes only 1 command-line parameter: the absolute filepath of the ```database.sh``` file created by ```make```. This can be found in ```web/config/database.sh```.
+1. (optional) If you want the number of recent errors to be reported on the view_devices page, follow the steps below:
+    1. Create a cron job, systemd timer, or similar to run the ```wall-ink-server/monitoring_scripts/collectErrorData.sh``` script once every 30 minutes. The ```collectErrorData.sh``` script takes only 1 command-line parameter: the absolute filepath of the ```database.sh``` file created by ```make```. This can be found in ```web/config/database.sh```.
 1. (optional) For those using Google Calendar API, follow the steps below:
     1. Install the dependency ```php``` necessary run the google API key software from the command line
     1. Open a web browser and follow the steps on https://developers.google.com/calendar/quickstart/php to enable the Google Calendar API
