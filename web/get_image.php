@@ -132,7 +132,7 @@ if ($result->num_rows != 0) {
     } else {
         //Load the simple_text plugin and display error to wall-ink device
         require_once("./plugins/simple_text.php");
-        returnError($plugins,$config, $mac_address, $voltage, $firmware_version, $width, $height, "Unknown MAC address");
+        returnError($plugins,$config, $mac_address, $voltage, $firmware_version, $width, $height, "Unknown MAC address; autoregistration is disabled");
     }
 }
 ?>
