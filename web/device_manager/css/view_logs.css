@@ -1,16 +1,35 @@
-div {
+div.main {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly; 
+}
+
+div.logs {
+    display: flex;
+    flex-direction: column;
+}
+
+div.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+div.search {
+    margin: 4px;
+    padding-top: 7px;
+}
+
+p {
+    margin: 5px;
 }
 
 a {
     text-decoration: none;
     color: black;
-    padding: 10px;
     font-weight: bold;
     font-size: 28px;
-    margin: 15px;
+    padding: 15px;
+    padding-left: 4px;
 }
 
 a:hover {
