@@ -1,12 +1,14 @@
 table {
     border-collapse: collapse;
+    margin: auto;
+    margin-top: 0px;
 }
 
 th, td {
     padding: 8px;
 }
 
-tr.device:hover, tr.fake_device:hover {
+tr.device:hover {
     background: #dadada;
     cursor: pointer;
 }
@@ -20,9 +22,44 @@ td.orange {
 }
 
 .devices {
-    margin: auto;
 }
 
-.notproduction {
+.blue {
     color: blue;
+}
+
+div.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly; 
+    align-items: flex-start;
+}
+
+div.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+div.sidebar > * {
+    padding-left: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 28px;
+    padding: 15px;
+}
+
+div.checkbox {
+    padding-top: 4px;
+}
+
+input {
+    margin-left: 0px;
+}
+
+a:hover {
+    background: #dadada;
 }
