@@ -3,8 +3,19 @@
 </style>
 <?php
 function printResult($devices, $rooms, $plugins) {
-    //Display how many results there were
-    #echo "$res->num_rows entries<br>";
+    echo '<div class="main">';
+
+    echo '<div class="sidebar">';
+    echo '<a href="edit_device.php?device_id=new">Add New Device</a>';
+    echo "<br>";
+    echo '<a href="voltage_charts.php">Battery History</a>';
+    echo '<div class="checkbox">';
+    echo '<input type="checkbox" name="showProduction" id="showProduction" value="true"><label for="showProduction">Show device that are in production</label>';
+    echo '</div>';
+    echo '<div class="checkbox">';
+    echo '<input type="checkbox" name="showNotProduction" id="showNotProduction" value="true"><label for="showNotProduction">Show device that are not in production</label>';
+    echo '</div>';
+    echo "</div>";
 
     //Display each row
     $devices->data_seek(0);
@@ -58,14 +69,20 @@ function printResult($devices, $rooms, $plugins) {
     }
 
     while ($device = $devices->fetch_assoc()) {
-        echo "<tr class=\"device\" onclick=\"document.location = 'edit_device.php?device_id=$device[device_id]'\">";
+        echo "<tr class=\"device";
+        if ($device['is_production']) {
+            echo " production";
+        } else {
+            echo " notproduction";
+        }
+        echo "\" onclick=\"document.location = 'edit_device.php?device_id=$device[device_id]'\">";
 
         #echo "<td class=\"device_id\">";
         #echo $row["device_id"];
         #echo "</td>";
         echo "<td class=\"mac_address";
         if (!$device['is_production']) {
-            echo " notproduction";
+            echo " blue";
         }
         echo "\">";
         echo $device["mac_address"];
@@ -102,7 +119,7 @@ function printResult($devices, $rooms, $plugins) {
             echo " orange";
         }
         if (!$device['is_production']) {
-            echo " notproduction";
+            echo " blue";
         }
         echo "\">";
         echo $device["last_checked_in"];
@@ -118,7 +135,7 @@ function printResult($devices, $rooms, $plugins) {
                 echo " orange";
             }
             if (!$device['is_production']) {
-                echo " notproduction";
+                echo " blue";
             }
             echo "\">";
             echo $recentErrors;
@@ -127,28 +144,9 @@ function printResult($devices, $rooms, $plugins) {
 
         echo "</tr>";
     }
-    echo "<tr class=\"fake_device\" onclick=\"document.location = 'edit_device.php?device_id=new'\">";
-    echo "<td>Add New Device</td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "</tr>";
-    echo "<tr class=\"fake_device\" onclick=\"document.location = 'voltage_charts.php'\">";
-    echo "<td>Battery History</td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "</tr>";
 
     echo "</table>";
+    echo '</div>';
 }
 
 require_once("../config/dbconfig.php");
@@ -165,6 +163,6 @@ foreach (glob("../plugins/*.php") as $filename) {
 foreach ($plugins as $plugin) {
     $rooms[ $plugin->getIndex() ] = $plugin->getResources($config);
 }
-echo "<script src='js/view_devices.js'></script>";
 printResult($devices, $rooms, $plugins);
+echo "<script src='js/view_devices.js'></script>";
 ?>

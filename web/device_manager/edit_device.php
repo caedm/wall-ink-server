@@ -162,19 +162,21 @@
 
     echo "<div class=\"images\">";
     echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&plugin=$device[plugin]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 
-    $batteryWeekImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/week_$device[mac_address].png";
-    $batteryMonthImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/month_$device[mac_address].png";
-    $batteryYearImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/year_$device[mac_address].png";
-    if (file_exists($batteryWeekImage)) {
-        echo "<img id=\"preview\" src=../voltage_monitor/data/week_$device[mac_address].png>"; 
+    if ($_GET["device_id"] != "new") {
+        $batteryWeekImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/week_$device[mac_address].png";
+        $batteryMonthImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/month_$device[mac_address].png";
+        $batteryYearImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/year_$device[mac_address].png";
+        if (file_exists($batteryWeekImage)) {
+            echo "<img id=\"preview\" src=../voltage_monitor/data/week_$device[mac_address].png>"; 
+        }
+        if (file_exists($batteryMonthImage)) {
+            echo "<img id=\"preview\" src=../voltage_monitor/data/month_$device[mac_address].png>"; 
+        }
+        if (file_exists($batteryYearImage)) {
+            echo "<img id=\"preview\" src=../voltage_monitor/data/year_$device[mac_address].png>"; 
+        }
+        echo "<a href=\"view_logs.php?mac_address=$device[mac_address]&device_id=$device[device_id]\">View Logs</a>";
     }
-    if (file_exists($batteryMonthImage)) {
-        echo "<img id=\"preview\" src=../voltage_monitor/data/month_$device[mac_address].png>"; 
-    }
-    if (file_exists($batteryYearImage)) {
-        echo "<img id=\"preview\" src=../voltage_monitor/data/year_$device[mac_address].png>"; 
-    }
-    echo "<a href=\"view_logs.php?mac_address=$device[mac_address]&device_id=$device[device_id]\">View Logs</a>";
     echo "</div>";
     echo "<script src=\"js/edit_device.js\">";
     echo "</script>";

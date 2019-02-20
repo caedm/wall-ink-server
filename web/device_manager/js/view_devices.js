@@ -1,3 +1,4 @@
+//this particular function was taken off of stackoverflow.
 function sortTable(column) {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("devices");
@@ -33,3 +34,38 @@ function sortTable(column) {
   }
 };
 
+function refreshFilters() {
+    var production = document.getElementsByClassName('production');
+    var notProduction = document.getElementsByClassName('notproduction');
+    var showProduction = document.getElementById('showProduction').checked;
+    var showNotProduction = document.getElementById('showNotProduction').checked;
+    for (i = 0; i < production.length; i++) {
+        if (showProduction) {
+            production[i].style.display = "table-row";
+        } else {
+            production[i].style.display = "none";
+        }
+    }
+    for (i = 0; i < notProduction.length; i++) {
+        if (showNotProduction) {
+            notProduction[i].style.display = "table-row";
+        } else {
+            notProduction[i].style.display = "none";
+        }
+    }
+}
+
+var showProduction = document.getElementById("showProduction");
+var showNotProduction = document.getElementById("showNotProduction");
+showProduction.addEventListener('change', function() {
+    refreshFilters();
+});
+showNotProduction.addEventListener('change', function() {
+    refreshFilters();
+});
+
+//make sure these start checked
+document.getElementById('showProduction').checked = true;
+document.getElementById('showNotProduction').checked = true;
+
+refreshFilters();
