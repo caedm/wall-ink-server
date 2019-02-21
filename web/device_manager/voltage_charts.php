@@ -9,7 +9,8 @@ function printResult($devices, $rooms, $plugins) {
     //Display each row
     $devices->data_seek(0);
 
-    echo "<a href=\"view_devices.php\"><h4>Home</h4></a>";
+    echo '<br>';
+    echo "<a href=\"view_devices.php\">Home</a>";
 
     while ($device = $devices->fetch_assoc()) {
         echo "<h4>$device[mac_address] - ";
