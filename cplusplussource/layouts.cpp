@@ -8,9 +8,9 @@ extern uint16_t x_res;
 extern uint16_t y_res;
 
 //portrait 7"
-void drawImage0(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage0(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(900);
+    setSleepTime(900, daylightSavingsActive);
 
     //Draw room name
     canvas->setFont(&FreeSans18pt7b);
@@ -127,9 +127,9 @@ void drawImage0(std::string roomName, std::string date, std::string time, std::s
 }
 
 //landscape 4", shows 2 appointments
-void drawImage1(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage1(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     //Draw room name and date
     canvas->setFont(&FreeSansBold12pt7b);
@@ -184,9 +184,9 @@ void drawImage1(std::string roomName, std::string date, std::string time, std::s
 }
 
 //7" landscape, shows 2 appointments plus blocks
-void drawImage2(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage2(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(900);
+    setSleepTime(900, daylightSavingsActive);
 
     canvas->setFont(&FreeSans24pt7b);
     canvas->setTextColor(1);
@@ -354,9 +354,9 @@ void drawImage2(std::string roomName, std::string date, std::string time, std::s
 }
 
 //7" landscape, shows 3 appointments plus blocks
-void drawImage3(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage3(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     canvas->setFont(&FreeSans24pt7b);
     canvas->setTextColor(1);
@@ -535,9 +535,9 @@ void drawImage3(std::string roomName, std::string date, std::string time, std::s
 }
 
 //landscape 4", shows 2 appointments
-void drawImage4(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage4(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     //Draw room name and date
     canvas->setFont(&FreeSansBold12pt7b);
@@ -689,9 +689,9 @@ void drawImage4(std::string roomName, std::string date, std::string time, std::s
 //layout 5 was for static 7" images, though it is no longer used this way
 
 //landscape 4", shows 2 appointments and has QR code
-void drawImage6(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage6(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     //Draw room name and date
     canvas->setFont(&FreeSansBold12pt7b);
@@ -848,9 +848,9 @@ void drawImage6(std::string roomName, std::string date, std::string time, std::s
 }
 
 //7" landscape, shows 2 appointments plus blocks & a QR code
-void drawImage7(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) { 
+void drawImage7(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) { 
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     canvas->setFont(&FreeSansBold18pt7b);
     canvas->setTextColor(1);
@@ -1025,9 +1025,9 @@ void drawImage7(std::string roomName, std::string date, std::string time, std::s
 //layout 8 was for static 4" images, though it is no longer used this way
 
 //landscape 4", shows 2 appointments and has QR code. More battery efficient than layout 6.
-void drawImage9(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage9(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     //parse reservations
     std::vector<reservation> reservs = parseReservations(reservations);
@@ -1194,9 +1194,9 @@ void drawImage9(std::string roomName, std::string date, std::string time, std::s
 }
 
 //7" landscape, shows 2 appointments plus blocks & a QR code
-void drawImage10(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) {
+void drawImage10(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) {
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     canvas->setFont(&FreeSansBold18pt7b);
     canvas->setTextColor(1);
@@ -1363,9 +1363,9 @@ void drawImage10(std::string roomName, std::string date, std::string time, std::
 }
 
 //7" landscape, shows 2 appointments plus blocks & a QR code. For events.
-void drawImage11(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString) { 
+void drawImage11(std::string roomName, std::string date, std::string time, std::string* reservations, float voltage, std::string displayUrl, std::string qrCodeString, int daylightSavingsActive) { 
     //set sleepTime
-    setSleepTime(1800);
+    setSleepTime(1800, daylightSavingsActive);
 
     canvas->setFont(&FreeSansBold18pt7b);
     canvas->setTextColor(1);

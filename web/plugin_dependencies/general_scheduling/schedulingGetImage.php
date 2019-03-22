@@ -7,6 +7,8 @@ function schedulingGetImage($config, $device, $schedule, $displayUrl, $qrCodeStr
     $macAddressInfo .= "\n";
     $macAddressInfo .= $date;
     $macAddressInfo .= $time;
+    $macAddressInfo .= date('I');
+    $macAddressInfo .= "\n";
     $macAddressInfo .= $device["device_type"];
     $macAddressInfo .= "\n";
     $macAddressInfo .= $device["voltage"];
