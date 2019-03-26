@@ -414,7 +414,7 @@ int process_data(const char * image_key,
     uint8_t mac_address_hash[HASH_SIZE];
     //generate the hash
     err = SHA1Reset(&sha);
-    //has the mac address
+    //hash the mac address
     err = SHA1Input(&sha, (uint8_t *) mac_address, MAC_ADDRESS_LENGTH); 
     //put hash in the array mac_address_hash
     err = SHA1Result(&sha, mac_address_hash);
