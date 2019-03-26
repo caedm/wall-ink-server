@@ -161,7 +161,8 @@
     echo "</div>";
 
     echo "<div class=\"images\">";
-    echo "<img id=\"preview\" src=../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&plugin=$device[plugin]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height] />"; 
+    $imgurl = str_replace(" ", "%20", "../get_png.php?mac_address=$device[mac_address]&layout=$device[device_type]&plugin=$device[plugin]&resource_id=$device[resource_id]&voltage=$device[voltage]&width=$device[width]&height=$device[height]");
+    echo "<img id=\"preview\" src=$imgurl />"; 
     if ($_GET["device_id"] != "new") {
         $batteryWeekImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/week_$device[mac_address].png";
         $batteryMonthImage = "$_SERVER[DOCUMENT_ROOT]/voltage_monitor/data/month_$device[mac_address].png";

@@ -12,7 +12,7 @@ $mac_address = $mysqli->real_escape_string($_GET['mac_address']);
 $width = $mysqli->real_escape_string($_GET["width"]);
 $height = $mysqli->real_escape_string($_GET["height"]);
 $layout = $mysqli->real_escape_string($_GET["layout"]);
-$resourceId = $mysqli->real_escape_string($_GET["resource_id"]);
+$resourceId = $mysqli->real_escape_string("$_GET[resource_id]");
 $plugin = $mysqli->real_escape_string($_GET["plugin"]);
 
 $png = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".png";
@@ -32,7 +32,7 @@ $device['plugin'] = $plugin;
 foreach ($plugins as $plugin) {
     if ($plugin->getIndex() == $device['plugin']) {
         $device['orientation'] = 0;
-        $device['resource_id'] = $resourceId;
+        $device['resource_id'] = "$resourceId";
         $device['device_type'] = $layout;
         $device['width'] = $width;
         $device['height'] = $height;
