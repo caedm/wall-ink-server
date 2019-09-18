@@ -1,6 +1,6 @@
 <?php
-require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
-require("$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php");
+require_once(dirname(__FILE__) . "/../plugin_dependencies/iPlugin.php");
+require(dirname(__FILE__) . "/../config/dbconfig.php");
 class staticImagesPlugin implements iPlugin {
     public function getIndex() {
         return 2;
@@ -49,16 +49,16 @@ class staticImagesPlugin implements iPlugin {
         }
         $nextRefreshTime = $timeIncrement - ($_SERVER['REQUEST_TIME'] % $timeIncrement) + 30;
         $sourceImage = $images[floor($_SERVER['REQUEST_TIME'] / $timeIncrement) % count($images)];
-        $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . "$device[mac_address]" . "." . "pbm";
-        $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . "$device[mac_address]";
-        $static = "$_SERVER[DOCUMENT_ROOT]/image_data/" . "$device[mac_address]" . "." . "static";
+        $pbm = "$config->runTimeWebDirectory/image_data/" . "$device[mac_address]" . "." . "pbm";
+        $raw = "$config->runTimeWebDirectory/image_data/" . "$device[mac_address]";
+        $static = "$config->runTimeWebDirectory/image_data/" . "$device[mac_address]" . "." . "static";
         $angle = 0;
         if ($device['orientation'] == 1) {
             $angle = 180;
         }
         `convert "$sourceImage" -rotate $angle -resize $size\! "$pbm"`;
-        `$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh "$pbm" "$raw"`;
-        `$_SERVER[DOCUMENT_ROOT]/rawToWink "$raw" "$static" $width $height $nextRefreshTime $device[mac_address]`;
+        `$config->runTimeWebDirectory/pbmToRaw.sh "$pbm" "$raw"`;
+        `$config->runTimeWebDirectory/rawToWink "$raw" "$static" $width $height $nextRefreshTime $device[mac_address]`;
         return "$static";
     }
     public function getDeviceType($device) {

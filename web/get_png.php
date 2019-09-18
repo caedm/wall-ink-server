@@ -1,5 +1,5 @@
 <?php
-include "$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php";
+include(dirname(__FILE__) . "/config/dbconfig.php");
 #Debug stuff
 if ($config->debugModeActive == 'true') {
     error_reporting(E_ALL);
@@ -15,7 +15,7 @@ $layout = $mysqli->real_escape_string($_GET["layout"]);
 $resourceId = $mysqli->real_escape_string("$_GET[resource_id]");
 $plugin = $mysqli->real_escape_string($_GET["plugin"]);
 
-$png = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address . ".png";
+$png = "$config->runTimeWebDirectory/image_data/" . $mac_address . ".png";
 $result = mysqli_query($mysqli, "SELECT * FROM devices WHERE mac_address = \"$mac_address\"");
 if ($result->num_rows == 0) {
     $device = array();
@@ -25,7 +25,7 @@ if ($result->num_rows == 0) {
 } else {
     $device = $result->fetch_assoc();
 }
-foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
+foreach (glob("$config->runTimeWebDirectory/plugins/*.php") as $filename) {
     require_once($filename);
 }
 $device['plugin'] = $plugin;
@@ -39,7 +39,7 @@ foreach ($plugins as $plugin) {
         $processedFile = $plugin->getImage($config, $device);
     }
 }
-$raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $mac_address;
+$raw = "$config->runTimeWebDirectory/image_data/" . $mac_address;
 `./rawToPng.sh $raw $device[width] $device[height]`;
 if (file_exists($png)) {
     header('Content-Type: image/png');

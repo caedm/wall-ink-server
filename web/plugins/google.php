@@ -1,6 +1,6 @@
 <?php
-require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
-require("$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php");
+require_once(dirname(__FILE__) . "/../plugin_dependencies/iPlugin.php");
+require(dirname(__FILE__) . "/../config/dbconfig.php");
 class googlePlugin implements iPlugin {
     public function getIndex() {
         return 1;
@@ -27,7 +27,7 @@ class googlePlugin implements iPlugin {
         return $rooms;
     }
     private function getSchedule($config, $resourceId) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/google/google_includes.php");
+        require_once(dirname(__FILE__) . "/../plugin_dependencies/google/google_includes.php");
 
         // Time zone must be set manually, google api complains if set by variable for some reason
         date_default_timezone_set('America/Denver');
@@ -58,11 +58,11 @@ class googlePlugin implements iPlugin {
         return $schedule;
     }
     public function getImage($config, $device) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
+        require_once(dirname(__FILE__) . "/../plugin_dependencies/general_scheduling/schedulingGetImage.php");
         return schedulingGetImage($config, $device, $this->getSchedule($config, $device["resource_id"]), $config->googleCalendarDisplayUrl, $config->googleCalendarQrCodeBaseUrlBeginning . $device["resource_id"] . $config->googleCalendarQrCodeBaseUrlEnd);
     }
     public function getDeviceType($device) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
+        require_once(dirname(__FILE__) . "/../plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
         return schedulingGetDeviceType($device, $this->getIndex());
     }
 }

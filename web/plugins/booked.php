@@ -1,6 +1,6 @@
 <?php
-require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
-require("$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php");
+require_once(dirname(__FILE__) . "/../plugin_dependencies/iPlugin.php");
+require(dirname(__FILE__) . "/../config/dbconfig.php");
 class bookedPlugin implements iPlugin {
     public function getIndex() {
         return 0;
@@ -66,7 +66,7 @@ class bookedPlugin implements iPlugin {
         return $schedule;
     }
     public function getImage($config, $device) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
+        require_once(dirname(__FILE__) . "/../plugin_dependencies/general_scheduling/schedulingGetImage.php");
         return schedulingGetImage(
             $config,
             $device,
@@ -75,7 +75,7 @@ class bookedPlugin implements iPlugin {
             $config->bookedQrCodeBaseUrlBeginning . $device["resource_id"] . $config->bookedQrCodeBaseUrlEnd);
     }
     public function getDeviceType($device) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
+        require_once(dirname(__FILE__) . "/../plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
         return schedulingGetDeviceType($device, $this->getIndex());
     }
 }

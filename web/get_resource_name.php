@@ -11,7 +11,7 @@ $plugin_id = $mysqli->real_escape_string($_GET["plugin_id"]);
 $resource_id = $mysqli->real_escape_string($_GET["resource_id"]);
 
 $resource_name = "";
-foreach (glob("$_SERVER[DOCUMENT_ROOT]/plugins/*.php") as $filename) {
+foreach (glob(dirname(__FILE__) . "/plugins/*.php") as $filename) {
     require_once($filename);
 }
 foreach ($plugins as $plugin) {

@@ -1,6 +1,6 @@
 <?php
-require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
-require("$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php");
+require_once(dirname(__FILE__) . "/../plugin_dependencies/iPlugin.php");
+require(dirname(__FILE__) . "/../config/dbconfig.php");
 
 class icalWebPlugin implements iPlugin {
 
@@ -17,7 +17,7 @@ class icalWebPlugin implements iPlugin {
         return $config->icalWebActive;
     }
     public function getResources($config) {
-        require("$_SERVER[DOCUMENT_ROOT]/config/icalweb_calendars.php");
+        require("$config->runTimeWebDirectory/config/icalweb_calendars.php");
         $rooms = array();
         foreach ($icalweb_calendars as $icalweb_calendar){
             $rooms[$icalweb_calendar['id']] = $icalweb_calendar['resource'];
@@ -30,12 +30,12 @@ class icalWebPlugin implements iPlugin {
         // image_data folder.  Look for a file named <mac_address>.info which will contain the
         // text schedule for your resource.
 
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/icalweb/icalparser/src/IcalParser.php");
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/icalweb/icalparser/src/Recurrence.php");
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/icalweb/icalparser/src/WindowsTimezones.php");
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/icalweb/icalparser/src/Freq.php");
+        require_once("$config->runTimeWebDirectory/plugin_dependencies/icalweb/icalparser/src/IcalParser.php");
+        require_once("$config->runTimeWebDirectory/plugin_dependencies/icalweb/icalparser/src/Recurrence.php");
+        require_once("$config->runTimeWebDirectory/plugin_dependencies/icalweb/icalparser/src/WindowsTimezones.php");
+        require_once("$config->runTimeWebDirectory/plugin_dependencies/icalweb/icalparser/src/Freq.php");
 
-        require("$_SERVER[DOCUMENT_ROOT]/config/icalweb_calendars.php");
+        require("$config->runTimeWebDirectory/config/icalweb_calendars.php");
 
         $results = false;
         $curl_return_string = false;
@@ -93,8 +93,8 @@ class icalWebPlugin implements iPlugin {
         return $schedule;
     }
     public function getImage($config, $device) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetImage.php");
-        require("$_SERVER[DOCUMENT_ROOT]/config/icalweb_calendars.php");
+        require_once("$config->runTimeWebDirectory/plugin_dependencies/general_scheduling/schedulingGetImage.php");
+        require("$config->runTimeWebDirectory/config/icalweb_calendars.php");
         if ($config->icalWebQrCodeBaseUrlBeginning !== "") {
             $qrCodeString = $config->icalWebQrCodeBaseUrlBeginning . $device["resource_id"] . $config->icalWebQrCodeBaseUrlEnd;
         } else {
@@ -108,7 +108,7 @@ class icalWebPlugin implements iPlugin {
             $qrCodeString);
     }
     public function getDeviceType($device) {
-        require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
+        require_once(dirname(__FILE__) . "/../plugin_dependencies/general_scheduling/schedulingGetDeviceType.php");
         return schedulingGetDeviceType($device, $this->getIndex());
     }
 }

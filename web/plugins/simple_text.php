@@ -1,6 +1,6 @@
 <?php
-require_once("$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/iPlugin.php");
-require("$_SERVER[DOCUMENT_ROOT]/config/dbconfig.php");
+require_once(dirname(__FILE__) . "/../plugin_dependencies/iPlugin.php");
+require(dirname(__FILE__) . "/../config/dbconfig.php");
 
 class simpleTextPlugin implements iPlugin {
 
@@ -30,7 +30,7 @@ class simpleTextPlugin implements iPlugin {
     }
     public function getImage($config, $device) {
 
-	$resource_file = "$_SERVER[DOCUMENT_ROOT]/plugin_dependencies/simple_text/" . $device['resource_id'] . ".php";	
+	$resource_file = "$config->runTimeWebDirectory/plugin_dependencies/simple_text/" . $device['resource_id'] . ".php";	
 	
 	// if the device has a resource php file, and it exists, then load it.
 	if (file_exists($resource_file)) {
@@ -76,14 +76,14 @@ class simpleTextPlugin implements iPlugin {
 	
 	//calculate the next time the wall-ink device is to check in
  	$nextRefreshTime = $timeIncrement - ($_SERVER['REQUEST_TIME'] % $timeIncrement) +30;
-        $pbm = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "pbm";
-        $raw = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"];
-        $textImage = "$_SERVER[DOCUMENT_ROOT]/image_data/" . $device["mac_address"] . "." . "wink";
+        $pbm = "$config->runTimeWebDirectory/image_data/" . $device["mac_address"] . "." . "pbm";
+        $raw = "$config->runTimeWebDirectory/image_data/" . $device["mac_address"];
+        $textImage = "$config->runTimeWebDirectory/image_data/" . $device["mac_address"] . "." . "wink";
 
 	
 	`convert -background white -fill black -font $font -border $margin_size -bordercolor white -size $size -pointsize $pointsize -rotate $angle caption:"$caption" $pbm`;
-	`$_SERVER[DOCUMENT_ROOT]/pbmToRaw.sh $pbm $raw`;
-	`$_SERVER[DOCUMENT_ROOT]/rawToWink $raw $textImage $width $height $nextRefreshTime $device[mac_address]`;
+	`$config->runTimeWebDirectory/pbmToRaw.sh $pbm $raw`;
+	`$config->runTimeWebDirectory/rawToWink $raw $textImage $width $height $nextRefreshTime $device[mac_address]`;
 
         return $textImage;
     }
